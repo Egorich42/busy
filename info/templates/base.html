@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{% static "/css/style.css" %}">
+<link rel="stylesheet" href="{% static "/css/font-style.css" %}">
+<link rel="stylesheet" href="{% static "/css/media-style.css" %}">
+<script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
+</head>
+<body> 
+<section class="main"> 
+{% block content %}{% endblock %}
+</section>
+<footer>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="{% static "/JS/script.js" %}"></script>
+</body>
+</html>

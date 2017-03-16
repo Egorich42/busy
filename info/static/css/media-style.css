@@ -1,0 +1,62 @@
+@media screen and (min-device-width: 1920px){}
+
+@media screen and (min-device-width: 1440px){}
+
+@media screen and (min-device-width: 1370px){}
+
+@media screen and (min-device-width: 1334px){}
+
+@media screen and (min-device-width: 1280px){}
+
+@media screen and (min-device-width: 1136px){
+.main {width: 80%;}	
+.sect li { font-size: 22px;margin: 20px 0px; padding-left: 0px;}
+.descript{height: 350px;}
+.descript ul li{width: 50%; float: left; text-align: left;}
+#header nav ul li {width: 20%;}
+.logo-title h1{text-align: center;}
+.logo-title a{font-size: 45px;}
+
+}
+
+
+@media screen and (max-device-width: 1080px){
+#header nav ul li, #header nav ul li:first-child {width: 500px; margin: 20px;background-color: #4c686d;padding: 20px 0px;}
+#header nav ul li a { font-size: 40px;display: block; text-decoration: none;  color: #fff;}
+
+.sect li { font-size: 22px;margin: 20px 0px; padding-left: 35px;}
+.sect li img{width: 80px;}
+.sect ul{margin: 0px; padding: 0px;}
+.sect{text-align: center;}
+
+.logo-title{text-align: center;}
+.logo-title h1{font-size: 5em;}
+
+#cont h2{font-size: 2.6em;}
+.descript {padding: 20px 0px;font-size: 1.4em;}
+
+.main{ width: 96%; margin: 2% 2%;}
+}
+
+@media screen and (max-device-width: 1024px){}
+
+@media screen and (max-device-width: 960px){
+#header nav ul li, #header nav ul li:first-child {width: 440px;}
+}
+
+@media screen and (max-device-width: 750px){
+#header nav ul li, #header nav ul li:first-child {width: 330px;}
+}
+
+
+@media only screen and (max-device-width: 640px) {
+#header nav ul li,#header nav ul li:first-child{width: 275px;}
+}
+
+
+@media screen and (min-width: 860px){ }
+
+@media screen and (min-width: 500px){}
+
+@media screen and (min-width: 400px){
+}

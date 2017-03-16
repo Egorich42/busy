@@ -1,0 +1,82 @@
+body{margin:auto;max-width: 1360px;font-weight: lighter; color: #737371;}
+/*background-color: #f6fbed;*/
+input{border-radius: 6px;border: 1px solid #555;padding: 7px;}
+input:focus{background-color: lightblue;border-radius: 4px;border: 3px solid #555;}
+header a{color: #fff;}
+a,footer{color: #000;}
+a:hover{text-decoration: none;}
+header:hover{text-decoration: none;}
+p{margin: 0px;}
+
+/*HEADER*/
+#header{display: inline-block;}
+#header nav ul li{height: 40px; list-style-type: none;}
+#header nav ul li a{font-size: 2em; display: block; text-decoration: none; color: #231f20;}
+#header nav ul li a:hover{background-color: #4c686d; color: #fff;}
+#header nav ul li a.active{background-color: #f59c82; color: #fff;}
+
+/*MAIN BLOCK*/
+.order-form{width: 50%;margin-left:25%;margin-top: 70px;}
+.order-form label, input{width: 90%;}
+.order-form h1{font-size: 2.5em;font-family: h;}
+.order-form p{font-size: 1.6em;}
+
+
+.sect li{height: 85px;font-size: 1.3em;text-align: right;}
+.sect li img{width: 60px;}
+.sect h2{font-size: 4em;padding: 0px;text-align: center; font-family: h;}
+.sect h3{text-align: center;}
+
+
+.logo-title {color: color: #737371;}
+.logo-title img{margin-top: 70px;display: inline-block;}
+.logotype{background-color: #F47116;border-radius: 50%;width: 35%;margin: 0% 1.25%;}
+
+
+.thanks{text-align: center;}
+.thanks h1{padding-top: 100px;}
+
+.title{cursor: pointer;background: url('media/arrow.png') left center no-repeat;border: solid  10px #F47116;padding: 10px 10px 10px 55px;font-size: 2em;background-color: #F47116;font-family: h; color: #fff;}
+.title:active{color:#fff;background: url('media/arrow-down.png') left center no-repeat;background-color: #F47116}
+
+.descript{padding: 10px 30px;	font-size: 1.3em;margin-bottom: 80px;}
+.descript ul li{text-align: left;height: auto;	}
+
+.cours{font-family: none; margin: 20px 20%; display: inline-block; font-size: 20px;}
+.cours td{border-left: 2px solid#231f20;border-right: 2px solid #231f20;}
+
+.buttons-all{background: #656565;background: linear-gradient(#656565, #444); color: #fff; border: solid 1px #535353;text-shadow: 0 1px 0 #2f2f2f;border: solid 1px #535353;width: 100%;margin-top: 20px;font-size: 1.2em;}
+.buttons-all a :hover{text-decoration: none;color: #fff;}
+
+.top-butt{height: 600px;position: fixed;left: 5px;top: 5px;z-index: 3;padding: 30px 10px;font-size: 1.3em;color:#000;	background-color: #EFF1EC;display: none; /* спрятать блок */cursor: pointer;opacity: 0.8; font-family: a;	}
+.top-butt:hover{opacity: 1.0;}
+
+
+.container .box .top {cursor: pointer;}
+.box{margin: 30px 0px;}
+
+
+/*SINGLES*/
+#cont li{padding: 0% 20%;}
+.main{width: 70%;margin: auto;align-content: center;}
+.title-name{font-size: 4em;width: 75%;}
+.mobMenu{text-align: left;border-radius: 8px;padding:10px;font-size: 3em;border: solid 1px #000;background: url('media/menu.png') right no-repeat;cursor:pointer;margin: 3% 20%; font-family: h;}
+.weather{padding: 0% 15%; font-size: 20px;}
+.head-contact{float: right;font-size: 1em;width: 20%;}
+.submain{width: 86%;padding-left: 7%;}
+.big-links{width: 40%;}
+.bigname{font-size: 2.5em;}
+.phone{width: 30%;}
+.page-name{font-size: 2.5em;width: 100%;}
+.lil-sect{min-height: 300px;}
+.company-name{width: 60%;}
+
+
+/*MASS CLASSES*/
+li,.categories li{list-style: none;}
+a,footer li,#header nav ul li a,.top-butt,.buttons-all,.page-name,#cont h2,#cont h3{text-decoration: none;text-align: center;}
+.bigname,.title-name,.order-form{text-align: center;}
+.sect,.contact-block{ margin: 50px 0px;  width: 100%;list-style: none;list-style-type: none;	}
+#header, #header nav,#header nav ul{width: 100%; font-family: y; margin: 0px;padding:0px;}
+#header, #header nav,#header nav ul,#header nav ul li,.sect li img,.phone,.title-name,.big-links,.sect li img,.l{float: left; }
+#header nav ul li:first-child, #header nav ul li{width: 16%; }
