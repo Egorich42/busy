@@ -4,14 +4,25 @@ input{border-radius: 6px;border: 1px solid #555;padding: 7px;}
 input:focus{background-color: lightblue;border-radius: 4px;border: 3px solid #555;}
 header a{color: #fff;}
 a,footer{color: #000;}
+footer{text-align: center; height: 50px;}
 a:hover{text-decoration: none;}
 header:hover{text-decoration: none;}
 p{margin: 0px;}
 
+
+/*MASS CLASSES*/
+li,.categories li{list-style: none;}
+a,footer li,#header nav ul li a,.top-butt,.buttons-all,.page-name{text-decoration: none;text-align: center;}
+.bigname,.title-name,.order-form{text-align: center;}
+.sect,.contact-block{ margin: 50px 0px;  width: 100%;list-style: none;list-style-type: none;}
+
+#header, #header nav,#header nav ul{width: 100%; font-family: y; margin: 0px;padding:0px;}
+#header, #header nav,#header nav ul,#header nav ul li,.sect li img,.phone,.title-name,.big-links,.sect li img,.l{float: left; }
+
 /*HEADER*/
 #header{display: inline-block;}
-#header nav ul li{height: 40px; list-style-type: none;}
-#header nav ul li a{font-size: 2em; display: block; text-decoration: none; color: #231f20;}
+#header nav ul li{list-style-type: none;}
+#header nav ul li a{font-size: 2em; display: block; text-decoration: none; color: #fff;background: #F47116;}
 #header nav ul li a:hover{background-color: #4c686d; color: #fff;}
 #header nav ul li a.active{background-color: #f59c82; color: #fff;}
 
@@ -26,21 +37,34 @@ p{margin: 0px;}
 .sect li img{width: 60px;}
 .sect h2{font-size: 4em;padding: 0px;text-align: center; font-family: h;}
 .sect h3{text-align: center;}
+.head-sect{width: 100%; height: 300px; padding: 15px; font-size: 20px; }
+.head-sect h1,.contact h2{text-align: center; font-size: 4em; font-family: h;margin: 10px;}
+
+
+.section-list{ background: url('media/11.png') left center no-repeat; background-size: 40px; }
+
+
+.contact{height: 350px; margin: 150px 0px;}
+.contact h2 {font-size: 35px; text-align: center;}
+.contact li {width: 20%;float: left;margin: 0% 2%;font-size: 30px;font-weight: bold; text-align: center;}
+.contact li img {width:100%;}
 
 
 .logo-title {color: color: #737371;}
 .logo-title img{margin-top: 70px;display: inline-block;}
+.logo-title a {text-align: center; font-size: 65px;}
 .logotype{background-color: #F47116;border-radius: 50%;width: 35%;margin: 0% 1.25%;}
 
 
 .thanks{text-align: center;}
 .thanks h1{padding-top: 100px;}
 
-.title{cursor: pointer;background: url('media/arrow.png') left center no-repeat;border: solid  10px #F47116;padding: 10px 10px 10px 55px;font-size: 2em;background-color: #F47116;font-family: h; color: #fff;}
+.title{cursor: pointer; background: url('media/arrow.png') left center no-repeat;border: solid  10px #F47116;padding: 20px 20px 20px 55px;font-size: 2.5em;background-color: #F47116;font-family: h; color: #fff;}
 .title:active{color:#fff;background: url('media/arrow-down.png') left center no-repeat;background-color: #F47116}
 
 .descript{padding: 10px 30px;	font-size: 1.3em;margin-bottom: 80px;}
 .descript ul li{text-align: left;height: auto;	}
+.descript ul{margin: 0px; padding: 0px;}
 
 .cours{font-family: none; margin: 20px 20%; display: inline-block; font-size: 20px;}
 .cours td{border-left: 2px solid#231f20;border-right: 2px solid #231f20;}
@@ -56,8 +80,8 @@ p{margin: 0px;}
 .box{margin: 30px 0px;}
 
 
+
 /*SINGLES*/
-#cont li{padding: 0% 20%;}
 .main{width: 70%;margin: auto;align-content: center;}
 .title-name{font-size: 4em;width: 75%;}
 .mobMenu{text-align: left;border-radius: 8px;padding:10px;font-size: 3em;border: solid 1px #000;background: url('media/menu.png') right no-repeat;cursor:pointer;margin: 3% 20%; font-family: h;}
@@ -70,13 +94,3 @@ p{margin: 0px;}
 .page-name{font-size: 2.5em;width: 100%;}
 .lil-sect{min-height: 300px;}
 .company-name{width: 60%;}
-
-
-/*MASS CLASSES*/
-li,.categories li{list-style: none;}
-a,footer li,#header nav ul li a,.top-butt,.buttons-all,.page-name,#cont h2,#cont h3{text-decoration: none;text-align: center;}
-.bigname,.title-name,.order-form{text-align: center;}
-.sect,.contact-block{ margin: 50px 0px;  width: 100%;list-style: none;list-style-type: none;	}
-#header, #header nav,#header nav ul{width: 100%; font-family: y; margin: 0px;padding:0px;}
-#header, #header nav,#header nav ul,#header nav ul li,.sect li img,.phone,.title-name,.big-links,.sect li img,.l{float: left; }
-#header nav ul li:first-child, #header nav ul li{width: 16%; }
