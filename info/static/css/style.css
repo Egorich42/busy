@@ -12,19 +12,31 @@ p{margin: 0px;}
 
 /*MASS CLASSES*/
 li,.categories li{list-style: none;}
-a,footer li,#header nav ul li a,.top-butt,.buttons-all,.page-name{text-decoration: none;text-align: center;}
-.bigname,.title-name,.order-form{text-align: center;}
-.sect,.contact-block{ margin: 50px 0px;  width: 100%;list-style: none;list-style-type: none;}
+a,footer li,
+.top-butt,
+.buttons-all,
+.page-name{text-decoration: none;text-align: center;}
 
-#header, #header nav,#header nav ul{width: 100%; font-family: y; margin: 0px;padding:0px;}
-#header, #header nav,#header nav ul,#header nav ul li,.sect li img,.phone,.title-name,.big-links,.sect li img,.l{float: left; }
+.bigname,
+.title-name,
+.order-form{text-align: center;}
+.sect,
+.contact-block{ margin: 50px 0px;  width: 100%;list-style: none;list-style-type: none;}
 
-/*HEADER*/
-#header{display: inline-block;}
-#header nav ul li{list-style-type: none;}
-#header nav ul li a{font-size: 2em; display: block; text-decoration: none; color: #fff;background: #F47116;}
-#header nav ul li a:hover{background-color: #4c686d; color: #fff;}
-#header nav ul li a.active{background-color: #f59c82; color: #fff;}
+
+
+.sect li img,
+.phone,
+.title-name,
+.big-links,
+.sect li img,
+.l{float: left; }
+
+/*NAVIGATION*/
+.navigation{width: 100%; display: inline-block;}
+.navigation ul li{list-style-type: none;}
+.navigation li{width: 45%; float: left; margin: 2.5%; background: #F47116; text-align: center;}
+.navigation li a{font-size: 40px;color: #fff; text-decoration: none; font-family: y;}	
 
 /*MAIN BLOCK*/
 .order-form{width: 50%;margin-left:25%;margin-top: 70px;}
@@ -37,17 +49,17 @@ a,footer li,#header nav ul li a,.top-butt,.buttons-all,.page-name{text-decoratio
 .sect li img{width: 60px;}
 .sect h2{font-size: 4em;padding: 0px;text-align: center; font-family: h;}
 .sect h3{text-align: center;}
-.head-sect{width: 100%; height: 300px; padding: 15px; font-size: 20px; }
-.head-sect h1,.contact h2{text-align: center; font-size: 4em; font-family: h;margin: 10px;}
+.head-sect{width: 100%;  padding: 15px; font-size: 20px; }
+.head-sect h1,
+.contact h2{text-align: center; font-size: 4em; font-family: h;margin: 10px;}
 
 
 .section-list{ background: url('media/11.png') left center no-repeat; background-size: 40px; }
 
+.our-contacts{width: 100%; height: 300px;}
+.our-contacts  li {width: 20%;float: left;margin: 0% 2%;font-size: 30px;font-weight: bold; text-align: center;}
+.our-contacts  li img{width: 100%;}
 
-.contact{height: 350px; margin: 150px 0px;}
-.contact h2 {font-size: 35px; text-align: center;}
-.contact li {width: 20%;float: left;margin: 0% 2%;font-size: 30px;font-weight: bold; text-align: center;}
-.contact li img {width:100%;}
 
 
 .logo-title {color: color: #737371;}
@@ -59,8 +71,8 @@ a,footer li,#header nav ul li a,.top-butt,.buttons-all,.page-name{text-decoratio
 .thanks{text-align: center;}
 .thanks h1{padding-top: 100px;}
 
-.title{cursor: pointer; background: url('media/arrow.png') left center no-repeat;border: solid  10px #F47116;padding: 20px 20px 20px 55px;font-size: 2.5em;background-color: #F47116;font-family: h; color: #fff;}
-.title:active{color:#fff;background: url('media/arrow-down.png') left center no-repeat;background-color: #F47116}
+.titul{cursor: pointer; background: url('media/arrow.png') left center no-repeat;border: solid  10px #F47116;padding: 20px 20px 20px 55px;font-size: 2.5em;background-color: #F47116;font-family: h; color: #fff;}
+.titul:active{color:#fff;background: url('media/arrow-down.png') left center no-repeat;background-color: #F47116}
 
 .descript{padding: 10px 30px;	font-size: 1.3em;margin-bottom: 80px;}
 .descript ul li{text-align: left;height: auto;	}

@@ -7,8 +7,6 @@
 
 @media screen and (min-device-width: 1334px){
 .main {width: 1000px;}		
-#header nav ul li:first-child, #header nav ul li {width: 215px;margin: 15px;}
-
 }
 
 @media screen and (min-device-width: 1280px){
@@ -17,15 +15,29 @@
 
 @media screen and (min-device-width: 1136px){
 .main {width: 1080px;}	
-#header nav ul li:first-child, #header nav ul li {width: 230px;margin: 15px;}
-#header nav ul li a{padding: 15px 0px;}
-.head-sect {width: 90%;height: 300px;padding: 25px;font-size: 20px;}
 
-.sect li { font-size: 22px;margin: 20px 0px; padding-left: 0px;}
-.sect li img {width: 35px;padding-right: 15px;}
+.head-sect {
+width: 90%;
+height: 300px;
+padding: 25px;
+font-size: 20px;}
+
+.sect li { 
+font-size: 22px;
+margin: 20px 0px; 
+padding-left: 0px;}
+.sect li img {
+width: 35px;
+padding-right: 15px;}
 
 .descript{height: 350px;}
-.descript ul li {width: 42%;float: left;text-align: left;font-size: 24px;padding: 20px 0px 0px 50px;height: 50px;}
+.descript ul li {
+width: 42%;
+float: left;
+text-align: left;
+font-size: 24px;
+padding: 20px 0px 0px 50px;
+height: 50px;}
 
 
 
@@ -35,77 +47,94 @@
 
 
 @media screen and (max-device-width: 1080px){
-#header nav ul li, #header nav ul li:first-child {width: 470px; margin: 20px;padding: 20px 0px;}
-#header nav ul li a { font-size: 45px;display: block; text-decoration: none;  color: #fff;padding: 20px 0px;}
 
-.sect li {font-size: 22px;margin: 20px 0px; padding-left: 35px;}
+.head-sect{font-size: 24px;}
+
+.sect li {
+font-size: 22px;
+margin: 20px 0px; 
+padding-left: 35px;}
 .sect li img{width: 80px;}
-.sect ul{margin: 0px; padding: 0px;}
+.sect ul{margin: 0px;
+ padding: 0px;}
 .sect{text-align: center;}
 
 .logo-title{text-align: center;}
 .logo-title h1{font-size: 5em;}
 
-.descript {padding: 20px 0px;font-size: 1.4em;}
-.descript ul li {text-align: left;height: 50px;padding: 20px 0px 0px 50px; margin-left: 30px; font-size: 28px;}
+.descript {
+padding: 20px 0px;
+font-size: 1.4em;}
+
+.descript ul li {
+text-align: left;
+height: 50px;
+padding: 20px 0px 0px 50px; 
+margin-left: 30px; 
+font-size: 32px;}
 
 
-.main{ width: 96%; margin: 2% 2%;}
+.main{ 
+width: 96%; 
+margin: 2% 2%;}
 }
 
 @media screen and (max-device-width: 1024px){
-#header nav ul li, #header nav ul li:first-child {width: 440px;}
-.contact li {font-size: 35px;font-weight: bold;}
+.contact li {
+font-size: 35px;
+font-weight: bold;}
 
-.descript ul li {text-align: left;height: 50px;padding: 20px 0px 0px 50px; margin-left: 30px; font-size: 28px;}
 
 
 }
 
 @media screen and (max-device-width: 960px){
-#header nav ul li a{padding: 15px 0px;}
-#header nav ul li, #header nav ul li:first-child {width: 360px;}
-.contact li {width: 22%;float: left;margin: 0% 1%;font-size: 27px;font-weight: bold;}
-
-.descript ul li {text-align: left;height: 50px;padding: 20px 0px 0px 50px; margin-left: 30px; font-size: 28px;}
+.our-contacts  li {
+width: 22%;
+float: left;
+margin: 0% 1%;
+font-size: 27px;
+font-weight: bold;}
 
 }
 
 @media screen and (max-device-width: 860px){
-.contact {height: 250px;margin: 150px 0px;}
-
-.descript ul li {text-align: left;height: 50px;padding: 20px 0px 0px 50px; margin-left: 30px; font-size: 28px;}
-
-
 }
 
 @media screen and (max-device-width: 750px){
-#header nav ul li, #header nav ul li:first-child {width: 300px;}
-.contact li {width: 35%;float: left;margin: 5% 5%;font-size: 25px;font-weight: bold; margin-left: 30px;}
-
-.descript ul li {text-align: left;height: 50px;padding: 20px 0px 0px 50px; margin-left: 30px; font-size: 28px;}
-
-
+.our-contacts  li {
+width: 39%;
+float: left;
+margin: 5% 5%;
+font-size: 34px;
+font-weight: bold; 
+margin-left: 30px;}
 }
 
 
+
 @media only screen and (max-device-width: 640px) {
-#header nav ul li,#header nav ul li:first-child{width: 260px;}
-#header nav ul li a {font-size: 40px;display: block;text-decoration: none;color: #fff;padding: 20px 0px;}
 .head-sect{width: auto;}
 
-.contact li {width: 35%;float: left;margin: 5% 5%;font-size: 20px;font-weight: bold; margin-left: 30px;}
-.contact {height: 650px;margin: 100px 0px;}
+.contact li {width: 35%;float: left;
+margin: 5% 5%;
+font-size: 20px;
+font-weight: bold; 
+margin-left: 30px;}
 
-.descript ul li {text-align: left;height: 50px;padding: 20px 0px 0px 50px; margin-left: 30px; font-size: 28px;}
+.order-form {width: 85%;margin-left: 7%;
+margin-top: 70px;}
 
-.order-form {width: 85%;margin-left: 7%;margin-top: 70px;}
+input {border-radius: 20px;
+border: 2px solid #555;
+height: 50px;
+font-size: 25px;}
 
-input {border-radius: 20px;border: 2px solid #555;height: 50px;font-size: 25px;}
+.sect h3 {text-align: center;
+font-size: 28px;}
 
-.sect h3 {text-align: center;font-size: 28px;}
-
-.head-sect {width: auto;height: 600px;}
+.head-sect {width: auto;
+height: 600px;}
 
 }
 

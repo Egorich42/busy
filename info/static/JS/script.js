@@ -1,8 +1,3 @@
-/*var ulHide = document.getElementById('ul-hide');
-var menuMobile = document.getElementById('mob-menu');
-menuMobile.style.display = 'none';
-*/
-
 if (document.documentElement.clientWidth <1082){
 	/*
 ulHide.style.display = 'none';
