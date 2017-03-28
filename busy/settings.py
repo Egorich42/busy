@@ -27,7 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "e.g.hutter@gmail.com"
+EMAIL_HOST_PASSWORD = "atlantishearth198622"
+EMAIL_USE_TLS = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'info',
+    'mails',
 ]
 
 MIDDLEWARE = [
