@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+СПИСОК
+{% endblock %}
+{% block content %}
+
+{%for post in posts%}
+{{post}}
+{%endfor%}
+{% endblock %}
