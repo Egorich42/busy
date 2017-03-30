@@ -26,9 +26,7 @@ font-size: 20px;}
 font-size: 22px;
 margin: 20px 0px; 
 padding-left: 0px;}
-.sect li img {
-width: 35px;
-padding-right: 15px;}
+
 
 .descript{height: 350px;}
 .descript ul li {
@@ -39,6 +37,15 @@ font-size: 24px;
 padding: 20px 0px 0px 50px;
 height: 50px;}
 
+.our-contacts  li {
+width: 22%;
+float: left;
+margin: 0% 1%;
+font-size: 27px;
+font-weight: bold;}
+
+
+.our-contacts  li img{width: 100%;}
 
 
 .logo-title h1{text-align: center;}
@@ -54,7 +61,7 @@ height: 50px;}
 font-size: 22px;
 margin: 20px 0px; 
 padding-left: 35px;}
-.sect li img{width: 80px;}
+
 .sect ul{margin: 0px;
  padding: 0px;}
 .sect{text-align: center;}
@@ -86,15 +93,7 @@ font-weight: bold;}
 
 
 
-}
-
 @media screen and (max-device-width: 960px){
-.our-contacts  li {
-width: 22%;
-float: left;
-margin: 0% 1%;
-font-size: 27px;
-font-weight: bold;}
 
 }
 

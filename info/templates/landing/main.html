@@ -27,13 +27,16 @@
     </ul>
   </nav>
 
-<!--a  class="top-butt" id="scrollup">наверх</a-->
 
 <!--ABOUT BLOCK-->
 <article class="head-sect" id="about">
-   <h1>Кто мы:</h1>
-      Бухгалтерская компания сдесятилетним опытом работы на рынке. Обслужаем более 30 самых разных клиентов, работающих с нами долгосрочной   договорной основе. Работаем во всех сферах бизнеса - от розничной тороговли и общепита - до строительства и IT-стартапов. 
-      У нас огромный опыт налоговых проерок, а каждый клиент защищен страховым полисом ,на случай любых неприятностей.
+  <h2>Кто мы:</h2>
+{{about}}
+  <h2>Почему мы:</h2>
+{{why_we}}
+  <h3>гарантии</h3>
+{{our_garanty}}
+      
 </article>
 
 
@@ -50,7 +53,7 @@
        <li class="section-list">Выбор системы налогообложения</li>
        <li class="section-list">Налоговое планирование</li>
        <li class="section-list">Автоматизация бухгалтерского учета</li>
-       <li class="section-list"> Составление деклараций</li> 
+       <li class="section-list">Составление деклараций</li> 
        <li class="section-list">Кадровое администрирование</li>
        <li class="section-list">Аутсорсинг участков бухгалтерского учета</li>
       </ul>
@@ -78,6 +81,38 @@
 
 <article class="sect box">
   <h2>Связаться с нами</h2>
+
+  можно так:
+  <article class="sect box">
+
+  <p class="titul top">Наши контакты:</p>
+    <article class="our-contacts  bottom" style="display: none";>
+        <ul>
+      {% for contact in contacts %}
+        <li> 
+        <img src="{{contact.contactIcon}}">
+        <span>{{contact.contactDesc}}</span>
+        </li>  
+      {% endfor %}
+    </ul>
+    </article>
+
+ можно оставить заявкуи мысами свяжемся
+    <article class="sect box">
+  <p class="titul top">Оставить заявку:</p>
+    <article class="order-form bottom" id="form" style="display: none";>
+        <form  action="." method="post">
+          {{ form.as_p }}
+          {% csrf_token %}
+          <p> 
+           <input type="submit" class="buttons-all"  value="Отправить">
+          </p>
+        </form>
+    </article>
+ </article> 
+
+   
+   Наш офис здесь:
     <p class="titul top">Открыть карту</p>
       <article class="bottom" id="mapa" style="display: none";>
         <h3>г.Минск, переулок Козлова, 7</h3>
@@ -95,39 +130,7 @@
 </article>
 
 <!--CONTACT FORM-->
-<article class="sect box">
-  <p class="titul top">Оставить заявку:</p>
-    <article class="order-form bottom" id="form" style="display: none";>
-        <form  action="." method="post">
-          {{ form.as_p }}
-          {% csrf_token %}
-          <p> 
-           <input type="submit" class="buttons-all"  value="Отправить">
-          </p>
-        </form>
-    </article>
- </article> 
 
-
-
-<article class="sect box">
-  <p class="titul top">Наши контакты:</p>
-
-
-    <article class="our-contacts  bottom" style="display: none";>
-
-
-        <ul>
-      {% for contact in contacts %}
-        <li> 
-        <img src="{{contact.contactIcon}}">
-        <span>{{contact.contactDesc}}</span>
-        </li>  
-      {% endfor %}
-    </ul>
-
-
-    </article>
  </article> 
 
 {% endblock %}

@@ -24,12 +24,9 @@ a,footer li,
 .contact-block{ margin: 50px 0px;  width: 100%;list-style: none;list-style-type: none;}
 
 
-
-.sect li img,
 .phone,
 .title-name,
 .big-links,
-.sect li img,
 .l{float: left; }
 
 /*NAVIGATION*/
@@ -46,7 +43,7 @@ a,footer li,
 
 
 .sect li{height: 85px;font-size: 1.3em;text-align: right;}
-.sect li img{width: 60px;}
+
 .sect h2{font-size: 4em;padding: 0px;text-align: center; font-family: h;}
 .sect h3{text-align: center;}
 .head-sect{width: 100%;  padding: 15px; font-size: 20px; }

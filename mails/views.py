@@ -10,7 +10,6 @@ import requests
 
 # Create your views here.
 def index(request):
-
     if request.method == "POST":
         form = MailForm(request.POST)
         clients = Mails.list_of_clients
@@ -32,4 +31,4 @@ def index(request):
     else:
         form = MailForm()
 
-    return render(request, 'mails.html',{'form': form}) 
+    return render(request, 'mails/mails.html',{'form': form}) 

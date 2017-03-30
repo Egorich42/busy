@@ -1,45 +1,13 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.db import models
+from .text_values import *
+import requests
 
 # Create your models here.
-class Serv(models.Model):
-    servName = models.CharField(max_length=200, db_index=True, verbose_name='Название услуги')
-    servDescription = models.TextField(blank=True, verbose_name="Описание")
-   
-    class Meta:
-            ordering = ['servName']
-            verbose_name = 'Услуги'
-            verbose_name_plural = 'Услуги'
-
-    def __str__(self):
-        return self.servName
-
-class Price(models.Model):
-    priceName = models.CharField(max_length=200, db_index=True, verbose_name='Название')
-    priceDescription = models.TextField(blank=True, verbose_name="Описание")
-    class Meta:
-        ordering = ['priceName']
-        verbose_name = 'Цены'
-        verbose_name_plural = 'Расценки'
-
-    def __str__(self):
-        return self.priceName
-
-class About(models.Model):
-    aboutName = models.CharField(max_length=200, db_index=True, verbose_name='Название')
-    aboutDescription = models.TextField(blank=True, verbose_name="Описание")
-    class Meta:
-        ordering = ['aboutName']
-        verbose_name = 'О нас'
-        verbose_name_plural = 'О нас'
-
-    def __str__(self):
-        return self.aboutName
-
 class Contact(models.Model):
-    first_name = models.CharField(verbose_name='Как к вам обратиться?', max_length=200)
-    address =  models.CharField(verbose_name='ваша почта', max_length=250)
+    first_name = models.CharField(verbose_name='Ваше имя либо название организации', max_length=200)
+    address =  models.CharField(verbose_name='Ваша почта', max_length=250)
 
     def __str__(self):
         return 'Контакты: {}'.format(self.id)
@@ -56,3 +24,24 @@ class ContList(models.Model):
 
     def __str__(self):
         return self.contactDesc
+
+
+res = requests.get(weather_request+my_city,
+                params={'q': my_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
+data = res.json()
+weathData = {
+'temp': data['main']['temp'],
+'weatherMainDesc': data['weather'][0]['main'],
+'weatherDesc': data['weather'][0]['description'],
+'weatherImg': data['weather'][0]['icon'],
+ }
+
+temp =  str(weathData['temp'])
+desc = str(weathData['weatherDesc'])
+mainDesc = str(weathData['weatherMainDesc'])
+icon = str(weathe_icons+weathData['weatherImg']+'.png')
+
+
+who = texts['who']
+why = texts['why']
+garanty = texts['garanty']
