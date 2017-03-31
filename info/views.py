@@ -24,6 +24,6 @@ def show_main_page(request):
     form = ContactCreateForm()
 
     return render(request, 'landing/main.html',
-    {'servs':servs,'form': form,'contacts': contacts, 
+    {'form': form,'contacts': contacts, 
     'temp':temp, 'desc':desc, 'icon':icon, 'mainDesc':mainDesc,
-     'about':about, 'our_garanty': our_garanty, 'why_we': why_we }) 
+    'about':about, 'our_garanty': our_garanty, 'why_we': why_we }) 

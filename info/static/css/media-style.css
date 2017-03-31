@@ -55,7 +55,7 @@ font-weight: bold;}
 
 @media screen and (max-device-width: 1080px){
 
-.head-sect{font-size: 24px;}
+.head-sect{font-size: 24px; width: 90%; margin-left: 5%; padding: 0px}
 
 .sect li {
 font-size: 22px;
