@@ -2,7 +2,9 @@ body{margin:auto;max-width: 1360px;font-weight: lighter; color: #737371;}
 /*background-color: #f6fbed;*/
 input{border-radius: 6px;border: 1px solid #555;padding: 12px; font-size: 24px;}
 input:focus{background-color: lightblue;border-radius: 4px;border: 3px solid #555;}
-header a{color: #fff;}
+header h1{padding: 0px; margin: 0px; font-family:y; }
+header h2{font-family: a;}
+header{text-align: center; }
 a,footer{color: #000;}
 footer{text-align: center; height: 50px;}
 a:hover{text-decoration: none;}
@@ -51,7 +53,7 @@ a,footer li,
 .contact h2{text-align: center; font-size: 4em; font-family: h;margin: 10px;}
 
 
-.section-list{ background: url('media/11.png') left center no-repeat; background-size: 40px; }
+.section-list { background: url('media/11.png') left center no-repeat; background-size: 40px; }
 
 .our-contacts{width: 100%; height: 300px;}
 .our-contacts  li {width: 20%;float: left;margin: 0% 2%;font-size: 30px;font-weight: bold; text-align: center;}
@@ -59,7 +61,6 @@ a,footer li,
 
 
 
-.logo-title {color: color: #737371;}
 .logo-title img{margin-top: 70px;display: inline-block;}
 .logo-title a {text-align: center; font-size: 65px;}
 .logotype{background-color: #F47116;border-radius: 50%;width: 35%;margin: 0% 1.25%;}
