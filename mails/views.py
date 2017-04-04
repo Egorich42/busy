@@ -9,7 +9,7 @@ from django.core.mail import *
 import requests
 
 # Create your views here.
-def index(request):
+def post_email(request):
     if request.method == "POST":
         form = MailForm(request.POST)
         clients = Mails.list_of_clients

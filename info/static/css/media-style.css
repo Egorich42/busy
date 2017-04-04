@@ -64,10 +64,6 @@ padding-left: 35px;}
 
 .sect ul{margin: 0px;
  padding: 0px;}
-.sect{text-align: center;}
-
-.logo-title{text-align: center;}
-.logo-title h1{font-size: 5em;}
 
 .descript {
 padding: 20px 0px;
@@ -92,13 +88,9 @@ font-size: 35px;
 font-weight: bold;}
 
 
+@media screen and (max-device-width: 960px){}
 
-@media screen and (max-device-width: 960px){
-
-}
-
-@media screen and (max-device-width: 860px){
-}
+@media screen and (max-device-width: 860px){}
 
 @media screen and (max-device-width: 750px){
 .our-contacts  li {

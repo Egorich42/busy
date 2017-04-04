@@ -4,16 +4,56 @@
 <head>
 <meta charset="UTF-8">
 <title>{% block title %}{% endblock %}</title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+<meta name="robots" content="index, follow" /> 
+<meta name="robots" content="noyaca"/>
+<meta name="robots" content="noodp"/>
+<meta name="keywords" content="buhsov@gmail.com, buhsov.com, buhsov com, buhsov, Бухгалтерские советы, бухгалтерия, аутсорс, аутсорсинг бухгалтерских услуг, бухгалтер, финансы, Беларусь, Минск"/>
+<meta name="description" content="Аутсорсинг бухгалтерских услуг в Беларуси"/>
+<meta property="business:contact_data:email" content="buhsov@gmail.com"/>
+<meta property="business:contact_data:phone_number" content="+375333516975"/>
+<meta property="business:contact_data:website" content="http://buhsov.com/"/>
+
+<meta property="og:title" content="Бухгалтерские советы" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://winorbite.com/" />
+<meta property="og:image" content="/media/s-logo.png"/>
+
+
+
 <link rel="stylesheet" href="{% static "/css/style.css" %}">
 <link rel="stylesheet" href="{% static "/css/font-style.css" %}">
 <link rel="stylesheet" href="{% static "/css/media-style.css" %}">
+
+
+
 <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
 </head>
 <body> 
+<header>
+ <article class="logo-title">
+    <h1>
+      <a href=""> Бухгалтерские советы</a>
+    </h1>
+    <h2>Аутсорсинг бухгалтерских услуг</h2>
+  </article>
+<!--nav>
+	<ul>
+		{% for contact in contacts %}
+        <li> 
+        <img src="{{contact.contactIcon}}">
+        <span>{{contact.contactDesc}}</span>
+        </li>  
+      {% endfor %}
+	</ul>
+</nav-->	
+
+</header>
 <section class="main"> 
 {% block content %}{% endblock %}
 </section>
 <footer>
+<p>"Бухгалтерские советы"</p>
 Copyright 2017
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
