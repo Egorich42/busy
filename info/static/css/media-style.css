@@ -16,12 +16,6 @@
 @media screen and (min-device-width: 1136px){
 .main {width: 1080px;}	
 
-.head-sect {
-width: 90%;
-height: 300px;
-padding: 25px;
-font-size: 20px;}
-
 .sect li { 
 font-size: 22px;
 margin: 20px 0px; 
@@ -54,9 +48,6 @@ font-weight: bold;}
 
 
 @media screen and (max-device-width: 1080px){
-
-.head-sect{font-size: 24px; width: 90%; margin-left: 5%; padding: 0px}
-
 .sect li {
 font-size: 22px;
 margin: 20px 0px; 
@@ -64,10 +55,6 @@ padding-left: 35px;}
 
 .sect ul{margin: 0px;
  padding: 0px;}
-.sect{text-align: center;}
-
-.logo-title{text-align: center;}
-.logo-title h1{font-size: 5em;}
 
 .descript {
 padding: 20px 0px;
@@ -92,13 +79,9 @@ font-size: 35px;
 font-weight: bold;}
 
 
+@media screen and (max-device-width: 960px){}
 
-@media screen and (max-device-width: 960px){
-
-}
-
-@media screen and (max-device-width: 860px){
-}
+@media screen and (max-device-width: 860px){}
 
 @media screen and (max-device-width: 750px){
 .our-contacts  li {
@@ -113,7 +96,6 @@ margin-left: 30px;}
 
 
 @media only screen and (max-device-width: 640px) {
-.head-sect{width: auto;}
 
 .contact li {width: 35%;float: left;
 margin: 5% 5%;
@@ -132,10 +114,6 @@ font-size: 25px;}
 .sect h3 {text-align: center;
 font-size: 28px;}
 
-.head-sect {width: auto;
-height: 600px;}
-
-}
 
 
 

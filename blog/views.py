@@ -16,16 +16,10 @@ def post_list(request):
     return render(request, 'post_list.html', {'posts': posts })
 
 
-
-
 def post_detail(request, id):
     post = get_object_or_404(Post, id=id)
     return render(request, 'post.html',
                              {'post': post})
-
-
-def PostDetail(request, id, slug):
-    post = get_object_or_404(Post, id=id)
 
 
 def create_post(request):

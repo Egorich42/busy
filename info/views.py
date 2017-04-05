@@ -20,7 +20,7 @@ def show_main_page(request):
         form = ContactCreateForm(request.POST)
         if form.is_valid():
             order = form.save()
-            return render(request, 'thanks.html')
+            return render(request, 'landing/thanks.html')
     form = ContactCreateForm()
 
     return render(request, 'landing/main.html',
