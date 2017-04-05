@@ -41,6 +41,8 @@ a,footer li,
 .sect h2{font-size: 4em;padding: 0px;text-align: center; font-family: h;}
 .sect h3{text-align: center;}
 
+.tesis{width: 80%; float: left;}
+.tesis ul li{border-bottom: solid 3px #F47116;}
 
 .contact h2{text-align: center; font-size: 4em; font-family: h;margin: 10px;}
 
@@ -48,15 +50,15 @@ a,footer li,
 .section-list { background: url('media/11.png') left center no-repeat; background-size: 40px; }
 
 .our-contacts{width: 100%; height: 300px;}
-.our-contacts  li {width: 20%;float: left;margin: 0% 2%;font-size: 30px;font-weight: bold; text-align: center;}
+.our-contacts  li {width: 15%;float: left;margin: 0% 2%;font-size: 30px;font-weight: bold; text-align: center;}
 .our-contacts  li img{width: 100%;}
 
 
 .thanks{text-align: center;}
 .thanks h1{padding-top: 100px;}
 
-.titul{cursor: pointer; background: url('media/arrow.png') left center no-repeat;border: solid  10px #F47116;padding: 20px 20px 20px 55px;font-size: 2.5em;background-color: #F47116;font-family: h; color: #fff;}
-.titul:active{color:#fff;background: url('media/arrow-down.png') left center no-repeat;background-color: #F47116}
+.titul{margin: 30px 0px;cursor: pointer; background: url('media/arrow.png') left center no-repeat;border: solid  10px #F47116;padding: 20px 20px 20px 55px;font-size: 2.5em;background-color: #F47116;font-family: h; color: #fff;}
+.titul:hover{color:#fff;background: url('media/arrow-down.png') left center no-repeat;background-color: #F47116}
 
 .descript{padding: 10px 30px;	font-size: 1.3em;margin-bottom: 80px;}
 .descript ul li{text-align: left;height: auto;	}
