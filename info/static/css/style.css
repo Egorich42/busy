@@ -1,5 +1,4 @@
 body{margin:auto;max-width: 1360px;font-weight: lighter; color: #737371;}
-/*background-color: #f6fbed;*/
 input{border-radius: 6px;border: 1px solid #555;padding: 12px; font-size: 24px;}
 input:focus{background-color: lightblue;border-radius: 4px;border: 3px solid #555;}
 header h1{padding: 0px; margin: 0px; font-family:y; }
@@ -15,21 +14,14 @@ p{margin: 0px;}
 /*MASS CLASSES*/
 li,.categories li{list-style: none;}
 a,footer li,
-.top-butt,
 .buttons-all,
 .page-name{text-decoration: none;text-align: center;}
 
-.bigname,
-.title-name,
+
 .order-form{text-align: center;}
 .sect,
 .contact-block{ margin: 50px 0px;  width: 100%;list-style: none;list-style-type: none;}
 
-
-.phone,
-.title-name,
-.big-links,
-.l{float: left; }
 
 /*NAVIGATION*/
 .navigation{width: 100%; display: inline-block;}
@@ -48,8 +40,8 @@ a,footer li,
 
 .sect h2{font-size: 4em;padding: 0px;text-align: center; font-family: h;}
 .sect h3{text-align: center;}
-.head-sect{width: 100%;  padding: 15px; font-size: 20px; }
-.head-sect h1,
+
+
 .contact h2{text-align: center; font-size: 4em; font-family: h;margin: 10px;}
 
 
@@ -58,12 +50,6 @@ a,footer li,
 .our-contacts{width: 100%; height: 300px;}
 .our-contacts  li {width: 20%;float: left;margin: 0% 2%;font-size: 30px;font-weight: bold; text-align: center;}
 .our-contacts  li img{width: 100%;}
-
-
-
-.logo-title img{margin-top: 70px;display: inline-block;}
-.logo-title a {text-align: center; font-size: 65px;}
-.logotype{background-color: #F47116;border-radius: 50%;width: 35%;margin: 0% 1.25%;}
 
 
 .thanks{text-align: center;}
@@ -76,14 +62,8 @@ a,footer li,
 .descript ul li{text-align: left;height: auto;	}
 .descript ul{margin: 0px; padding: 0px;}
 
-.cours{font-family: none; margin: 20px 20%; display: inline-block; font-size: 20px;}
-.cours td{border-left: 2px solid#231f20;border-right: 2px solid #231f20;}
-
 .buttons-all{background: #656565;background: linear-gradient(#656565, #444); color: #fff; border: solid 1px #535353;text-shadow: 0 1px 0 #2f2f2f;border: solid 1px #535353;width: 100%;margin-top: 20px;font-size: 1.2em;}
 .buttons-all a :hover{text-decoration: none;color: #fff;}
-
-.top-butt{height: 600px;position: fixed;left: 5px;top: 5px;z-index: 3;padding: 30px 10px;font-size: 1.3em;color:#000;	background-color: #EFF1EC;display: none; /* спрятать блок */cursor: pointer;opacity: 0.8; font-family: a;	}
-.top-butt:hover{opacity: 1.0;}
 
 
 .container .box .top {cursor: pointer;}
@@ -102,5 +82,5 @@ a,footer li,
 .bigname{font-size: 2.5em;}
 .phone{width: 30%;}
 .page-name{font-size: 2.5em;width: 100%;}
-.lil-sect{min-height: 300px;}
+il-sect{min-height: 300px;}
 .company-name{width: 60%;}
