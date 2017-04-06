@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import render, get_object_or_404, render_to_response,redirect
 from django.http import HttpResponse
 from .models import *
 from .forms import *
@@ -27,6 +27,7 @@ def post_email(request):
                  (str(post.mail_head), str(post.mail_text),  from_who , clients),
              )
             send_mass_mail(datatuple)
+
 
     else:
         form = MailForm()

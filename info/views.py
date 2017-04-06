@@ -11,8 +11,8 @@ import requests
 
 def show_main_page(request):
     about = who
-    our_garanty = garanty
-    why_we = why
+    descript = what_we_did
+    why_we = listik
 
     contacts = ContList.objects.all()
 
@@ -26,4 +26,4 @@ def show_main_page(request):
     return render(request, 'landing/main.html',
     {'form': form,'contacts': contacts, 
     'temp':temp, 'desc':desc, 'icon':icon, 'mainDesc':mainDesc,
-    'about':about, 'our_garanty': our_garanty, 'why_we': why_we }) 
+    'about':about, 'descript': descript, 'why_we': why_we }) 

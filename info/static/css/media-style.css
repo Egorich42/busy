@@ -58,7 +58,9 @@ text-align: left;
 height: 50px;
 padding: 20px 0px 0px 50px; 
 margin-left: 30px; 
-font-size: 32px;}
+font-size: 32px;
+background: url('media/11.png') left center no-repeat; 
+background-size: 40px; }
 
 
 .main{ 
