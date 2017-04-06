@@ -15,7 +15,7 @@
 
 @media screen and (min-device-width: 1136px){
 .main {width: 1080px;}	
-.titul{ padding: 0px 0px 0px 55px;    font-size: 1.2em;}
+.titul{ padding: 0px 0px 0px 55px; font-size: 1.2em;}
 
 .sect li { 
 font-size: 22px;
@@ -31,14 +31,6 @@ text-align: left;
 font-size: 24px;
 padding: 20px 0px 0px 50px;
 height: 50px;}
-
-.our-contacts  li {
-width: 22%;
-float: left;
-margin: 0% 1%;
-font-size: 27px;
-font-weight: bold;}
-
 
 .our-contacts  li img{width: 100%;}
 
