@@ -43,5 +43,5 @@ icon = str(weathe_icons+weathData['weatherImg']+'.png')
 
 
 who = texts['who']
-why = texts['why']
-garanty = texts['garanty']
+what_we_did = texts['what_we_did']
+listik = texts['list']
