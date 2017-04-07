@@ -201,6 +201,14 @@ background-color: #F47116;
 font-family: h; color: #fff;
 }
 
+
+.head-titul{
+font-size: 1.7em;
+background-color: #F47116;
+font-family: h; color: #fff;
+padding:5px 30px;	
+}
+
 .titul:hover{
 color:#fff;background: url('media/arrow-down.png') left center no-repeat;
 background-color: #F47116;
