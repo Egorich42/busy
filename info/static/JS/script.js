@@ -1,12 +1,3 @@
-if (document.documentElement.clientWidth <1082){
-	/*
-ulHide.style.display = 'none';
-menuMobile.classList.add('mobMenu');
-menuMobile.style.display = 'block';
-*/
-}
-
- 
 $('.top').on('click', function() {
 	$parent_box = $(this).closest('.box');
 	$parent_box.siblings().find('.bottom').slideUp();

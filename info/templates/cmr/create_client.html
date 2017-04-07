@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-Создать пост
+Создать клиента
 {% endblock %}
 {% block content %}
 
 <form method="POST" class="post-form">{% csrf_token %}
 {{ form.as_p }}
-<button type="submit">Создать</button>
+<button type="submit">Save</button>
 </form>
 {% endblock %}

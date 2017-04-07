@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Почта
+{% endblock %}
+{% block content %}
+
+
+{{client.name}}
+{{client.individual_number}}
+{{client.bank_schet}}
+{{client.description}}
+{{client.email}}
+{{client.phone}}
+{{client.telegram}}
+{{client.skype}}
+{{client.spheres}}
+
+{% endfor %}
+
+{% endblock %}

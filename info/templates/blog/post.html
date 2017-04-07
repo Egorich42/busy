@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-Почта
+{{post.name}}
 {% endblock %}
 {% block content %}
-{{post_name}}
-{{post_text}}
+
+
+{{post.name}}
+{{post.text}}
+{{post.icon}}
+
+{% endfor %}
+
 {% endblock %}

@@ -1,37 +1,30 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, get_object_or_404, render_to_response, redirect
-from django.shortcuts import redirect
-
+from django.shortcuts import render, get_object_or_404, render_to_response,redirect
 from django.http import HttpResponse
 from .models import *
 from .forms import *
 from django import forms
-from django.core.mail import *
 import requests
-
-# Create your views here.
-def post_list(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/post_list.html', {'posts': posts })
-
-
-def post_detail(request, id):
-    post = get_object_or_404(Post, id=id)
-    return render(request, 'blog/post.html',
-                             {'post': post})
-
-
+ 
+#python manage.py migrate --run-syncdb
 def create_post(request):
     if request.method == "POST":
-        form = Post_Form(request.POST)
+        client_form = PostForm(request.POST)
         if form.is_valid():
-           post = form.save(commit=False)
-           post.author = request.user
-           post.save()
-
-           return redirect('blog/post_detail',id=id)
+            client = client_form.save(commit=False)
+            client.author = request.user
+            client.save()
     else:
-    	form = Post_Form()	
+        form = PostForm()
 
-    return render(request, 'blog/create_post.html',{'form': form}) 
+    return render(request, 'blog/create_post.html', {'client_form': client_form}) 
+
+
+def post_list(request):
+    posts = Post.objects.all().order_by('name')
+
+    return render(request, 'blog/post_list.html', {'posts': posts })
+
+def client_profile(request):
+    return render(request, 'blog/post.html')

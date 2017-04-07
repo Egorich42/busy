@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-Посты
+Почта
 {% endblock %}
 {% block content %}
 
-{% for post in posts %}
-{{post.name}}
-{{post.icon}}
+{% for client in clients %}
+{{client.name}}
+{{client.individual_number}}
+{{client.bank_schet}}
 
 {% endfor %}
 
