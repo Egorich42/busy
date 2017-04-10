@@ -7,6 +7,8 @@ class Post(models.Model):
     post_name = models.CharField(max_length=200, db_index=True, verbose_name='Название')
     post_text = models.TextField(blank=True, verbose_name="текст")
     post_image = models.ImageField(upload_to='static/media/', blank=True, verbose_name="Иконка")
+    post_created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
+
     class Meta:
             ordering = ['post_name']
             verbose_name = 'пост'

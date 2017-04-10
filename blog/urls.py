@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^create_post/$', views.create_post, name='create_post'),
     url(r'^$', views.post_list, name='post_list'),
 #    url(r'^$', views.client, name='client'),
+ #   url(r'^(?P<slug>[-\w])/$', views.client_detail, name='client_detail'),
 ]

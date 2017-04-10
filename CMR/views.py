@@ -41,17 +41,20 @@ def create_client(request):
             client.author = request.user
             client.save()
     else:
-        form = ClientForm()
+        client_form = ClientForm()
+        
 
     return render(request, 'cmr/create_client.html', {'client_form': client_form}) 
 
 
-
-
 def client_list(request):
-    clients = Client.objects.all().order_by('name')
+    clients = Client.objects.all().order_by('id')
 
     return render(request, 'cmr/clients_list.html', {'clients': clients })
 
-def client_profile(request):
-    return render(request, 'cmr/client.html')
+
+
+def client_profile(request, id):
+    client = get_object_or_404(Client, id=id)
+
+    return render(request, 'cmr/client.html', {'client':client})
