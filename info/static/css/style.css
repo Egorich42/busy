@@ -19,24 +19,29 @@ border: 3px solid #555;
 }
 
 header h1{
-padding: 0px; 
-margin: 0px; 
 font-family:y; 
+font-size: 35px;
 }
 
 header h2{font-family: a;
+font-size: 25px;
 }
+
+header h1, header h2{padding: 20px; margin:0px;}
 
 header{text-align: center; 
 }
 
-a,footer{color: #000;
+a{
+color: #000;
 }
 
 footer{
 text-align: center; 
-height: 50px;
 background-color: #F47116;
+color: #fff;
+padding-bottom: 10px;
+font-family: a;
 }
 
 a:hover{text-decoration: none;
@@ -45,8 +50,12 @@ a:hover{text-decoration: none;
 header:hover{text-decoration: none;
 }
 
-p{margin: 0px;
+p{
+margin: 0px;
+padding: 20px 10px;
 }
+
+p,.about,.tesis ul li{font-size: 18px;}
 
 nav{
 width: 100%;
@@ -57,6 +66,8 @@ nav ul li{
 float: left;
 width: 20%;	
 }
+
+header a{background-color: #F47116; padding: 15px; text-decoration: none; color: #fff;}
 
 
 /*MASS CLASSES*/
@@ -123,8 +134,7 @@ font-family: h;
 
 .order-form p{
 font-size: 1.6em;
-margin: 25px 0px;
-}
+padding: 0px;}
 
 
 .sect li{
@@ -147,6 +157,7 @@ text-align: center;
 
 .tesis ul li{
 margin-bottom: 15px;
+list-style-type: square;
 }
 
 .contact h2{
@@ -272,8 +283,8 @@ font-size: 20px;
 
 .logo-title{
 background-size: cover;
-padding-top: 50px;
-padding-bottom: 50px;
+padding-top: 30px;
+padding-bottom: 30px;
 background-image: url('media/02.jpg');
 border-bottom: solid 3px #F47116;
 }
@@ -311,17 +322,14 @@ width: 42%;
 float: left;
 text-align: left;
 font-size: 24px;
-padding: 20px 0px 0px 50px;
-height: 50px;}
-
-.our-contacts  li img{width: 100%;}
-.our-contacts li {
-font-size: 24px;
+padding: 10px 0px 10px 50px;
 }
 
+.our-contacts li {
+font-size: 24px;
+margin: 0% 2%;
+}
 
-.logo-title h1{text-align: center;}
-.logo-title a{font-size: 45px;}
 }
 
 
@@ -395,7 +403,7 @@ font-weight: bold;}
 
 @media screen and (max-device-width: 960px){
 
-.about{font-size: 16px; padding: 20px;}
+.about{ padding: 20px;}
 
 .our-contacts {
 width: 100%;
@@ -414,33 +422,25 @@ padding: 0px;
 @media screen and (max-device-width: 860px){}
 
 @media screen and (max-device-width: 750px){
-.our-contacts  li {
-width: 39%;
-float: left;
-margin: 5% 5%;
-font-size: 34px;
-font-weight: bold; 
-margin-left: 30px;}
 
-.logo-title {
-padding-top: 100px;
-padding-bottom: 100px;
+header h2{font-size: 18px;}
+
+p,.about,.tesis ul li{font-size: 16px; color: red;}
+
+
+footer{font-size: 15px;
 }
+
 
 .tesis ul li {
 margin-bottom: 45px;
 }
 
-.descript ul li {
-text-align: left;
-height: 100px;
-padding: 100px 0px 0px 50px;
-margin-left: 100px;
-font-size: 32px;
-background-size: 40px;
-background: #000;
-}
 
+.logo-title {
+padding-top: 100px;
+padding-bottom: 100px;
+}
 
 
 }
@@ -448,6 +448,29 @@ background: #000;
 
 
 @media only screen and (max-device-width: 640px) {
+
+.descript ul li {
+height: 100px;
+padding: 20px 0px 0px 90px;
+margin-left: 30px;
+font-size: 24px;
+margin-bottom: 40px;
+background-size: 60px;
+}
+
+.head-titul {
+margin: 50px 0px;
+}
+
+
+.our-contacts  li {
+width: 39%;
+float: left;
+margin: 5% 5%;
+font-size: 34px;
+font-weight: bold; 
+margin-left: 30px;}
+	
 
 .contact li {
 width: 35%;
@@ -473,10 +496,4 @@ text-align: center;
 font-size: 28px;}
 
 }
-
-
-@media screen and (min-width: 500px){}
-
-@media screen and (min-width: 480px){}
-
-@media screen and (min-width: 400px){}
+}
