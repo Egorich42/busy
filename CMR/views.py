@@ -13,8 +13,10 @@ def post_email(request):
         form = MailForm(request.POST)
         clients = Mails.list_of_clients
         from_who = Mails.from_who
+        
         mail_text = Mails.mail_text
         subject = Mails.mail_head
+
         if form.is_valid():
 
             post = form.save(commit=False)

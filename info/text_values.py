@@ -9,3 +9,8 @@ appid = "55dbe8902d5abb4d0631be757c2a2ba0"
 my_city = 'Minsk, BY'
 weather_request =  "http://api.openweathermap.org/data/2.5/weather?q="
 weathe_icons = 'http://openweathermap.org/img/w/'
+
+to_me = ['e.g.hutter@gmail.com']
+from_who = 'e.g.hutter@gmail.com'
+
+

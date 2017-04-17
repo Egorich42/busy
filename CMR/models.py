@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.db import models
-
+import requests
 # Create your models here.
 
 class Mails(models.Model):
