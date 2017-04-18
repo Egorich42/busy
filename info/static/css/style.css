@@ -179,7 +179,7 @@ height: 300px;
 }
 
 .our-contacts  li {
-width: 15%;
+width: 20%;
 float: left;
 margin: 0% 2%;
 font-size: 30px;
@@ -426,7 +426,7 @@ padding: 0px;
 
 header h2{font-size: 18px;}
 
-p,.about,.tesis ul li{font-size: 16px; color: red;}
+p,.about,.tesis ul li{font-size: 14px;}
 
 
 footer{font-size: 15px;
