@@ -5,11 +5,15 @@
 {% endblock %}
 {% block content %}
 
+<a href="/">на главную</a>
 {% for client in clients %}
-{{client.name}}
-{{client.individual_number}}
-{{client.bank_schet}}
+<ul>
+<ul>
+<li><a href="/cmr/{{client.id}}">{{client.name}}</a></li>
+<li>{{client.icon}}	</li>
+</ul>	
 
+</ul>
 {% endfor %}
 
 {% endblock %}

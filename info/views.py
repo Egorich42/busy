@@ -4,7 +4,6 @@ from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse
 from .models import *
 from .forms import *
-from .text_values import *
 from django import forms
 from django.core.mail import send_mass_mail,send_mail
 import requests
@@ -12,10 +11,7 @@ import requests
 def show_main_page(request):
     about = who
     descript = what_we_did
-
     contacts = ContList.objects.all()
-
-
 
     if request.method == 'POST':
         form = ContactCreateForm(request.POST)

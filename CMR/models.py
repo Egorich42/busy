@@ -7,9 +7,6 @@ import requests
 class Mails(models.Model):
     mail_head = models.CharField(max_length=200, db_index=True, verbose_name='Тема')
     mail_text = models.TextField(blank=True, verbose_name="текст")
-
-    list_of_clients = ['e.g.hutter@gmail.com','zonaegora@gmail.com']
-    from_who = 'e.g.hutter@gmail.com'
     
     class Meta:
             ordering = ['mail_head']
@@ -23,14 +20,15 @@ class Mails(models.Model):
 class Client(models.Model):
     icon = models.ImageField(upload_to='products/', blank=True, verbose_name="Иконка")
     name = models.CharField(max_length=200, db_index=True, verbose_name='Название')
-    description =  models.TextField(blank=True, verbose_name="Описание")
-    individual_number = models.PositiveIntegerField(verbose_name='УНН', default=1)
-    bank_schet = models.PositiveIntegerField(verbose_name='Банковский счет', default=1)
-    spheres= models.CharField(max_length=400, db_index=True, verbose_name='Области деятельности')
+    organization_type = models.CharField(max_length=50, db_index=True, verbose_name='Вид организации')
+    nalog_system = models.CharField(max_length=200, db_index=True, verbose_name='Система налогооблажения')
+    unp = models.PositiveIntegerField(verbose_name='УНП', default=1)
+    bank_schet = models.CharField(max_length=100, db_index=True,verbose_name='Банковский счет')
+    bank_BIK = models.CharField(max_length=100, db_index=True, verbose_name='IBAN')
     email =  models.EmailField(verbose_name='Е-mail', blank = True) 
-    skype= models.CharField(max_length=200, db_index=True, verbose_name='Скайп')
-    telegram= models.CharField(max_length=200, db_index=True, verbose_name='Телеграм')
-    phone =  models.PositiveIntegerField(verbose_name='Телефон', default=1)
+    skype= models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Скайп')
+    phone =  models.PositiveIntegerField(verbose_name='Телефон', blank = True ,default=1)
+    
 
     class Meta:
             ordering = ['name']
@@ -38,6 +36,6 @@ class Client(models.Model):
             verbose_name_plural = 'Клиенты'
 
     def __str__(self):
-        return 'Название: {}'.format(self.name)
+        return str(self.id) +'. '+self.name 
 
 

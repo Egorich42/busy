@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.db import models
-from .text_values import *
 import requests
 
 # Create your models here.
@@ -26,6 +25,23 @@ class ContList(models.Model):
         return self.contactDesc
 
 
+
+texts = {
+"who": '"Бухгалтерские советы" - компания, на удаленной основе оказывающая услуги в области ведения кадровой, налоговой и бухгалтерской документации, а так же консультирующая по вопросам ведения и открытия бизнеса.',
+"what_we_did":"Мы берем на себя довольно затратную и объемную часть бизнеса - ведение финансовой и кадровой документации, подготовку различной финансовой отчетности, прохождение и представление ваших интересов во время финансовых проверок. \n Оказываем свои услуги на удаленной основе, что означает для вас целый ряд преимуществ перед наймом штатных специалистов - нет нужды оборудовать рабочие места, выплачивать страховые и социальные взносы, а так же задумываться об отпуске и больничном. Вместо этого штат опытных бухгалтеров, занимающихся вашими делами, что кушать не просят и места не занимают.",
+}
+
+who = texts['who']
+what_we_did = texts['what_we_did']
+
+appid = "55dbe8902d5abb4d0631be757c2a2ba0"
+my_city = 'Minsk, BY'
+weather_request =  "http://api.openweathermap.org/data/2.5/weather?q="
+weathe_icons = 'http://openweathermap.org/img/w/'
+
+to_me = ['e.g.hutter@gmail.com']
+from_who = 'e.g.hutter@gmail.com'
+
 res = requests.get(weather_request+my_city,
                 params={'q': my_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
 data = res.json()
@@ -42,5 +58,4 @@ mainDesc = str(weathData['weatherMainDesc'])
 icon = str(weathe_icons+weathData['weatherImg']+'.png')
 
 
-who = texts['who']
-what_we_did = texts['what_we_did']
+
