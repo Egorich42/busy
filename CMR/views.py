@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
+
+#python manage.py migrate --run-syncdb
+
 from django.shortcuts import render, get_object_or_404, render_to_response,redirect
 from django.http import HttpResponse
 from .models import *
@@ -32,8 +35,6 @@ def post_email(request):
 
     return render(request, 'cmr/mails.html',{'form': form}) 
 
-
-#python manage.py migrate --run-syncdb
 
 def create_client(request):
     if request.method == "POST":

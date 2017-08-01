@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{user.username}}
+{% endblock %}
+{% block content %}
+
+{{user.client.organization_type}}
+{{user.client.name}}
+{{user.client.unp}}
+
+{% endblock %}
+
