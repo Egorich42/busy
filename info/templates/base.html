@@ -22,9 +22,9 @@
 
 <link rel="shortcut icon" href="/media/favicon.ico">
 
-<link rel="stylesheet" href="{% static "/css/style.css" %}">
-<link rel="stylesheet" href="{% static "/css/font-style.css" %}">
-<link rel="stylesheet" href="{% static "/css/media-style.css" %}">
+<!--link rel="stylesheet" href="{% static "/css/style.css" %}"-->
+<!--link rel="stylesheet" href="{% static "/css/font-style.css" %}"-->
+<!--link rel="stylesheet" href="{% static "/css/media-style.css" %}"-->
 
 
 
@@ -32,24 +32,30 @@
 </head>
 <body> 
 <header>
- <article class="logo-title">
-    <h1>
-      <a href="/"> Бухгалтерские советы</a>
-    </h1>
-    <h2><a href="/">Аутсорсинг бухгалтерских услуг</a>
-    </h2>
-  </article>
-
+ <nav>
+<ul>
+<li>кто мы</li>
+<li>блог</li>
+<li>цены</li>
+<li>контакты</li>
+</ul>
+ </nav>
 </header>
-<section class="main"> 
+
+
 {% block content %}{% endblock %}
-</section>
+
+
+
 <footer>
-<p style="padding: 10px;">"Бухгалтерские советы"</p>
-Copyright 2017
+<section> СОЦИАЛКИ</section>
+<section>МЕНЮ</section>
+<section>Адрес</section>
+
+
 </footer>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="{% static "/JS/script.js" %}"></script>
+<script src="{% static "/JS/script.js" %}"></script-->
 </body>
 </html>

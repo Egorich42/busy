@@ -6,14 +6,19 @@
 {% block content %}
 
 <a href="/">на главную</a>
-{% for client in clients %}
-<ul>
-<ul>
-<li><a href="/cmr/{{client.id}}">{{client.name}}</a></li>
-<li>{{client.icon}}	</li>
-</ul>	
 
+
+
+<ul>
+{% for client in clients %}
+<li>
+<ul>
+<a href="/cmr/{{client.id}}">{{client.name}}</a></li>
+<li>{{client.icon}}</li>
 </ul>
 {% endfor %}
+</ul>
+
+
 
 {% endblock %}

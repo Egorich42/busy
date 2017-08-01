@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+"Бухгалтерские советы"
+{% endblock %}
+{% block content %}
+
+<!--ABOUT BLOCK-->
+  <article class="about">
+     <p class="head-titul">Кто мы:</p>
+       <p>
+         {{about}}
+       </p>
+  </article>
+
+
+  <article class="about" >
+   <p class="head-titul">Как мы работаем:</p>
+   <p>
+    {{descript}}
+   </p>
+  </article>
+
+
+  <p class="head-titul">Наши преимущества:</p>
+    <article class="tesis">
+      <ul>
+        <li>Штат опытных бухгалтеров.</li>
+        <li>Практика работы на рынке бухгалтерских услуг более 11 лет.</li>
+        <li>Более 30 клиентов, работающих на долгосрочной договорной основе.</li>
+        <li>Квалифицированные консультации, подтвержденные нормативными правовыми актами. </li>
+        <li>Опыт налоговых проверок, представление интересов заказчика при проведении проверок.</li>
+        <li>Полная ответственность за ведение учета,  в т.ч. страхование профессиональной ответственности бухгалтера страховым полисом.</li>
+      </ul>
+    </article>
+
+<section class="sect">
+
+   <h2>Наши услуги:</h2>
+
+    <article class="box">
+      <p class="titul top">Ведение бизнеса:</p>
+      <article class="descript bottom" style="display: none;">
+        <ul>
+         <li>Консультация</li>
+         <li>Бухгалтерское обслуживание</li>
+         <li>Выбор системы налогообложения</li>
+         <li>Налоговое планирование</li>
+         <li >Автоматизация бухгалтерского учета</li>
+         <li>Составление деклараций</li> 
+         <li>Кадровое администрирование</li>
+         <li>Аутсорсинг участков бухгалтерского учета</li>
+        </ul>
+      </article>
+    </article> 
+
+
+
+  <article class="box">
+    <p class="titul top">Открытие бизнеса:</p> 
+      <article class="descript bottom" style="display: none;">
+       <ul>
+        <li>Оценка эффективности бизнесидеи</li>
+        <li>Разработка бизнес-плана</li>
+        <li>Помощь в выборе банка</li>
+        <li >Помощь в выборе юр.адреса</li>
+        <li>Составление документов для регистрации</li>
+        <li>Сопровождение регистрации</li>
+        <li>Управление предприятием</li>
+       </ul>
+    </article>
+  </article> 
+
+</section>
+
+
+
+
+<section class="sect">
+
+         <h2>Связаться с нами</h2>
+
+    <article class="sect box">
+
+     <p class="titul top">Контакты:</p>
+       <article class="our-contacts  bottom" style="display: none";>
+        <ul>
+            {% for contact in contacts %}
+          <li> 
+            <img src="{{contact.contactIcon}}">
+            <span>{{contact.contactDesc}}</span>
+          </li>  
+             {% endfor %}
+        </ul>
+      </article>
+    </article>
+
+
+    <article class="sect box">
+      <p class="titul top">Оставить заявку:</p>
+        <article class="order-form bottom" style="display: none";>
+          <form  action="." method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <p> 
+              <input type="submit" class="buttons-all"  value="Отправить">
+            </p>
+          </form>
+        </article>
+    </article> 
+
+</section>
+
+
+<section class="sect">
+  <h2>Где нас найти:</h2>
+  <article class="sect box">
+    <p class="titul top">Показать на  карте</p>
+      <article class="bottom"  style="display: none";>
+        <h3 style="font-size: 27px;">г.Минск, переулок Козлова, 7</h3>
+          <table  class = "weather">
+            <tr>
+              <td>за окном сейчас:</td> 
+              <td>{{temp}}</td>
+              <td>{{desc}}</td>
+              <td><img src="{{icon}}"></td>
+            </tr>
+          </table>
+           <article id="map" style="padding: 0% 5%; height: 400px"></article>
+  </article> 
+</section>
+
+
+
+<!--CONTACT FORM-->
+
+{% endblock %}
