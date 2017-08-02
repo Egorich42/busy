@@ -12,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
- 
+import sqlite3 
  
 
 # Функция для установки сессионного ключа.
@@ -50,10 +50,23 @@ class LogoutView(View):
 
 def show_user_profile(request,id):
     user = get_object_or_404(User, id=id)
+#    f = open(str(user.id)+'.txt')
+#    beta = f.read()
+
+    conn = sqlite3.connect('bas.sqlite')
+    cur = conn.cursor()
+
+    sel = cur.execute("""
+    SELECT ostatok 
+    FROM users
+    """).fetchall()
+
+    conn.close()
+    beta = str(sel[user.id][0])
 
 
     return render(request, 'users/user_profile.html',
-        {'user':user})
+        {'user':user, 'beta':beta})
 
 
 
