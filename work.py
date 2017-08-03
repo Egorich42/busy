@@ -12,48 +12,25 @@ import sqlite3
 
 #https://www.site-do.ru/db/sql3.php
 
-conn = sqlite3.connect('bas.sqlite')
+conn = sqlite3.connect('1.sqlite')
 
 # Создаем курсор - это специальный объект который делает запросы и получает их результаты
 cur = conn.cursor()
 
+b = cur.execute("""
 
-
-
-cur.execute("""
-UPDATE users 
-SET ostatok = '99999999'
-WHERE id=1;
-""")
-
-
-cur.execute("""
-UPDATE users 
-SET ostatok = '1111111111'
-WHERE id=2;
-""")
-
-
-cur.execute("""
-UPDATE users 
-SET ostatok = '678543121212'
-WHERE id=3;
-""")
-
-
-cur.execute("""
-UPDATE users 
-SET ostatok = '333333333333333'
-WHERE id=4;
-""")
-
-a = cur.execute("""
-SELECT ostatok 
-FROM users
+UPDATE bank
+SET summ = '99999999'
 """).fetchall()
-print(a)
+conn.commit()
 
 
+b = cur.execute("""
+SELECT *
+FROM tn;
+""").fetchall()
+
+print(b)
 
 # ТУТ БУДЕТ НАШ КОД РАБОТЫ С БАЗОЙ ДАННЫХ
 

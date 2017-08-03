@@ -50,23 +50,38 @@ class LogoutView(View):
 
 def show_user_profile(request,id):
     user = get_object_or_404(User, id=id)
-#    f = open(str(user.id)+'.txt')
-#    beta = f.read()
 
-    conn = sqlite3.connect('bas.sqlite')
+    base_name = str(user.id)+'.sqlite'
+
+    conn = sqlite3.connect(base_name)
     cur = conn.cursor()
 
-    sel = cur.execute("""
-    SELECT ostatok 
-    FROM users
+    bank = cur.execute("""
+    SELECT summ
+    FROM bank;
+    """).fetchall()
+
+    tn_sum = cur.execute("""
+    SELECT sum
+    FROM tn;
+    """).fetchall()
+
+
+    tn_contr= cur.execute("""
+    SELECT *
+    FROM tn;
     """).fetchall()
 
     conn.close()
-    beta = str(sel[user.id][0])
+    beta = str(bank)
+    
+    t_sum = str(tn_sum)
+
+    t_kontr = str(tn_contr)
 
 
     return render(request, 'users/user_profile.html',
-        {'user':user, 'beta':beta})
+        {'t_sum':t_sum, 't_kontr':t_kontr})
 
 
 
