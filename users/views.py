@@ -53,7 +53,7 @@ def show_user_profile(request,id):
 
     base_name = str(user.id)+'.sqlite'
 
-    conn = sqlite3.connect(base_name)
+    conn = sqlite3.connect('1.sqlite')
     cur = conn.cursor()
 
     bank = cur.execute("""
@@ -61,27 +61,20 @@ def show_user_profile(request,id):
     FROM bank;
     """).fetchall()
 
-    tn_sum = cur.execute("""
-    SELECT sum
-    FROM tn;
-    """).fetchall()
 
-
-    tn_contr= cur.execute("""
+    kontr= cur.execute("""
     SELECT *
     FROM tn;
     """).fetchall()
 
     conn.close()
     beta = str(bank)
-    
-    t_sum = str(tn_sum)
 
-    t_kontr = str(tn_contr)
+    #kontr = str(tn_contr)
 
 
     return render(request, 'users/user_profile.html',
-        {'t_sum':t_sum, 't_kontr':t_kontr})
+        { 'kontr':kontr})
 
 
 
