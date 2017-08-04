@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-{{user.username}}
+USER
 {% endblock %}
 {% block content %}
 
@@ -9,9 +9,20 @@
 {{user.client.name}}
 {{user.client.unp}}
 
-{%for t in kontr %}
-<li>{{t}}</li>
+
+{%for f in res %}
+<ul>
+	<li>
+		<ul>
+
+			<li>{{f.sum}}</li>
+			<li>{{f.tn_date}}</li>
+			<li>{{f.kontragent_name}}</li>
+    	</ul>
+    </li>
+</ul>
 {%endfor%}
+
 
 
 
