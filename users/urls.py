@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^$', views.UsersList, name='UsersList'),
 #    url(r'^register/$', views.RegisterFormView.as_view()),
     url(r'^login/$', views.LoginFormView.as_view()),
-    url(r'^(?P<id>\d+)/$', views.show_user_profile, name='show_user_profile'),
-
+    url(r'^logout/$', views.LogoutView.as_view()),
+    url(r'^(?P<id>\d+)/(?P<first_name>[\w\-]+)/$', views.show_user_profile, name='show_user_profile'),
 
 ]

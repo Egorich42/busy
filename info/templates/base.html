@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>{% block title %}{% endblock %}</title>
+<title>БУС{% block title %}{% endblock %}</title>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 <meta name="robots" content="index, follow" /> 
 <meta name="robots" content="noyaca"/>
@@ -31,7 +31,7 @@
 <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
 </head>
 <body> 
-<header>
+<!--header>
  <nav>
 <ul>
 <li>кто мы</li>
@@ -40,20 +40,38 @@
 <li>контакты</li>
 </ul>
  </nav>
-</header>
+</header-->
 
+<a href="/">главная</a>
+<p></p>
+<a href="/users">пользователи</a>
+<p></p>
+<a href="/users/login">логин</a>
+<p></p>
+<div>
+{% if user.is_authenticated %}
+HELLO&nbsp;&nbsp;&nbsp;{{user.username}} 
+<p></p>
+Хотите посетить личный кабинет? <a href="/users/{{user.id}}/{{user.first_name}}">Войти</a>
 
+{% else %}
+AShOLE
+ <a href="/users/login">войти</a>    
+ {% endif %}
+</div>
 {% block content %}{% endblock %}
 
 
 
-<footer>
+
+
+<!--footer>
 <section> СОЦИАЛКИ</section>
 <section>МЕНЮ</section>
 <section>Адрес</section>
 
 
-</footer>
+</footer-->
 <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="{% static "/JS/script.js" %}"></script-->
