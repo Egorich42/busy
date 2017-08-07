@@ -1,4 +1,11 @@
+/*http://html5.by/blog/flexbox/*/
 body{text-align: center; color: #472D2D;}
+
+nav{height: 40px;}
+
+nav ul{flex-direction: row; justify-content: space-between;}
+
+nav ul li{ width: 15%;}
 
 ul li, 
 ul, 
@@ -11,7 +18,7 @@ a:hover{text-decoration: none;}
 footer{height: 638px;}
 
 /*---------------------FONTS-------------------*/
-.great-font{font-size: 60px;color: #2D2D2D;}
+.great-font{font-size: 60px; color: #2D2D2D;}
 
 .big-font{font-size: 48px;}
 
@@ -28,11 +35,13 @@ footer{height: 638px;}
 /*------------------BLOCK---------------------*/
 .full-width-block{width: 100%;}
 .central-block{width: 980px;}
+
+.list-block{flex-direction: row; flex-wrap: wrap; align-content: space-around;}
 .list-block ul{width: 240px;}
 .list-block ul li{font-size: 20px;}
 
 .center{text-align: center;}
 
-
 .grey-back{background-color: #2F2F2F; color: #fff;}
+
 .pointer{cursor: pointer;}

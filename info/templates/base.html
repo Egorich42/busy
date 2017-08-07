@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>БУС{% block title %}{% endblock %}</title>
+<title>"Бухгалтерские советы"{% block title %}{% endblock %}</title>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 <meta name="robots" content="index, follow" /> 
 <meta name="robots" content="noyaca"/>
@@ -32,12 +32,22 @@
 </head>
 <body> 
 <header>
- <nav>
+<nav>
 <ul>
+<li><a href="/">"Бухгалтерские советы"</a></li>
 <li>кто мы</li>
 <li>блог</li>
 <li>цены</li>
 <li>контакты</li>
+<li>
+{% if user.is_authenticated %}
+HELLO&nbsp;&nbsp;&nbsp;{{user.username}} 
+<p></p>
+<a href="/users/{{user.id}}/{{user.first_name}}">Войти</a>
+{% else %}
+<a href="/users/login">ключик</a>    
+{% endif %}	
+</li>
 </ul>
  </nav>
 </header>
@@ -47,18 +57,9 @@
 <a href="/users">пользователи</a>
 <p></p>
 <a href="/users/login">логин</a>
-<p></p>
-<div>
-{% if user.is_authenticated %}
-HELLO&nbsp;&nbsp;&nbsp;{{user.username}} 
-<p></p>
-Хотите посетить личный кабинет? <a href="/users/{{user.id}}/{{user.first_name}}">Войти</a>
+<p></p-->
 
-{% else %}
-AShOLE
- <a href="/users/login">войти</a>    
- {% endif %}
-</div-->
+
 {% block content %}{% endblock %}
 
 
@@ -68,8 +69,27 @@ AShOLE
 <footer class="full-width-block center grey-back">
 <section class="central-block center">
 <section> СОЦИАЛКИ</section>
-<section>МЕНЮ</section>
-<section>Адрес</section>
+
+<nav>
+<ul>
+<li>кто мы</li>
+<li>блог</li>
+<li>цены</li>
+<li>контакты</li>
+<li>
+{% if user.is_authenticated %}
+HELLO&nbsp;&nbsp;&nbsp;{{user.username}} &nbsp;&nbsp;
+<a href="/users/{{user.id}}/{{user.first_name}}">Войти</a>
+{% else %}
+
+ <a href="/users/login">ключик</a>    
+ {% endif %}	
+</li>
+</ul>
+ </nav>
+
+
+<section>юр. адрес:  г. Минск, пер. Козлова, 7/г,  каб.501, номер в реестре - 190530248</section>
 </section>
 </footer>
 
