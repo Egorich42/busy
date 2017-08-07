@@ -22,7 +22,7 @@
 
 <link rel="shortcut icon" href="/media/favicon.ico">
 
-<!--link rel="stylesheet" href="{% static "/css/style.css" %}"-->
+<link rel="stylesheet" href="{% static "/css/style.css" %}">
 <!--link rel="stylesheet" href="{% static "/css/font-style.css" %}"-->
 <!--link rel="stylesheet" href="{% static "/css/media-style.css" %}"-->
 
@@ -31,7 +31,7 @@
 <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
 </head>
 <body> 
-<!--header>
+<header>
  <nav>
 <ul>
 <li>кто мы</li>
@@ -40,9 +40,9 @@
 <li>контакты</li>
 </ul>
  </nav>
-</header-->
+</header>
 
-<a href="/">главная</a>
+<!--a href="/">главная</a>
 <p></p>
 <a href="/users">пользователи</a>
 <p></p>
@@ -58,20 +58,21 @@ HELLO&nbsp;&nbsp;&nbsp;{{user.username}}
 AShOLE
  <a href="/users/login">войти</a>    
  {% endif %}
-</div>
+</div-->
 {% block content %}{% endblock %}
 
 
 
 
 
-<!--footer>
+<footer class="full-width-block center grey-back">
+<section class="central-block center">
 <section> СОЦИАЛКИ</section>
 <section>МЕНЮ</section>
 <section>Адрес</section>
+</section>
+</footer>
 
-
-</footer-->
 <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="{% static "/JS/script.js" %}"></script-->
