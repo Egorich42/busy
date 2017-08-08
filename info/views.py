@@ -8,7 +8,13 @@ from django import forms
 from django.core.mail import send_mass_mail,send_mail
 import requests
 
+
+import json
+
 def show_main_page(request):
+    p =json.loads(open('js.json').read())
+
+
     about = who
     descript = what_we_did
     contacts = ContList.objects.all()

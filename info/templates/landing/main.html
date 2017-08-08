@@ -5,6 +5,9 @@
 <section class="central-block center normal-font-24">
 <span class="great-font">Вы делаете бизнес, мы берем на себе рутину</span>
 
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+
+
 <p>
 Наши специалисты ведут бухгалтерский учет, 
 обслуживают расчётный счёт, консультируют, помогают с прохождением проверок и выполняют ваши поручения. 
@@ -15,14 +18,21 @@
 
 <section class="full-width-block center grey-back">
 <section class="central-block center"> 
-<button>подключиться</button>
-Есть вопросы? Хотите подключиться?
+У вас есть вопросы или вы хотите хотите подключиться?
+Отправьте запрос и мы обязательно свяжемся с вами!
 <form>
 Телефон или email, Имя
 Я согласен с условиями передачи информации
-Звоните на 8 800 700 50 96 или пишите в телеграм
-Расскажем всё о Кнопке, посчитаем стоимость, подключим. 
+<form  action="." method="post">
+{{ form.as_p }}
+{% csrf_token %}
+<p> 
+<input type="submit" class="buttons-all"  value="Отправить">
+</p>
 </form>
+</form>
+Звоните на +_________________________ или пишите в телеграм
+Расскажем всё о наших услугах, посчитаем стоимость, проконсультируем, подключим. 
 </section>
 </section>
 
@@ -42,24 +52,24 @@
 <span  class="big-font">Как это работает?</span>
 <ul>    
 <li>
-<img src="{% static "back.jpg" %}" alt="background" title="background"> 
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 
 Команда "Бухгалтерских советов" обслуживает вас удалённо</li> 
 
 <li>
-<img src="{% static "back.jpg" %}" alt="background" title="background">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 Ставить задачи, следить за бухгалтерией и задавать вопросы можно через приложение</li> 
 <li>
-<img src="{% static "back.jpg" %}" alt="background" title="background">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 А можно в почте или по телефону</li> 
 <li>
-<img src="{% static "back.jpg" %}" alt="background" title="background">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 Бухгалтеры Кнопки ведут учёт в 1С, но дружат и с облачными сервисами</li> 
 <li>
-<img src="{% static "back.jpg" %}" alt="background" title="background">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 Создавать счета и акты можно в приложении, а можно поручить это бухгалтеру</li> 
 <li>
-<img src="{% static "back.jpg" %}" alt="background" title="background">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 Чтобы вести учёт, бухгалтеру нужны документы. Пришлите сканы или позовите нашего курьера</li> 
 </ul>
 </p>
@@ -68,6 +78,7 @@
 
 
 <section class="full-width-block" style="background-color: #5D67AE;">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 <section  class="central-block center" >
 <section class="colored-paragraph">
 <span class="midle-font-45">Берём бухгалтерию
@@ -88,6 +99,7 @@
 
 
 <section class="full-width-block" style="background-color: #F7A416;">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 <section  class="central-block center">
 <section class="colored-paragraph">
 
@@ -102,16 +114,10 @@
 </section>
 </section>
 
-<!--section  class="central-block center">
 
-<span  class="big-font">Помогаем развивать
-бизнес</span>
-<p class="normal-font-20">
-Когда ваш бизнес растёт — мы счастливы.
-Решили открыть новую точку? Поможем найти помещение и сотрудников, закажем оборудование и проверим договор аренды. Запускаете интернет-магазин? Подберём платформу, настроим интернет-платежи, трудоустроим курьера. Поможем открыть бизнес, реализовать идеи и поделимся своим опытом.</p>
-</section-->
 
 <section class="full-width-block" style="background-color: #01B5D8;">
+<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 <section  class="central-block center">
 <section class="colored-paragraph">
 <span  class="midle-font-45">Поможем на старте</span>
@@ -124,14 +130,6 @@
 </section>
 </section>
 </section>
-
-<!--section  class="central-block center">
-<span  class="big-font">Кому подходят наши услуги?</span>
-<p style="font-size: 24px;">
-Кнопка создана, чтобы заботиться о малом бизнесе. Мы обслуживаем начинающих предпринимателей, растущий бизнес и взрослые компании до 50 сотрудников.</p>
-</section-->
- 
-
 
 
 <section class="central-block center">
@@ -205,10 +203,29 @@ IT
 <p>
 Поэтому мы нанимаем бухгалтеров, с которыми приятно и легко общаться. Они объяснят сложные вещи простым языком, а не ссылками на налоговый кодекс. Общаться  можно через приложение в телефоне или браузере а можно и через скайп, вайбер, телграм или телефон. Это удобно и мобильно, а вся важная информация всегда хранится под рукой.
 </p>
-<!--h3>Технологичная бухгалтерия</h3>
-<p>
-Наше приложение — не только чат с бухгалтером. Это ещё и удобный интернет-банк, который позволяет контролировать финансы компании и быстро совершать платежи партнёрам. А ещё мы будем автоматически получать информацию о доходах и расходах вашей компании, чтобы быстро считать и оптимизировать налоги. 
-</p-->
+ы
+</section>
+</section>
+
+
+
+<section class="full-width-block center grey-back">
+<section class="central-block center"> 
+У вас есть вопросы или вы хотите хотите подключиться?
+Отправьте запрос и мы обязательно свяжемся с вами!
+<form>
+Телефон или email, Имя
+Я согласен с условиями передачи информации
+<form  action="." method="post">
+{{ form.as_p }}
+{% csrf_token %}
+<p> 
+<input type="submit" class="buttons-all"  value="Отправить">
+</p>
+</form>
+</form>
+Звоните на +_________________________ или пишите в телеграм
+Расскажем всё о наших услугах, посчитаем стоимость, проконсультируем, подключим. 
 </section>
 </section>
 
