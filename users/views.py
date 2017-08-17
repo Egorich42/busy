@@ -56,26 +56,46 @@ def show_user_profile(request,id, **kwargs):
         cur = conn.cursor()
 
 
-        bank = cur.execute("""
+        bank1 = cur.execute("""
         SELECT summ
         FROM bank;
         """).fetchall()
+
+        bank2 = list(bank1[0])
+        bank = str(bank2[0])
+
+        pay_list= cur.execute("""
+        SELECT *
+        FROM pays;
+        """).fetchall()        
 
         tn_list= cur.execute("""
         SELECT *
         FROM tn;
         """).fetchall()
 
+
+
         conn.close()
+
+
+
         nakladnye = [list(elem) for elem in tn_list]
         cols = [column[0] for column in cur.description]
         res = []
         for row in nakladnye:
             res += [{col.lower():value for col,value in zip(cols,row)}] 
 
-        
+
+        pays = [list(elem) for elem in pay_list]
+        cols2 = [column[0] for column in cur.description]
+        res2 = []
+        for row2 in pays:
+            res2 += [{col.lower():value for col,value in zip(cols2,row2)}] 
+
+   
         return render(request, 'users/user_profile.html',
-        { 'bank':bank,'res':res})
+        { 'bank':bank,'res':res, 'res2': res2})
     else:
          return HttpResponseRedirect("/")   
 

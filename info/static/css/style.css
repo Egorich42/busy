@@ -1,10 +1,9 @@
 /*http://html5.by/blog/flexbox/*/
-body{text-align: center; color: #2D2D2D; font-family: Verdana,Geneva,sans-serif; }
-
-nav ul{flex-direction: row; justify-content: space-between; display: flex; }
-
+body{text-align: center; color: #2D2D2D; font-family: Verdana, Geneva,sans-serif;}
+nav ul{justify-content: space-between; }
+nav{max-width: 1920px; width: 100%; }
 nav ul li, a{cursor: pointer; }
-nav ul li{font-size: 18px; font-weight: bold;}
+nav ul li{font-size: 18px; }
 
 ul li, 
 ul, 
@@ -17,10 +16,9 @@ a:hover{text-decoration: none;}
 footer{height: 638px;}
 
 /*---------------------FONTS-------------------*/
+.great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li {font-weight: bold;}
 
-
-.great-font,.big-font,.midle-font-45,.middle-font-35 {font-weight: bold;}
-
+.key{width: 50px;}
 
 .great-font{font-size: 60px; color: #2D2D2D;}
 
@@ -36,38 +34,102 @@ footer{height: 638px;}
 
 .normal-font-20{font-size: 20px;}
 
+
 /*------------------BLOCK---------------------*/
-.main{ height: 100%;display: flex;flex-direction: column;align-items: center;}
+.main{ height: 100%; align-items: center;}
 
 .full-width-block{width: 100%; text-align: center;}
-.central-block{width: 980px; padding-top: 96px; padding-bottom: 96px;}
+.central-block{width: 980px; padding-top: 76px; padding-bottom: 76px;}
 
-.list-block{flex-direction: row; flex-wrap: wrap; align-content: space-around; display: flex;}
+
+
 .list-block ul{width: 240px;}
-.list-block ul li{font-size: 20px; padding-top: 9px; }
+.list-block ul li{font-size: 18px; padding-top: 9px; }
+
+.how-it-work-list ul li{width: 240px;margin-left: 40px; margin-top: 40px; margin-bottom: 40px; }
+.how-it-work-list ul li img {width: 70px;}
+
+.list-block,
+.how-it-work-list ul {flex-wrap: wrap; align-content: space-around;}
 
 
-.how-it-work-list ul {flex-direction: row; flex-wrap: wrap; align-content: space-around; display: flex;}
-.how-it-work-list ul li{width: 240px;margin-left: 40px; text-align: left; margin-top: 40px; margin-bottom: 40px;}
-
-
-.colored-paragraph{text-align: left; margin: 50px; color: #000;}
+.colored-paragraph{ margin: 50px; color: #000;}
 .colored-paragraph-text{width: 60%; text-align: left;  margin: 25px;}
 
-.down-description{text-align: left;}
+.text-left,
+.left-list ul li,
+.down-description,
+.colored-paragraph{text-align: left;}
+
+.text-right{text-align: right;}
 
 .center{text-align: center;}
 
 .left-list ul {font-size: 24px;}
 
 
-.left-list ul li{text-align: left;}
-
-
 .grey-back{background-color: #2F2F2F; color: #fff;}
+.grey-back-contact{display: flex; align-items: center;}
 
 .pointer{cursor: pointer;}
 
-orange - #F7A416
+
+.forma input{padding: 10px 20px; text-align: left; border: solid 1.5px #FD761F; font-size: 21px; border-radius: 40px;}
+.forma p{margin: 20px;}
+
+.button-orange-border{border: solid 2px #FD761F; border-radius: 40px; font-size: 21px; text-align: center; padding: 15px 50px;}
+
+/*----------------------------FLEX-RULES*------------------------*/
+.flex,
+nav ul,
+.main, 
+.list-block,
+.how-it-work-list ul,
+.how-it-work-list ul li{display: flex;}
+
+
+.row,
+nav ul,
+.list-block,
+.how-it-work-list ul{flex-direction: row;}
+
+.column,
+.main,
+.how-it-work-list ul li,
+.grey-back-contact{flex-direction: column;}
+
+
+.left{float: left;}
+.right{float: right;}
+
+
+.full-width{width: 100%;}
+.user-profile{width: 90%;}
+.twenty-percent-width{width: 20%;}
+
+.vertical-content-center{justify-content: space-around; align-items: center;}
+.horizontal-content-center{justify-content: center;}
+
+
+.operations-list{padding: 0% 20%; }
+
+.operations li{width: 100%;}
+
+.operations-date{}
+.operations-kontragent{}
+.operations-summ{}
+.operation-type{}
+
+.without-margin-left{margin-left: 0px;}
+.without-padding-left{padding-left: 0px;}
+
+.side-paddings-20{padding: 0% 20%;}
+
+.without-margin{margin: 0px;}
+
+.operations-border-bottom{border-bottom: solid 1.5px #9B999B;}
+
+orange - #F7A416, #FD761F, #FF4400
+red - #ec0637
 fiol #5D67AE
 golyboi #01B5D8

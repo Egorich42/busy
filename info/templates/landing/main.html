@@ -5,8 +5,9 @@
 <section class="central-block center normal-font-24">
 <span class="great-font">Вы делаете бизнес, мы берем на себе рутину</span>
 
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-
+<article>
+<img src="static/media/icons/monitor.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
 
 <p>
 Наши специалисты ведут бухгалтерский учет, 
@@ -16,29 +17,29 @@
 </section>
 
 
-<section class="full-width-block center grey-back">
+<section class="full-width-block center grey-back grey-back-contact">
 <section class="central-block center"> 
 У вас есть вопросы или вы хотите хотите подключиться?
 Отправьте запрос и мы обязательно свяжемся с вами!
-<form>
-Телефон или email, Имя
-Я согласен с условиями передачи информации
-<form  action="." method="post">
+<form class="forma flex horizontal-content-center">
+<!--Я согласен с условиями передачи информации-->
+<form  action="." method="post" >
 {{ form.as_p }}
 {% csrf_token %}
+
 <p> 
-<input type="submit" class="buttons-all"  value="Отправить">
+<input type="submit" class="button-orange-border pointer"  value="Отправить">
 </p>
 </form>
 </form>
-Звоните на +_________________________ или пишите в телеграм
+Звоните на +_________________________ или пишите в <a>телеграм</a>
 Расскажем всё о наших услугах, посчитаем стоимость, проконсультируем, подключим. 
 </section>
 </section>
 
 <section  class="central-block center">
 <span class="big-font"> Умный аутсорсинг</span>
-<p>
+<p class ="normal-font-24">
 В Кнопке на вас работает команда удалённых сотрудников.
 Они знают ваш бизнес, берут инициативу на себя и помогают вести дела, а в случае проверок отстаиваем ваши интересы и разрешаем возникающие вопросы.
 </p>
@@ -51,34 +52,74 @@
 <p>
 <span  class="big-font">Как это работает?</span>
 <ul>    
-<li>
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 
-Команда "Бухгалтерских советов" обслуживает вас удалённо</li> 
+
 
 <li>
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-Ставить задачи, следить за бухгалтерией и задавать вопросы можно через приложение</li> 
+<article>
+<img src="static/media/icons/red-men.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
+
+<p>
+Команда "Бухгалтерских советов" обслуживает вас удалённо
+</p>
+
+</li> 
+
 <li>
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-А можно в почте или по телефону</li> 
+<article>
+<img src="static/media/icons/aqua-pen.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
+<p>
+Ставить задачи, следить за бухгалтерией и задавать вопросы можно через приложение
+</p>
+
+</li> 
+
 <li>
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-Бухгалтеры Кнопки ведут учёт в 1С, но дружат и с облачными сервисами</li> 
+<article>
+<img src="static/media/icons/phone.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
+<p>
+А можно в почте или по телефону
+</p>
+
+</li> 
+
 <li>
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-Создавать счета и акты можно в приложении, а можно поручить это бухгалтеру</li> 
+<article>
+<img src="static/media/icons/3.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
+<p>
+Бухгалтеры Кнопки ведут учёт в 1С, но дружат и с облачными сервисами
+</p>
+
+</li> 
+
 <li>
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-Чтобы вести учёт, бухгалтеру нужны документы. Пришлите сканы или позовите нашего курьера</li> 
+<article>
+<img src="static/media/icons/circle.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
+<p>
+Создавать счета и акты можно в приложении, а можно поручить это бухгалтеру
+</p>
+</li> 
+
+<li>
+<article>
+<img src="static/media/icons/blue-doc2.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
+<p>
+Чтобы вести учёт, бухгалтеру нужны документы. Пришлите сканы или позовите нашего курьера
+</p>
+</li> 
 </ul>
 </p>
 
 </section>
 
 
-<section class="full-width-block" style="background-color: #5D67AE;">
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+<section class="full-width-block flex  horizontal-content-center" style="background-color: #5D67AE;">
 <section  class="central-block center" >
 <section class="colored-paragraph">
 <span class="midle-font-45">Берём бухгалтерию
@@ -94,18 +135,23 @@
 </p>
 </section>
 </section>
+<article class="vertical-content-center  flex">
+<img src="static/media/icons/account.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
 </section>
 
 
 
-<section class="full-width-block" style="background-color: #F7A416;">
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+<section class="full-width-block flex  horizontal-content-center" style="background-color: #F7A416;">
+<article class="vertical-content-center  flex">
+<img src="static/media/icons/greydoc.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
 <section  class="central-block center">
-<section class="colored-paragraph">
+<section class="colored-paragraph right">
 
-<span  class="big-font">Собираем, оформляем
+<span  class="big-font right text-right">Собираем, оформляем
 и храним первичку</span>
-<p class="normal-font-20   colored-paragraph-text" >
+<p class="normal-font-20   colored-paragraph-text  right" >
 Кнопка обслуживает клиентов удалённо. Это не значит, что вам придётся заниматься первичкой самостоятельно. Поручите нам работу с документами.
 Оформить отпуск, премирование, составить договор, оформить акт? Мы сделаем это за вас. 
 
@@ -116,8 +162,8 @@
 
 
 
-<section class="full-width-block" style="background-color: #01B5D8;">
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+<section class="full-width-block flex  horizontal-content-center" style="background-color: #01B5D8;">
+
 <section  class="central-block center">
 <section class="colored-paragraph">
 <span  class="midle-font-45">Поможем на старте</span>
@@ -129,6 +175,9 @@
 </p>
 </section>
 </section>
+<article class="vertical-content-center  flex">
+<img src="static/media/icons/5.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+</article>
 </section>
 
 
@@ -203,28 +252,27 @@ IT
 <p>
 Поэтому мы нанимаем бухгалтеров, с которыми приятно и легко общаться. Они объяснят сложные вещи простым языком, а не ссылками на налоговый кодекс. Общаться  можно через приложение в телефоне или браузере а можно и через скайп, вайбер, телграм или телефон. Это удобно и мобильно, а вся важная информация всегда хранится под рукой.
 </p>
-ы
+
 </section>
 </section>
 
 
-
-<section class="full-width-block center grey-back">
+<section class="full-width-block center grey-back grey-back-contact">
 <section class="central-block center"> 
 У вас есть вопросы или вы хотите хотите подключиться?
 Отправьте запрос и мы обязательно свяжемся с вами!
-<form>
-Телефон или email, Имя
-Я согласен с условиями передачи информации
-<form  action="." method="post">
+<form class="forma flex horizontal-content-center">
+<!--Я согласен с условиями передачи информации-->
+<form  action="." method="post" >
 {{ form.as_p }}
 {% csrf_token %}
+
 <p> 
-<input type="submit" class="buttons-all"  value="Отправить">
+<input type="submit" class="button-orange-border pointer"  value="Отправить">
 </p>
 </form>
 </form>
-Звоните на +_________________________ или пишите в телеграм
+Звоните на +_________________________ или пишите в <a>телеграм</a>
 Расскажем всё о наших услугах, посчитаем стоимость, проконсультируем, подключим. 
 </section>
 </section>

@@ -12,7 +12,7 @@ import requests
 import json
 
 def show_main_page(request):
-    p =json.loads(open('js.json').read())
+ #   p =json.loads(open('js.json').read())
 
 
     about = who

@@ -5,25 +5,64 @@
 {% endblock %}
 {% block content %}
 
+<span class="middle-font-35">
 {{user.client.organization_type}}
 {{user.client.name}}
-{{user.client.unp}}
+</span>
 
-{{bank}}
+<span class="normal-font-24"><img src="static/media/icons/red-funny-pig.png">банковский баланс:{{bank}}</span>
 
+
+
+<section class="central-block center user-profile"> 
+
+
+<aside class="twenty-percent-width right">
+<ul class="without-padding-left">
+
+<li class="normal-font-21">СЧЕТ - {{user.client.bank_schet}}</li>
+<li class="normal-font-21">УНП - {{user.client.unp}}</li>
+</ul>	
+
+</aside>
+
+<section class="central-block center"> 
+<section class="operations-list "> 
 
 {%for f in res %}
-<ul>
+{%for ff in res2 %}
+<ul class="full-width without-padding-left">
 	<li>
-		<ul>
+		<ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom">
 
-			<li>{{f.sum}}</li>
-			<li>{{f.tn_date}}</li>
-			<li>{{f.kontragent_name}}</li>
+			<li class="text-left">{{ff.sum}}&nbsp;.Р</li>
+			<li >{{ff.type}}</li>
+			<li>{{ff.kontragent}}</li>
+    	</ul>
+    </li>
+</ul>
+
+<ul class="full-width without-padding-left">
+	<li>
+		<ul  class="operations horizontal-content-center without-padding-left  operations-border-bottom">
+
+			<li  class="text-left">{{f.sum}}&nbsp;.Р</li>
+			<li  class="text-left">{{f.kontragent_name}}</li>
+			<li class="text-right">{{f.tn_date}}</li>
     	</ul>
     </li>
 </ul>
 {%endfor%}
+{%endfor%}
+</section>
+</section>
+<p>
+<img src="/media/products/defenders.jpg" class="post-info" alt="fullImage">
+</p>
+<p>
+<img src="/media/products/defenders2.jpg" class="post-info" alt="fullImage">
+<img src="/media/products/defenders2.jpg" class="post-info" alt="fullImage">
+</p>
 
 
 {% if user.is_authenticated %}
@@ -31,7 +70,6 @@
 {%else%}
 НИЧЕГО
 {% endif %}
-
 
 {% endblock %}
 

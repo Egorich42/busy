@@ -7,5 +7,5 @@ from .models import Contact
 class ContactCreateForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['first_name', 'address',]
+        fields = ['first_name']
 

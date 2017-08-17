@@ -31,18 +31,18 @@
 <header>
 <nav>
 <ul>
-<li><a href="/">"Бухгалтерские советы"</a></li>
+<li><a href="/"><img src="static/media/icons/logo-busy-150px.png"></a></li>
+
+
 <li>кто мы</li>
 <li>блог</li>
 <li>цены</li>
 <li>контакты</li>
 <li>
 {% if user.is_authenticated %}
-HELLO&nbsp;&nbsp;&nbsp;{{user.username}} 
-<p></p>
-<a href="/users/{{user.id}}/{{user.first_name}}">Войти</a>
+<a href="/users/{{user.id}}/{{user.first_name}}"><img src="static/media/icons/key-green.png" class="key"></a>
 {% else %}
-<a href="/users/login">ключик</a>    
+<a href="/users/login"><img src="static/media/icons/key-green.png"  class="key"></a>    
 {% endif %}	
 </li>
 </ul>
@@ -53,13 +53,13 @@ HELLO&nbsp;&nbsp;&nbsp;{{user.username}}
 {% block content %}{% endblock %}	
 </section>
 
-<footer class="full-width-block center grey-back">
+<footer class="full-width-block center grey-back flex  horizontal-content-center">
 <section class="central-block center">
 <section> СОЦИАЛКИ</section>
 
 <nav>
 <ul>
-<li>кто мы</li>
+<li id="button">кто мы</li>
 <li>блог</li>
 <li>цены</li>
 <li>контакты</li>
@@ -71,8 +71,6 @@ HELLO&nbsp;&nbsp;&nbsp;{{user.username}}
 </section>
 </footer>
 
-<!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="{% static "/JS/script.js" %}"></script-->
+
 </body>
 </html>

@@ -5,7 +5,7 @@ import requests
 
 # Create your models here.
 class Contact(models.Model):
-    first_name = models.CharField(verbose_name='Ваше имя либо название организации', max_length=200)
+    first_name = models.CharField(verbose_name='Ваша почта или телефон', max_length=200)
     address =  models.CharField(verbose_name='Ваша почта', max_length=250)
 
     def __str__(self):
