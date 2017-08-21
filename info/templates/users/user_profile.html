@@ -30,29 +30,17 @@
 <section class="operations-list "> 
 
 {%for f in res %}
-{%for ff in res2 %}
 <ul class="full-width without-padding-left">
 	<li>
 		<ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom">
 
-			<li class="text-left">{{ff.sum}}&nbsp;.Р</li>
-			<li >{{ff.type}}</li>
-			<li>{{ff.kontragent}}</li>
+			<li class="text-left">{{f.sum}}&nbsp;.Р</li>
+			<li >{{f.document}}</li>
+			<li>{{f.contragent}}</li>
+			<li>{{f.date_and_time}}</li>
     	</ul>
     </li>
 </ul>
-
-<ul class="full-width without-padding-left">
-	<li>
-		<ul  class="operations horizontal-content-center without-padding-left  operations-border-bottom">
-
-			<li  class="text-left">{{f.sum}}&nbsp;.Р</li>
-			<li  class="text-left">{{f.kontragent_name}}</li>
-			<li class="text-right">{{f.tn_date}}</li>
-    	</ul>
-    </li>
-</ul>
-{%endfor%}
 {%endfor%}
 </section>
 </section>
@@ -62,6 +50,15 @@
 <p>
 <img src="/media/products/defenders2.jpg" class="post-info" alt="fullImage">
 <img src="/media/products/defenders2.jpg" class="post-info" alt="fullImage">
+<img src="/media/products/defenders2.jpg" class="post-info" alt="fullImage">
+
+
+<img src="{% static "media/icons/key-green.jpg" %}" alt="background" title="background">
+<img src="{% static "icons/key-green.jpg" %}" alt="background" title="background">
+<img src="{% static "/icons/key-green.jpg" %}" alt="background" title="background">
+<img src="{%static "/icons/key-green.png" %}" alt="background" title="background">
+<img src="{%static "key-green.png" %}" alt="background" title="background">
+
 </p>
 
 

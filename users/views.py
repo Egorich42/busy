@@ -64,21 +64,12 @@ def show_user_profile(request,id, **kwargs):
         bank2 = list(bank1[0])
         bank = str(bank2[0])
 
-        pay_list= cur.execute("""
-        SELECT *
-        FROM pays;
-        """).fetchall()        
-
         tn_list= cur.execute("""
         SELECT *
-        FROM tn;
+        FROM docs;
         """).fetchall()
 
-
-
         conn.close()
-
-
 
         nakladnye = [list(elem) for elem in tn_list]
         cols = [column[0] for column in cur.description]
@@ -86,16 +77,9 @@ def show_user_profile(request,id, **kwargs):
         for row in nakladnye:
             res += [{col.lower():value for col,value in zip(cols,row)}] 
 
-
-        pays = [list(elem) for elem in pay_list]
-        cols2 = [column[0] for column in cur.description]
-        res2 = []
-        for row2 in pays:
-            res2 += [{col.lower():value for col,value in zip(cols2,row2)}] 
-
    
         return render(request, 'users/user_profile.html',
-        { 'bank':bank,'res':res, 'res2': res2})
+        { 'bank':bank,'res':res,})
     else:
          return HttpResponseRedirect("/")   
 
