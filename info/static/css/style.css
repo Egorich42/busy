@@ -1,52 +1,36 @@
 /*http://html5.by/blog/flexbox/*/
-body{text-align: center; color: #2D2D2D; font-family: Verdana, Geneva,sans-serif;}
+body{color: #2D2D2D; font-family: Verdana, Geneva,sans-serif;}
 nav ul{justify-content: space-between; }
-nav{max-width: 1920px; width: 100%; }
-nav ul li, a{cursor: pointer; }
+nav{max-width: 1920px; }
+nav ul li, a,.pointer{cursor: pointer; }
 nav ul li{font-size: 18px; }
-
-ul li, 
-ul, 
-li{list-style-type: none;}
-
-a,
-li:hover,
-a:hover{text-decoration: none;}
-
+ul li, ul, li{list-style-type: none;}
+a,li:hover,a:hover{text-decoration: none;}
 footer{height: 638px;}
 
 /*---------------------FONTS-------------------*/
 .great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li {font-weight: bold;}
-
-.key{width: 50px;}
-
 .great-font{font-size: 60px; color: #2D2D2D;}
-
 .big-font{font-size: 48px;}
-
 .midle-font-45{font-size: 45px;}
-
 .middle-font-35{font-size: 35px;}
-
 .normal-font-24{font-size: 24px;}
-
 .normal-font-21{font-size: 21px;}
-
 .normal-font-20{font-size: 20px;}
 
 
 /*------------------BLOCK---------------------*/
-.main{ height: 100%; align-items: center;}
+.key{width: 50px;}
 
-.full-width-block{width: 100%; text-align: center;}
+.main{ height: 100%;}
+
 .central-block{width: 980px; padding-top: 76px; padding-bottom: 76px;}
-
 
 
 .list-block ul{width: 240px;}
 .list-block ul li{font-size: 18px; padding-top: 9px; }
 
-.how-it-work-list ul li{width: 240px;margin-left: 40px; margin-top: 40px; margin-bottom: 40px; }
+.how-it-work-list ul li{width: 240px; margin-left: 40px; margin-top: 40px; margin-bottom: 40px; }
 .how-it-work-list ul li img {width: 70px;}
 
 .list-block,
@@ -54,53 +38,29 @@ footer{height: 638px;}
 
 
 .colored-paragraph{ margin: 50px; color: #000;}
-.colored-paragraph-text{width: 60%; text-align: left;  margin: 25px;}
-
-.text-left,
-.left-list ul li,
-.down-description,
-.colored-paragraph{text-align: left;}
-
-.text-right{text-align: right;}
-
-.center{text-align: center;}
-
-.left-list ul {font-size: 24px;}
+.colored-paragraph-text{width: 60%; margin: 25px;}
 
 
 .grey-back{background-color: #2F2F2F; color: #fff;}
-.grey-back-contact{display: flex; align-items: center;}
-
-.pointer{cursor: pointer;}
+.grey-back-contact{align-items: center;}
 
 
 .forma input{padding: 10px 20px; text-align: left; border: solid 1.5px #FD761F; font-size: 21px; border-radius: 40px;}
 .forma p{margin: 20px;}
 
-.button-orange-border{border: solid 2px #FD761F; border-radius: 40px; font-size: 21px; text-align: center; padding: 15px 50px;}
+.button-orange-border{border: solid 2px #FD761F; border-radius: 40px; font-size: 21px;  padding: 15px 50px;}
 
-/*----------------------------FLEX-RULES*------------------------*/
-.flex,
-nav ul,
-.main, 
-.list-block,
-.how-it-work-list ul,
-.how-it-work-list ul li{display: flex;}
-
-
-.row,
-nav ul,
-.list-block,
-.how-it-work-list ul{flex-direction: row;}
-
-.column,
-.main,
-.how-it-work-list ul li,
-.grey-back-contact{flex-direction: column;}
-
+/*----------------------------RULES*------------------------*/
+.flex{display: flex;}
+.row{flex-direction: row;}
+.column{flex-direction: column;}
 
 .left{float: left;}
 .right{float: right;}
+
+.text-right{text-align: right;}
+.text-left{text-align: left;}
+.center{text-align: center;}
 
 
 .full-width{width: 100%;}
@@ -113,7 +73,6 @@ nav ul,
 
 .operations-list{padding: 0% 20%; }
 
-.operations li{width: 100%;}
 
 .operations-date{}
 .operations-kontragent{}

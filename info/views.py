@@ -12,13 +12,6 @@ import requests
 import json
 
 def show_main_page(request):
- #   p =json.loads(open('js.json').read())
-
-
-    about = who
-    descript = what_we_did
-    contacts = ContList.objects.all()
-
     if request.method == 'POST':
         form = ContactCreateForm(request.POST)
         new_name = Contact.first_name
@@ -35,6 +28,4 @@ def show_main_page(request):
     form = ContactCreateForm()
 
     return render(request, 'landing/main.html',
-    {'form': form,'contacts': contacts, 
-    'temp':temp, 'desc':desc, 'icon':icon, 'mainDesc':mainDesc,
-    'about':about, 'descript': descript, }) 
+    {'form': form}) 

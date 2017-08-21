@@ -13,26 +13,24 @@
 <meta property="business:contact_data:email" content="buhsov@gmail.com"/>
 <meta property="business:contact_data:phone_number" content="+375333516975"/>
 <meta property="business:contact_data:website" content="http://buhsov.com/"/>
-
 <meta property="og:title" content="Бухгалтерские советы" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://winorbite.com/" />
 <meta property="og:image" content="/media/s-logo.png"/>
-
-
 <link rel="shortcut icon" href="/media/favicon.ico">
-
 <link rel="stylesheet" href="{% static "/css/style.css" %}">
-
-
 <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
 </head>
-<body> 
-<header>
-<nav>
-<ul>
-<li><a href="/"><img src="static/media/icons/logo-busy-150px.png"></a></li>
 
+<body class="center"> 
+<header>
+<nav class="full-width">
+<ul class="flex row">
+<li>
+<a href="/">
+<img src="{%static "/icons/logo-busy-150px.png" %}" alt="background" title="background">
+</a>
+</li>
 
 <li>кто мы</li>
 <li>блог</li>
@@ -40,23 +38,22 @@
 <li>контакты</li>
 <li>
 {% if user.is_authenticated %}
-<a href="/users/{{user.id}}/{{user.first_name}}"><img src="static/media/icons/key-green.png" class="key"></a>
+<a href="/users/{{user.id}}/{{user.first_name}}">
+<img src="{%static "/icons/key-green.png" %}" class="key">
+</a>
 {% else %}
-<a href="/users/login"><img src="static/media/icons/key-green.png"  class="key"></a> 
-
-<img src="{%static "/icons/key-green.png" %}" alt="background" title="background">
-
+<a href="/users/login"><img src="static/media/icons/key-red.png"  class="key"></a> 
 {% endif %}	
 </li>
 </ul>
  </nav>
 </header>
 
-<section class="main">
+<section class="main flex column vertical-content-center">
 {% block content %}{% endblock %}	
 </section>
 
-<footer class="full-width-block center grey-back flex  horizontal-content-center">
+<footer class="full-width  center grey-back flex  horizontal-content-center">
 <section class="central-block center">
 <section> СОЦИАЛКИ</section>
 

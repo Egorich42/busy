@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
 <section class="central-block center normal-font-24">
 <span class="great-font">Вы делаете бизнес, мы берем на себе рутину</span>
@@ -17,7 +16,7 @@
 </section>
 
 
-<section class="full-width-block center grey-back grey-back-contact">
+<section class="full-width center grey-back grey-back-contact column flex">
 <section class="central-block center"> 
 У вас есть вопросы или вы хотите хотите подключиться?
 Отправьте запрос и мы обязательно свяжемся с вами!
@@ -28,7 +27,7 @@
 {% csrf_token %}
 
 <p> 
-<input type="submit" class="button-orange-border pointer"  value="Отправить">
+<input type="submit" class="button-orange-border pointer center"  value="Отправить">
 </p>
 </form>
 </form>
@@ -48,14 +47,10 @@
 
 
 <section class="central-block center normal-font-20 how-it-work-list"> 
-
-<p>
 <span  class="big-font">Как это работает?</span>
 <ul>    
-
-
-
 <li>
+
 <article>
 <img src="static/media/icons/red-men.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 </article>
@@ -119,12 +114,12 @@
 </section>
 
 
-<section class="full-width-block flex  horizontal-content-center" style="background-color: #5D67AE;">
+<section class="full-width center flex  horizontal-content-center" style="background-color: #5D67AE;">
 <section  class="central-block center" >
-<section class="colored-paragraph">
+<section class="colored-paragraph text-left">
 <span class="midle-font-45">Берём бухгалтерию
 на себя</span>
-<p  class="normal-font-20  colored-paragraph-text"  >
+<p  class="normal-font-20  colored-paragraph-text text-left"  >
 Наши специалисты обладют более чем десятилетним опытом ведения бизнеса.
 Они заботятся о том, чтобы вы не платили лишних
 денег, а у налоговой не было лишних вопросов.
@@ -142,7 +137,7 @@
 
 
 
-<section class="full-width-block flex  horizontal-content-center" style="background-color: #F7A416;">
+<section class="full-width center flex  horizontal-content-center" style="background-color: #F7A416;">
 <article class="vertical-content-center  flex">
 <img src="static/media/icons/greydoc.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 </article>
@@ -150,8 +145,9 @@
 <section class="colored-paragraph right">
 
 <span  class="big-font right text-right">Собираем, оформляем
-и храним первичку</span>
-<p class="normal-font-20   colored-paragraph-text  right" >
+и храним первичку
+</span>
+<p class="normal-font-20   colored-paragraph-text  text-left right" >
 Кнопка обслуживает клиентов удалённо. Это не значит, что вам придётся заниматься первичкой самостоятельно. Поручите нам работу с документами.
 Оформить отпуск, премирование, составить договор, оформить акт? Мы сделаем это за вас. 
 
@@ -162,12 +158,12 @@
 
 
 
-<section class="full-width-block flex  horizontal-content-center" style="background-color: #01B5D8;">
+<section class="full-width center flex  horizontal-content-center" style="background-color: #01B5D8;">
 
 <section  class="central-block center">
-<section class="colored-paragraph">
+<section class="colored-paragraph text-left">
 <span  class="midle-font-45">Поможем на старте</span>
-<p class="normal-font-20  colored-paragraph-text">
+<p class="normal-font-20  colored-paragraph-text text-left">
 Собираетесь открыть свое дело?
 Проконсультируем по выбору оптимальной формы собственности и системы налогооблажения, поможем избежать возможных подводных камней.
 Решили открыть торговую точку? Поможем с поиском помещения и изучим договор аренды.
@@ -189,43 +185,62 @@
 
 <ul>
 Услуги
-<li>Консультанты,</li> <li>реклама,</li> <li>грузоперевозки,</li> <li>брокеры,</li> <li>тренинги,</li> <li>ивент-агентства</li>
+<li>Консультанты,</li>
+ <li>реклама,</li> 
+ <li>грузоперевозки,</li> 
+ <li>брокеры,</li> 
+ <li>тренинги,</li> 
+ <li>ивент-агентства</li>
 </ul>
 
 <ul>
 IT
-<li>Веб-разработчики,</li> <li>разработчики мобильных приложений,</li> <li>хостинг,</li> <li>SEO-студии</li>
+<li>Веб-разработчики,</li> 
+<li>разработчики мобильных приложений,</li> 
+<li>хостинг,</li> 
+<li>SEO-студии</li>
 </ul>
 
 
 <ul>
 Торговля
-<li>Розница, мелкооптовые компании и крупный опт.</li> <li> Торговля с Европой, Китаем и Таможенным союзом</li> 
+<li>Розница, мелкооптовые компании и крупный опт.</li> 
+<li> Торговля с Европой, Китаем и Таможенным союзом</li> 
 </ul>
 
 <ul>
 Общепит
-<li>Кафе,</li>  <li>рестораны,</li>  <li>бары,</li>  <li>фастфуд-заведения</li>  <li>стрит-фуды и пит-стопы</li> 
+<li>Кафе,</li>  
+<li>рестораны,</li>  
+<li>бары,</li>  
+<li>фастфуд-заведения</li>  
+<li>стрит-фуды и пит-стопы</li> 
 </ul>
 
 <ul>
 Строительство
-<li>Архитектурные бюро,</li>  <li>монтажные и ремонтные работы,</li>  <li>инжиниринг
+<li>Архитектурные бюро,</li>  
+<li>монтажные и ремонтные работы,</li>  
+<li>инжиниринг
 </ul>
 
 <ul>
 Производство
-<li>Строительная техника,</li><li>электроника и микросхемы,</li><li>Косметика,</li>  <li>еда,</li>  <li>крафтовые товары,</li>  <li>мебель,</li>  <li>одежда и аксессуары</li> 
+<li>Строительная техника,</li>
+<li>электроника и микросхемы,</li>
+<li>Косметика,</li>  
+<li>еда,</li>  
+<li>крафтовые товары,</li>  
+<li>мебель,</li>  
+<li>одежда и аксессуары</li> 
 </ul>
 </p>
 </section>
 </section>
 
 
-
 <section  class="central-block center normal-font-21">
 <section class="down-description">
-
 
 <span class="middle-font-35">"Бухгалтерские советы" — бухгалтерские услуги
 в Минске и областях</span>
@@ -237,8 +252,6 @@ IT
 Бухгалтерский учёт, отчётность и налоги — сложная дисциплина. Хороший бухгалтер должен иметь большой опыт, аналитический ум и повышенное внимание к деталям. Мы выбираем лучших кандидатов, которые получили высшее образование, успели поработать в профессии не меньше пяти лет и прошли через налоговые проверки.
 
 "Бухгалтерские советы" - компания с огромным опытом работы. Мы более двенадцати лет на рынке и за плечами наших бухгалтеров работа с самыми разными клиентами и сотни самых разных проверок. 
-
-
 
 <h3>Нам доверяют самые сложные задачи</h3>
 </p>
@@ -257,7 +270,7 @@ IT
 </section>
 
 
-<section class="full-width-block center grey-back grey-back-contact">
+<section class="full-width center center grey-back grey-back-contact column flex">
 <section class="central-block center"> 
 У вас есть вопросы или вы хотите хотите подключиться?
 Отправьте запрос и мы обязательно свяжемся с вами!
@@ -268,7 +281,7 @@ IT
 {% csrf_token %}
 
 <p> 
-<input type="submit" class="button-orange-border pointer"  value="Отправить">
+<input type="submit" class="button-orange-border pointer center"  value="Отправить">
 </p>
 </form>
 </form>
