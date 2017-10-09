@@ -55,39 +55,43 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
+        bank1 = cur.execute("SELECT summ FROM bank;").fetchall()
 
-        bank1 = cur.execute("""
-        SELECT summ
-        FROM bank;
-        """).fetchall()
 
         bank2 = list(bank1[0])
+
         bank = str(bank2[0])
 
-        tn_list= cur.execute("""
-        SELECT *
-        FROM docs;
-        """).fetchall()
+        tn_list = cur.execute("SELECT * FROM contragents_documents;").fetchall()
+#        clients_list = cur.execute("SELECT * FROM contragents LEFT JOIN contragents_places ON contragents.ID=contragents_places.m LEFT JOIN contragents_bank ON contragents.ID=contragents_bank.schet;").fetchall()
 
         conn.close()
 
-        nakladnye = [list(elem) for elem in tn_list]
-        cols = [column[0] for column in cur.description]
-        res = []
-        for row in nakladnye:
-            res += [{col.lower():value for col,value in zip(cols,row)}] 
+        def list_of_table_values(request_name):
+            list_to_sort = [list(elem) for elem in request_name]
+            cols = [column[0] for column in cur.description]
+            result = []
+            for row in list_to_sort:
+                result += [{col.lower():value for col,value in zip(cols,row)}]
+            return result
+            pass    
+
+
+
+        res = list_of_table_values(tn_list)
+
 
    
         return render(request, 'users/user_profile.html',
-        { 'bank':bank,'res':res,})
+        { 'bank':bank,'res':res})
     else:
          return HttpResponseRedirect("/")   
 
 
 def UsersList(request):
-	users = User.objects.all()
-	return render(request, 'users/users_list.html', {'users':users})
-	pass
+    users = User.objects.all()
+    return render(request, 'users/users_list.html', {'users':users})
+    pass
 
 
 

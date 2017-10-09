@@ -17,18 +17,23 @@ footer{height: 638px;}
 .normal-font-24{font-size: 24px;}
 .normal-font-21{font-size: 21px;}
 .normal-font-20{font-size: 20px;}
+.font-18{font-size: 20px;}
+.font-14{font-size: 14px;}
+.font-12{font-size: 12px;}
+
+.bold{font-weight: bold;}
 
 
 /*------------------BLOCK---------------------*/
 .key{width: 50px;}
 
-.main{ height: 100%;}
+.main{height: 100%;}
 
 .central-block{width: 980px; padding-top: 76px; padding-bottom: 76px;}
 
 
-.list-block ul{width: 240px;}
-.list-block ul li{font-size: 18px; padding-top: 9px; }
+.list-block ul{width: 240px; font-weight: bold; font-size: 21px;}
+.list-block ul li{font-size: 18px; padding-top: 9px; font-weight: normal;}
 
 .how-it-work-list ul li{width: 240px; margin-left: 40px; margin-top: 40px; margin-bottom: 40px; }
 .how-it-work-list ul li img {width: 70px;}
@@ -59,13 +64,15 @@ footer{height: 638px;}
 .right{float: right;}
 
 .text-right{text-align: right;}
-.text-left{text-align: left;}
+.list-block ul,.text-left{text-align: left;}
 .center{text-align: center;}
 
 
 .full-width{width: 100%;}
 .user-profile{width: 90%;}
+.half{width: 50%;}
 .twenty-percent-width{width: 20%;}
+.eighty-percent-width{width: 80%;}
 
 .vertical-content-center{justify-content: space-around; align-items: center;}
 .horizontal-content-center{justify-content: center;}
@@ -85,6 +92,8 @@ footer{height: 638px;}
 .side-paddings-20{padding: 0% 20%;}
 
 .without-margin{margin: 0px;}
+.bottom-5px{margin-bottom: 5px;}
+.bottom-15px{margin-bottom: 15px;}
 
 .operations-border-bottom{border-bottom: solid 1.5px #9B999B;}
 

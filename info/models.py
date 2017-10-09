@@ -34,6 +34,17 @@ texts = {
 who = texts['who']
 what_we_did = texts['what_we_did']
 
+
+def list_of_table_values(request_name):
+    list_to_sort = [list(elem) for elem in request_name]
+    cols = [column[0] for column in cur.description]
+    result = []
+    for row in list_to_sort:
+        result += [{col.lower():value for col,value in zip(cols,row)}]
+    return result
+    pass 
+
+"""
 appid = "55dbe8902d5abb4d0631be757c2a2ba0"
 my_city = 'Minsk, BY'
 weather_request =  "http://api.openweathermap.org/data/2.5/weather?q="
@@ -56,6 +67,6 @@ temp =  str(weathData['temp'])
 desc = str(weathData['weatherDesc'])
 mainDesc = str(weathData['weatherMainDesc'])
 icon = str(weathe_icons+weathData['weatherImg']+'.png')
-
+"""
 
 
