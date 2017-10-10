@@ -62,12 +62,8 @@ def show_user_profile(request,id, **kwargs):
 
         bank = str(bank2[0])
 
-        tn_list = cur.execute("SELECT * FROM contragents_documents;").fetchall()
-#        clients_list = cur.execute("SELECT * FROM contragents LEFT JOIN contragents_places ON contragents.ID=contragents_places.m LEFT JOIN contragents_bank ON contragents.ID=contragents_bank.schet;").fetchall()
-
-        conn.close()
-
-        def list_of_table_values(request_name):
+        def list_of_table_values():
+            request_name = cur.execute("SELECT * FROM contragents_documents;").fetchall()
             list_to_sort = [list(elem) for elem in request_name]
             cols = [column[0] for column in cur.description]
             result = []
@@ -78,12 +74,39 @@ def show_user_profile(request,id, **kwargs):
 
 
 
-        res = list_of_table_values(tn_list)
+        def list_of_table_values2():
+            request_name = cur.execute("SELECT * FROM contragents LEFT JOIN contragents_places ON contragents.ID=contragents_places.m LEFT JOIN contragents_bank ON contragents.ID=contragents_bank.schet;").fetchall()
+            list_to_sort = [list(elem) for elem in request_name]
+            cols = [column[0] for column in cur.description]
+            result = []
+            for row in list_to_sort:
+                result += [{col.lower():value for col,value in zip(cols,row)}]
+            return result
+            pass 
 
 
+        def test_akt_sverki():
+            request_name_akt = cur.execute("SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE  parent = 17;").fetchall()
+            list_to_sort = [list(elem) for elem in request_name_akt]
+            cols = [column[0] for column in cur.description]
+            resultat = []
+            for row in list_to_sort:
+                resultat += [{col.lower():value for col,value in zip(cols,row)}]
+            return resultat
+            pass 
+            
+
+
+        res = list_of_table_values()
+        bankai = list_of_table_values2()
+        batani = test_akt_sverki()
+
+
+        conn.commit()
+        conn.close()
    
         return render(request, 'users/user_profile.html',
-        { 'bank':bank,'res':res})
+        { 'bank':bank,'res':res, 'bankai':bankai,'batani':batani})
     else:
          return HttpResponseRedirect("/")   
 

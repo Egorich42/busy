@@ -19,9 +19,9 @@ def get_data(values_list, table_name, *args):
 	for l in table_name:
 		if len(args) == 4:
 			values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].encode('latin1').decode('cp1251') ,l[args[2]], l[args[3]]]]
-		if len(args) == 5:
+		if len(args) == 6:
 			values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]] ,l[args[2]].encode('latin1').decode('cp1251'), l[args[3]],l[args[4]]]]
-		if len(args) > 5:
+		if len(args) > 6:
 			values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]] ,l[args[2]],l[args[3]].encode('latin1').decode('cp1251'),l[args[4]].encode('latin1').decode('cp1251'),l[args[5]].encode('latin1').decode('cp1251'),l[args[6].encode('latin1').decode('cp1251')]]]
 	return values_list	
 	pass
@@ -34,7 +34,7 @@ places =  get_data_from_dbf('SC556.dbf')
 names_table = get_data('sellers', names, 'DESCR', 'SP134', 'SP137', 'ID')
 bank_data_table= get_data('contragent_bank', bank_data, 'DESCR','PARENTEXT', 'SP494', 'SP39997')
 places_table= get_data('contragent_places', places, 'DESCR','PARENTEXT', 'SP24617', 'SP24618','SP24619','SP24620','SP24621','SP24622',)
-documents_table = get_data('contragent_documents', documents, 'DESCR','PARENTEXT', 'SP609', 'SP611','SP613')
+documents_table = get_data('contragent_documents', documents, 'DESCR','PARENTEXT', 'SP609', 'SP611','SP613', 'SP617')
 
 
 
