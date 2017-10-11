@@ -59,15 +59,18 @@ def show_user_profile(request,id, **kwargs):
         contragent_id = 17
         pp ="contragents_documents.summm != '0'"
         tn = "contragents_documents.summm = '0'"
-        select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} ORDER BY contragents_documents.doc_date;"
+        start_date = "'2016-09-02'"
+        end_date = "'2016-09-12'"
+        select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
         select_contragents_info="SELECT * FROM contragents LEFT JOIN contragents_places ON contragents.ID=contragents_places.m LEFT JOIN contragents_bank ON contragents.ID=contragents_bank.schet ;"
         select_all_documents="SELECT * FROM contragents_documents;"
-        select_tn = select_docs.format(tn, contragent_id)   
-        select_pp = select_docs.format(pp, contragent_id)
+  
+        select_tn = select_docs.format(tn, contragent_id, start_date, end_date)   
+        select_pp = select_docs.format(pp, contragent_id, start_date, end_date)
 
 
 
-        def list_of_table_values(request_text):
+        def create_list_of_table_values(request_text):
             request_name = cur.execute(request_text).fetchall()
             list_to_sort = [list(elem) for elem in request_name]
             cols = [column[0] for column in cur.description]
@@ -77,25 +80,16 @@ def show_user_profile(request,id, **kwargs):
             return result
             pass    
 
-        def test_akt_sverki(request_text):
-            request_name_akt = cur.execute(request_text).fetchall()
-            list_to_sort = [list(elem) for elem in request_name_akt]
-            cols = [column[0] for column in cur.description]
-            resultat = []
-            for row in list_to_sort:
-                resultat += [{col.lower():value for col,value in zip(cols,row)}]
-            return resultat
-            pass 
-
                    
-        all_documents = list_of_table_values(select_all_documents)
-        contragents_list = list_of_table_values(select_contragents_info)
-        all_pp = test_akt_sverki(select_pp)
-        all_tn = test_akt_sverki(select_tn)
+        all_documents = create_list_of_table_values(select_all_documents)
+        contragents_list = create_list_of_table_values(select_contragents_info)
+        all_pp = create_list_of_table_values(select_pp)
+        all_tn = create_list_of_table_values(select_tn)
 
 
         pp_summ_list = [f[key] for key in['summ'] for f in all_pp]
         tn_summ_list = [f[key] for key in['summ'] for f in all_tn]
+
         pp_sum = sum(pp_summ_list)
         tn_sum = sum(tn_summ_list)
 
