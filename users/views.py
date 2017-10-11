@@ -55,15 +55,20 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-        bank1 = cur.execute("SELECT summ FROM bank;").fetchall()
+
+        contragent_id = 17
+        pp ="contragents_documents.summm != '0'"
+        tn = "contragents_documents.summm = '0'"
+        select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} ORDER BY contragents_documents.doc_date;"
+        select_contragents_info="SELECT * FROM contragents LEFT JOIN contragents_places ON contragents.ID=contragents_places.m LEFT JOIN contragents_bank ON contragents.ID=contragents_bank.schet ;"
+        select_all_documents="SELECT * FROM contragents_documents;"
+        select_tn = select_docs.format(tn, contragent_id)   
+        select_pp = select_docs.format(pp, contragent_id)
 
 
-        bank2 = list(bank1[0])
 
-        bank = str(bank2[0])
-
-        def list_of_table_values():
-            request_name = cur.execute("SELECT * FROM contragents_documents;").fetchall()
+        def list_of_table_values(request_text):
+            request_name = cur.execute(request_text).fetchall()
             list_to_sort = [list(elem) for elem in request_name]
             cols = [column[0] for column in cur.description]
             result = []
@@ -72,21 +77,8 @@ def show_user_profile(request,id, **kwargs):
             return result
             pass    
 
-
-
-        def list_of_table_values2():
-            request_name = cur.execute("SELECT * FROM contragents LEFT JOIN contragents_places ON contragents.ID=contragents_places.m LEFT JOIN contragents_bank ON contragents.ID=contragents_bank.schet;").fetchall()
-            list_to_sort = [list(elem) for elem in request_name]
-            cols = [column[0] for column in cur.description]
-            result = []
-            for row in list_to_sort:
-                result += [{col.lower():value for col,value in zip(cols,row)}]
-            return result
-            pass 
-
-
-        def test_akt_sverki():
-            request_name_akt = cur.execute("SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE  parent = 17;").fetchall()
+        def test_akt_sverki(request_text):
+            request_name_akt = cur.execute(request_text).fetchall()
             list_to_sort = [list(elem) for elem in request_name_akt]
             cols = [column[0] for column in cur.description]
             resultat = []
@@ -94,19 +86,27 @@ def show_user_profile(request,id, **kwargs):
                 resultat += [{col.lower():value for col,value in zip(cols,row)}]
             return resultat
             pass 
-            
+
+                   
+        all_documents = list_of_table_values(select_all_documents)
+        contragents_list = list_of_table_values(select_contragents_info)
+        all_pp = test_akt_sverki(select_pp)
+        all_tn = test_akt_sverki(select_tn)
 
 
-        res = list_of_table_values()
-        bankai = list_of_table_values2()
-        batani = test_akt_sverki()
+        pp_summ_list = [f[key] for key in['summ'] for f in all_pp]
+        tn_summ_list = [f[key] for key in['summ'] for f in all_tn]
+        pp_sum = sum(pp_summ_list)
+        tn_sum = sum(tn_summ_list)
+
+        
 
 
         conn.commit()
         conn.close()
    
         return render(request, 'users/user_profile.html',
-        { 'bank':bank,'res':res, 'bankai':bankai,'batani':batani})
+        {'all_documents':all_documents, 'contragents_list':contragents_list,'all_pp':all_pp, 'all_tn':all_tn})
     else:
          return HttpResponseRedirect("/")   
 

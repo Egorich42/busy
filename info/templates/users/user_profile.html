@@ -21,9 +21,20 @@
 
 
 
+{%for s2 in all_tn %}
+{{s2.summ}}
+{{s.name}}
+{{s2.document_name}}
+{{s2.contragent_name}}
+{{s2.classid}}
+{%endfor%}
+
+
+
+
 <section class="central-block center"> 
 <section class="operations-list "> 
-{%for s in batani %}
+{%for s in all_pp %}
 <ul class="full-width without-padding-left">
 	<li>
 		<ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
@@ -31,6 +42,8 @@
 			<li class="text-left eighty-percent-width left bold"> {{s.name}}</li>
 			<li class="text-left bottom-15px">{{s.document_name}}</li>
 						<li class="text-left bottom-15px">{{s.contragent_name}}</li>
+												<li class="text-left bottom-15px">{{s.classid}}</li>
+
 
     	</ul>
     </li>
@@ -44,7 +57,7 @@
 
 
 
-<section class="central-block center"> 
+<!--section class="central-block center"> 
 <section class="operations-list "> 
 {%for m in bankai %}
 <ul class="full-width without-padding-left">
@@ -78,7 +91,7 @@
 </ul>
 {%endfor%}
 </section>
-</section>
+</section-->
 
 
 {% if user.is_authenticated %}

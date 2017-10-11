@@ -18,3 +18,6 @@ class Client(models.Model):
     skype= models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Скайп')
     phone =  models.PositiveIntegerField(verbose_name='Телефон', blank = True ,default=1)
 
+
+
+    
