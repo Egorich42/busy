@@ -19,7 +19,13 @@
 </ul>	
 </aside>
 
-
+<form class="order-form" action="." method="post">
+{{ form.as_p }}
+{% csrf_token %}
+<p> 
+<input type="submit" class="buttons-all"  value="Отправить">
+</p>
+</form>
 
 {%for s2 in all_tn %}
 {{s2.summ}}

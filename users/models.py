@@ -1,8 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 
+#python manage.py migrate --run-syncdb
 #https://habrahabr.ru/post/313764/
-
+from django.db import migrations
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -18,6 +19,8 @@ class Client(models.Model):
     skype= models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Скайп')
     phone =  models.PositiveIntegerField(verbose_name='Телефон', blank = True ,default=1)
 
+class Contragent(models.Model):
+    contragent_id = models.PositiveIntegerField(verbose_name='ID contragent', blank = True ,default=1)
 
 
     
