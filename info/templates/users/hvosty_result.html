@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+&nbsp;|&nbsp;{{user.username}}
+{% endblock %}
+{% block content %}
+
+
+
+
+{% if user.is_authenticated %}
+<a href="/users/logout" class="btn">выйти</a>
+{%else%}
+НИЧЕГО
+{% endif %}
+
+{% endblock %}
+

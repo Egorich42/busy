@@ -24,15 +24,22 @@ from django.contrib.auth import login
 # По нему django будет определять, выполнил ли вход пользователь.
 
 
-
-contragent_id = 17
 pp ="contragents_documents.summm != '0'"
 tn = "contragents_documents.summm = '0'"
 start_date = "'2014-09-02'"
 end_date = "'2018-09-12'"
+select_all_documents="SELECT * FROM contragents_documents;"
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 
-
+def create_list_of_table_values(request_text, massive_from_table):
+    request_name = request_text.fetchall()
+    list_to_sort = [list(elem) for elem in request_name]
+    cols = [column[0] for column in massive_from_table]
+    result = []
+    for row in list_to_sort:
+        result += [{col.lower():value for col,value in zip(cols,row)}]
+    return result
+    pass  
 
 class LoginFormView(FormView):
     form_class = AuthenticationForm
@@ -69,23 +76,7 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-
-        pp ="contragents_documents.summm != '0'"
-        tn = "contragents_documents.summm = '0'"  
-        select_all_documents="SELECT * FROM contragents_documents;"
-
-        def create_list_of_table_values(request_text):
-            request_name = cur.execute(request_text).fetchall()
-            list_to_sort = [list(elem) for elem in request_name]
-            cols = [column[0] for column in cur.description]
-            result = []
-            for row in list_to_sort:
-                result += [{col.lower():value for col,value in zip(cols,row)}]
-            return result
-            pass    
-
-                   
-        all_documents = create_list_of_table_values(select_all_documents)
+        all_documents = create_list_of_table_values(cur.execute(select_all_documents),cur.description)
 
         conn.commit()
         conn.close()
@@ -98,29 +89,11 @@ def show_user_profile(request,id, **kwargs):
 #!----------https://djbook.ru/ch07s02.html,    
 def show_sverka(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
-    contr_id = Contragent_identy(request)
-
 
     if user == request.user:
         base_name = str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
-
-
-        def create_list_of_table_values(request_text):
-            request_name = cur.execute(request_text).fetchall()
-            list_to_sort = [list(elem) for elem in request_name]
-            cols = [column[0] for column in cur.description]
-            result = []
-            for row in list_to_sort:
-                result += [{col.lower():value for col,value in zip(cols,row)}]
-            return result
-            pass    
-
-    
-
-        a = list(Contragent_identy.objects.all().order_by('contragent_id').values())
-        tt = a[:1][0]['contragent_id']
 
 
         if request.method == 'POST':
@@ -130,11 +103,12 @@ def show_sverka(request,id, **kwargs):
                 order.save()
 
                 select_pp = select_docs.format(pp, str(order.contragent_id), order.start_date, order.end_date)
+                select_tn = select_docs.format(tn, str(order.contragent_id), order.start_date, order.end_date)
 
-                all_pp = create_list_of_table_values(select_pp)
-
+                all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
+                all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
                
-                return render(request, 'users/sverka_result.html',{'tt':tt,'all_pp':all_pp})
+                return render(request, 'users/sverka_result.html',{'all_pp':all_pp,'all_tn':all_tn})
 
         forma = ContragentIdForm()
         return render(request, 'users/akt_sverki.html',{'forma': forma})
@@ -143,13 +117,45 @@ def show_sverka(request,id, **kwargs):
          return HttpResponseRedirect("/")   
 
 
+
+
 def UsersList(request):
     users = User.objects.all()
+
     return render(request, 'users/users_list.html', {'users':users})
     pass
 
+"""
+def show_hvosty(request,id, **kwargs):
+    user = get_object_or_404(User, id=id)
 
-#https://djbook.ru/ch07s02.html
+
+    if user == request.user:
+        base_name = str(user.id)+'.sqlite'
+        conn = sqlite3.connect(base_name)
+        cur = conn.cursor()
+
+
+        if request.method == 'POST':
+            forma = ContragentIdForm(request.POST)     
+            if forma.is_valid():
+                order = forma.save()
+                order.save()
+
+                select_pp = select_docs.format(pp,  order.start_date, order.end_date)
+                select_tn = select_docs.format(tn,  order.start_date, order.end_date)
+
+                all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
+                all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
+
+                return render(request, 'users/hvosty_result.html')
+
+        forma = ContragentIdForm()    
+
+    return render(request, 'users/hvosty.html')
+    pass
+"""
+
 
 def show_main_page(request):
     contacts = ContList.objects.all()

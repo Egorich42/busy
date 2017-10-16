@@ -40,8 +40,6 @@ all_pp = create_list_of_table_values(select_pp)
 all_tn = create_list_of_table_values(select_tn)
 
 
-
-
 sorted_pp = sorted(all_pp, key=lambda item: item['id'])
 sorted_tn = sorted(all_tn, key=lambda item: item['id'])
 
