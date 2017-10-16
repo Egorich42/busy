@@ -61,12 +61,9 @@ def show_user_profile(request,id, **kwargs):
         cur = conn.cursor()
 
 
-        contragent_id = 17
-    
-        select_tn = select_docs.format(tn, contragent_id, start_date, end_date)   
-        select_pp = select_docs.format(pp, contragent_id, start_date, end_date)
-
-
+        pp ="contragents_documents.summm != '0'"
+        tn = "contragents_documents.summm = '0'"  
+        select_all_documents="SELECT * FROM contragents_documents;"
 
         def create_list_of_table_values(request_text):
             request_name = cur.execute(request_text).fetchall()
@@ -80,77 +77,51 @@ def show_user_profile(request,id, **kwargs):
 
                    
         all_documents = create_list_of_table_values(select_all_documents)
-        contragents_list = create_list_of_table_values(select_contragents_info)
-        all_pp = create_list_of_table_values(select_pp)
-        all_tn = create_list_of_table_values(select_tn)
-
-
-        pp_summ_list = [f[key] for key in['summ'] for f in all_pp]
-        tn_summ_list = [f[key] for key in['summ'] for f in all_tn]
-
-        pp_sum = sum(pp_summ_list)
-        tn_sum = sum(tn_summ_list)
 
         conn.commit()
         conn.close()
    
         return render(request, 'users/user_profile.html',
-        {'all_documents':all_documents, 'contragents_list':contragents_list,'all_pp':all_pp, 'all_tn':all_tn})
+        {'all_documents':all_documents})
     else:
          return HttpResponseRedirect("/")   
 
 #!----------https://djbook.ru/ch07s02.html,    
 def show_sverka(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
-
     contr_id = Contragent_identy(request)
 
-    base_name = str(user.id)+'.sqlite'
-    conn = sqlite3.connect(base_name)
-    cur = conn.cursor()
 
-    
     if user == request.user:
+        base_name = str(user.id)+'.sqlite'
+        conn = sqlite3.connect(base_name)
+        cur = conn.cursor()
+
+        pp ="contragents_documents.summm != '0'"
+        tn = "contragents_documents.summm = '0'"
+        start_date = "'2016-09-02'"
+        end_date = "'2016-09-12'"
+        select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+
+        a = list(contr_id.objects.all().order_by('contragent_id').values())
+        tt = a[:1][0]['contragent_id']
+        print('egorich'+tt)
+
         if request.method == 'POST':
-            form = ContragentIdForm(request.POST)
-     
+            form = ContragentIdForm(request.POST)     
             if form.is_valid():
                 order = form.save()
-                identif = Contragent_identy.contragent_id  
+                identif = contr_id.contragent_id  
                 order.save() 
+                print('ggg'+identif)
 
-            pp ="contragents_documents.summm != '0'"
-            tn = "contragents_documents.summm = '0'"
-            start_date = "'2016-09-02'"
-            end_date = "'2016-09-12'"
-            select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-  
-            def create_list_of_table_values(request_text):
-                request_name = cur.execute(request_text).fetchall()
-                list_to_sort = [list(elem) for elem in request_name]
-                cols = [column[0] for column in cur.description]
-                result = []
-                for row in list_to_sort:
-                    result += [{col.lower():value for col,value in zip(cols,row)}]
-                return result
-                pass 
-
-
-            select_tn = select_docs.format(tn, identif, start_date, end_date)   
-
-            all_tn = create_list_of_table_values(select_tn)
-
-            tn_sum = sum([f[key] for key in['summ'] for f in all_tn])
-
-            conn.commit()
-            conn.close()
-            
-
-            return print(all_tn)
+                
+                return render(request, 'users/sverka_result.html',{'tt':tt})
 
         forma = ContragentIdForm()
 
         return render(request, 'users/akt_sverki.html',{'forma': forma})
+
     else:
          return HttpResponseRedirect("/")   
 
