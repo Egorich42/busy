@@ -25,6 +25,15 @@ from django.contrib.auth import login
 
 
 
+contragent_id = 17
+pp ="contragents_documents.summm != '0'"
+tn = "contragents_documents.summm = '0'"
+start_date = "'2014-09-02'"
+end_date = "'2018-09-12'"
+select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+
+
+
 class LoginFormView(FormView):
     form_class = AuthenticationForm
     # Аналогично регистрации, только используем шаблон аутентификации.
@@ -97,29 +106,37 @@ def show_sverka(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-        pp ="contragents_documents.summm != '0'"
-        tn = "contragents_documents.summm = '0'"
-        start_date = "'2016-09-02'"
-        end_date = "'2016-09-12'"
-        select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 
-        a = list(contr_id.objects.all().order_by('contragent_id').values())
+        def create_list_of_table_values(request_text):
+            request_name = cur.execute(request_text).fetchall()
+            list_to_sort = [list(elem) for elem in request_name]
+            cols = [column[0] for column in cur.description]
+            result = []
+            for row in list_to_sort:
+                result += [{col.lower():value for col,value in zip(cols,row)}]
+            return result
+            pass    
+
+    
+
+        a = list(Contragent_identy.objects.all().order_by('contragent_id').values())
         tt = a[:1][0]['contragent_id']
-        print('egorich'+tt)
+
 
         if request.method == 'POST':
-            form = ContragentIdForm(request.POST)     
-            if form.is_valid():
-                order = form.save()
-                identif = contr_id.contragent_id  
-                order.save() 
-                print('ggg'+identif)
+            forma = ContragentIdForm(request.POST)     
+            if forma.is_valid():
+                order = forma.save()
+                order.save()
 
-                
-                return render(request, 'users/sverka_result.html',{'tt':tt})
+                select_pp = select_docs.format(pp, str(order.contragent_id), order.start_date, order.end_date)
+
+                all_pp = create_list_of_table_values(select_pp)
+
+               
+                return render(request, 'users/sverka_result.html',{'tt':tt,'all_pp':all_pp})
 
         forma = ContragentIdForm()
-
         return render(request, 'users/akt_sverki.html',{'forma': forma})
 
     else:
@@ -134,3 +151,25 @@ def UsersList(request):
 
 #https://djbook.ru/ch07s02.html
 
+def show_main_page(request):
+    contacts = ContList.objects.all()
+
+    if request.method == 'POST':
+        form = ContactCreateForm(request.POST)
+        new_name = Contact.first_name
+        new_mail = Contact.address
+
+        if form.is_valid():
+            order = form.save()
+            order.save()
+ 
+            send_mail('Новый клиент', str(order.first_name),  from_who,
+                to_me, fail_silently=False)
+
+            return render(request, 'landing/thanks.html')
+    form = ContactCreateForm()
+
+    return render(request, 'landing/main.html',
+    {'form': form,'contacts': contacts, 
+    'temp':temp, 'desc':desc, 'icon':icon, 'mainDesc':mainDesc,
+    'about':about, 'descript': descript, }) 

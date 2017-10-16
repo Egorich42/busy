@@ -7,5 +7,5 @@ from .models import *
 class ContragentIdForm(forms.ModelForm):
     class Meta:
         model = Contragent_identy
-        fields = ['contragent_id']
+        fields = ['contragent_id','start_date','end_date']
 

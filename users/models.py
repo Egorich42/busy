@@ -21,8 +21,7 @@ class Client(models.Model):
 
 class Contragent_identy(models.Model):
     contragent_id =models.CharField(max_length=200, db_index=True, blank = True, verbose_name='ID Contragent')
-
-
-    
+    start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='start_date')
+    end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='end_date')   
     
     
