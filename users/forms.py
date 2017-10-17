@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import Contragent_identy
+from .models import Contragent_identy,Hvosty_borders
 from .models import *
 
 class ContragentIdForm(forms.ModelForm):
@@ -9,3 +9,7 @@ class ContragentIdForm(forms.ModelForm):
         model = Contragent_identy
         fields = ['contragent_id','start_date','end_date']
 
+class HvostyForm(forms.ModelForm):
+    class Meta:
+        model = Contragent_identy
+        fields = ['start_date','end_date']

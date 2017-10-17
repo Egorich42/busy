@@ -24,4 +24,9 @@ class Contragent_identy(models.Model):
     start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='start_date')
     end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='end_date')   
     
-    
+
+
+class Hvosty_borders(models.Model):
+    document_start_data = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='start_date')
+    document_end_data = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='end_date')   
+        

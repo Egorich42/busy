@@ -6,7 +6,11 @@
 {% block content %}
 
 
-
+<form class="order-form" action="." method="post">
+{{ hvosty_forma.as_p }}
+{% csrf_token %}
+<p> 
+<input type="submit" class="buttons-all"  value="Отправить">
 
 {% if user.is_authenticated %}
 <a href="/users/logout" class="btn">выйти</a>

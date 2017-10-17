@@ -4,9 +4,41 @@
 &nbsp;|&nbsp;{{user.username}}
 {% endblock %}
 {% block content %}
+{%for a in mm%}
+{{a}}
+{%endfor%}
+
+<section style="width: 50%; float: right;">
+{% for tn_document in sorted_tn %}
+<ul class="full-width without-padding-left">
+    <li>
+        <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
+            <li class="text-right twenty-percent-width right font-18">{{tn_document.summ}}&nbsp;.Р</li>
+            <li class="text-left eighty-percent-width left bold"> {{tn_document.contragent_name}}</li>
+            <li class="text-left bottom-15px">{{tn_document.document_name}}</li>
+            <li class="text-right font-12">{{tn_document.date}}</li>
+        </ul>
+    </li>
+</ul>
+{% endfor %}
+</section>
 
 
 
+<section style="width: 50%; float: right;">
+{%for pp_document in sorted_pp %}
+<ul class="full-width without-padding-left">
+    <li>
+        <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
+            <li class="text-right twenty-percent-width right font-18">{{pp_document.summ}}&nbsp;.Р</li>
+            <li class="text-left eighty-percent-width left bold"> {{pp_document.contragent_name}}</li>
+            <li class="text-left bottom-15px">{{pp_document.document_name}}</li>
+            <li class="text-right font-12">{{pp_document.date}}</li>
+        </ul>
+    </li>
+</ul>
+{% endfor %}
+</section>
 
 {% if user.is_authenticated %}
 <a href="/users/logout" class="btn">выйти</a>

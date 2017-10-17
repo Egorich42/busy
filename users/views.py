@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*
 from django.shortcuts import render, get_object_or_404, render_to_response
 from .models import *
-from .models import Contragent_identy
 from .forms import *
 from django.http import HttpResponse
 from django.views.generic.edit import FormView
@@ -13,7 +12,11 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
 import sqlite3 
 from django.db import migrations
-from django.contrib.auth import login
+from itertools import groupby
+import collections
+from collections import defaultdict
+from operator import itemgetter
+import itertools
 #https://djbook.ru/examples/39/
 #https://ustimov.org/posts/17/
 #http://acman.ru/django/publichnyi-profil-i-lichnyi-kabinet-po-odnoi-ssylk/
@@ -30,6 +33,7 @@ start_date = "'2014-09-02'"
 end_date = "'2018-09-12'"
 select_all_documents="SELECT * FROM contragents_documents;"
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_docs_for_data = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 
 def create_list_of_table_values(request_text, massive_from_table):
     request_name = request_text.fetchall()
@@ -39,7 +43,16 @@ def create_list_of_table_values(request_text, massive_from_table):
     for row in list_to_sort:
         result += [{col.lower():value for col,value in zip(cols,row)}]
     return result
-    pass  
+    pass 
+
+def perebor(data_sorted, one, two, three):
+    albert = []
+    for key, group in itertools.groupby(data_sorted, key=lambda x:x[one]):
+        a = list(sorted(group, key=lambda item: item[two]))
+        suma = sum([f[key] for key in[three] for f in a])
+        albert += [sum([f[key] for key in[three] for f in a])]
+    
+    return albert     
 
 class LoginFormView(FormView):
     form_class = AuthenticationForm
@@ -65,8 +78,6 @@ class LogoutView(View):
         logout(request)
         return HttpResponseRedirect("/")
 
-
-
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
 
@@ -89,10 +100,8 @@ def show_user_profile(request,id, **kwargs):
 #!----------https://djbook.ru/ch07s02.html,    
 def show_sverka(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
-
     if user == request.user:
-        base_name = str(user.id)+'.sqlite'
-        conn = sqlite3.connect(base_name)
+        conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
 
 
@@ -107,6 +116,8 @@ def show_sverka(request,id, **kwargs):
 
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
+
+
                
                 return render(request, 'users/sverka_result.html',{'all_pp':all_pp,'all_tn':all_tn})
 
@@ -125,36 +136,44 @@ def UsersList(request):
     return render(request, 'users/users_list.html', {'users':users})
     pass
 
-"""
+
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
-
-
     if user == request.user:
-        base_name = str(user.id)+'.sqlite'
-        conn = sqlite3.connect(base_name)
+        conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
 
 
         if request.method == 'POST':
-            forma = ContragentIdForm(request.POST)     
-            if forma.is_valid():
-                order = forma.save()
+            hvosty_forma = HvostyForm(request.POST)     
+            if hvosty_forma.is_valid():
+                order = hvosty_forma.save()
                 order.save()
 
-                select_pp = select_docs.format(pp,  order.start_date, order.end_date)
-                select_tn = select_docs.format(tn,  order.start_date, order.end_date)
+
+                select_pp = select_docs_for_data.format(pp, order.start_date, order.end_date)
+                select_tn = select_docs_for_data.format(tn, order.start_date, order.end_date)
 
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
 
-                return render(request, 'users/hvosty_result.html')
 
-        forma = ContragentIdForm()    
 
-    return render(request, 'users/hvosty.html')
+                sorted_pp = sorted(all_pp, key=lambda item: item['id'])
+                sorted_tn = sorted(all_tn, key=lambda item: item['id'])
+
+
+                nn = perebor(sorted_tn, 'id', 'doc_date', 'summ')
+                mm = perebor(sorted_pp, 'id', 'doc_date', 'summ')
+                print(nn)
+
+                return render(request, 'users/hvosty_result.html',{'nn':nn, 'mm':mm,'sorted_pp':sorted_pp,'sorted_tn':sorted_tn })
+
+        hvosty_forma = HvostyForm()    
+
+    return render(request, 'users/hvosty.html',{'hvosty_forma':hvosty_forma})
     pass
-"""
+
 
 
 def show_main_page(request):
