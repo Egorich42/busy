@@ -5,38 +5,48 @@
 {% endblock %}
 {% block content %}
 
+<section class="user-profile">
+Акт сверки с {{contr_name}}<p></p>
+с {{start_data}}по{{ending_data}}
+ <section class="user-profile flex row horizontal_ravnomerno">
+ <section class="fourty-percent_width left">
 
-
-
-
-<section style="width: 50%; float: right;">
 {%for pp in all_pp%}
 <ul class="full-width without-padding-left">
     <li>
         <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
             <li class="text-right twenty-percent-width right font-18">{{pp.summ}}&nbsp;.Р</li>
-            <li class="text-left eighty-percent-width left bold"> {{pp.contragent_name}}</li>
             <li class="text-left bottom-15px">{{pp.document_name}}</li>
             <li class="text-right font-12">{{pp.date}}</li>
         </ul>
     </li>
 </ul>
-{% endfor %}
-</section>
+{% endfor %}    
+</ul>
 
-<section style="width: 50%; float: right;">
-{%for tn in all_tn%}
+   </section>  
+
+
+
+   <section class="fourty-percent_width right"> 
+   {%for tn in all_tn%}
 <ul class="full-width without-padding-left">
     <li>
         <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
             <li class="text-right twenty-percent-width right font-18">{{tn.summ}}&nbsp;.Р</li>
-            <li class="text-left eighty-percent-width left bold"> {{tn.contragent_name}}</li>
             <li class="text-left bottom-15px">{{tn.document_name}}</li>
             <li class="text-right font-12">{{tn.date}}</li>
         </ul>
     </li>
 </ul>
-{% endfor %}
+{% endfor %}      
+   </section> 
+
+
+
+ </section> 
+ За период с {{start_data}}по{{ending_data}} {{summa_sverki}}  
 </section>
+
 {% endblock %}
 

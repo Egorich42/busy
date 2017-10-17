@@ -73,9 +73,11 @@ footer{height: 638px;}
 .half{width: 50%;}
 .twenty-percent-width{width: 20%;}
 .eighty-percent-width{width: 80%;}
+.fourty-percent_width{width: 40%;}
 
 .vertical-content-center{justify-content: space-around; align-items: center;}
 .horizontal-content-center{justify-content: center;}
+.horizontal_ravnomerno{justify-content: :space-between;}
 
 
 .operations-list{padding: 0% 20%; }
@@ -101,3 +103,4 @@ orange - #F7A416, #FD761F, #FF4400
 red - #ec0637
 fiol #5D67AE
 golyboi #01B5D8
+http://theory.phphtml.net/css/justify-content.html

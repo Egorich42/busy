@@ -17,48 +17,13 @@ import collections
 from collections import defaultdict
 from operator import itemgetter
 import itertools
-#https://djbook.ru/examples/39/
-#https://ustimov.org/posts/17/
-#http://acman.ru/django/publichnyi-profil-i-lichnyi-kabinet-po-odnoi-ssylk/
 #python manage.py version
-
-
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
-
-
-pp ="contragents_documents.summm != '0'"
-tn = "contragents_documents.summm = '0'"
-start_date = "'2014-09-02'"
-end_date = "'2018-09-12'"
-select_all_documents="SELECT * FROM contragents_documents;"
-select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-select_docs_for_data = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-
-def create_list_of_table_values(request_text, massive_from_table):
-    request_name = request_text.fetchall()
-    list_to_sort = [list(elem) for elem in request_name]
-    cols = [column[0] for column in massive_from_table]
-    result = []
-    for row in list_to_sort:
-        result += [{col.lower():value for col,value in zip(cols,row)}]
-    return result
-    pass 
-
-def perebor(data_sorted, one, two, three):
-    albert = []
-    for key, group in itertools.groupby(data_sorted, key=lambda x:x[one]):
-        a = list(sorted(group, key=lambda item: item[two]))
-        suma = sum([f[key] for key in[three] for f in a])
-        albert += [sum([f[key] for key in[three] for f in a])]
-    
-    return albert     
-
 class LoginFormView(FormView):
     form_class = AuthenticationForm
     # Аналогично регистрации, только используем шаблон аутентификации.
     template_name = "login.html"
-
     # В случае успеха перенаправим на главную.
     success_url = "/"
 
@@ -78,9 +43,10 @@ class LogoutView(View):
         logout(request)
         return HttpResponseRedirect("/")
 
+
+
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
-
     if user == request.user:
         
         base_name = str(user.id)+'.sqlite'
@@ -104,26 +70,31 @@ def show_sverka(request,id, **kwargs):
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
 
-
         if request.method == 'POST':
             forma = ContragentIdForm(request.POST)     
             if forma.is_valid():
                 order = forma.save()
                 order.save()
 
+                start_data = order.start_date
+                ending_data = order.end_date
+
                 select_pp = select_docs.format(pp, str(order.contragent_id), order.start_date, order.end_date)
                 select_tn = select_docs.format(tn, str(order.contragent_id), order.start_date, order.end_date)
 
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
+                  
+                summa_sverki = get_pays_balance(all_pp, all_tn, 'summ')
 
-
+                contr_name = all_tn[0]['full_name']
                
-                return render(request, 'users/sverka_result.html',{'all_pp':all_pp,'all_tn':all_tn})
+                return render(request, 'users/sverka_result.html',{'all_pp':all_pp,
+                    'all_tn':all_tn,'contr_name':contr_name,'start_data':start_data,
+                    'ending_data':ending_data,'summa_sverki':summa_sverki})
 
         forma = ContragentIdForm()
         return render(request, 'users/akt_sverki.html',{'forma': forma})
-
     else:
          return HttpResponseRedirect("/")   
 
@@ -143,13 +114,11 @@ def show_hvosty(request,id, **kwargs):
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
 
-
         if request.method == 'POST':
             hvosty_forma = HvostyForm(request.POST)     
             if hvosty_forma.is_valid():
                 order = hvosty_forma.save()
                 order.save()
-
 
                 select_pp = select_docs_for_data.format(pp, order.start_date, order.end_date)
                 select_tn = select_docs_for_data.format(tn, order.start_date, order.end_date)
@@ -157,11 +126,8 @@ def show_hvosty(request,id, **kwargs):
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
 
-
-
                 sorted_pp = sorted(all_pp, key=lambda item: item['id'])
                 sorted_tn = sorted(all_tn, key=lambda item: item['id'])
-
 
                 nn = perebor(sorted_tn, 'id', 'doc_date', 'summ')
                 mm = perebor(sorted_pp, 'id', 'doc_date', 'summ')
