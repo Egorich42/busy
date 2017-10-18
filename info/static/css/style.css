@@ -7,7 +7,8 @@ nav ul li{font-size: 18px; }
 ul li, ul, li{list-style-type: none;}
 a,li:hover,a:hover{text-decoration: none;}
 footer{height: 638px;}
-
+a{color: #2D2D2D;}
+a:visited{color: #2D2D2D;}
 /*---------------------FONTS-------------------*/
 .great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li {font-weight: bold;}
 .great-font{font-size: 60px; color: #2D2D2D;}
@@ -25,7 +26,7 @@ footer{height: 638px;}
 
 
 /*------------------BLOCK---------------------*/
-.key{width: 50px;}
+.key{width: 25px; margin: 0px 10px;}
 
 .main{height: 100%;}
 
@@ -73,15 +74,16 @@ footer{height: 638px;}
 .half{width: 50%;}
 .twenty-percent-width{width: 20%;}
 .eighty-percent-width{width: 80%;}
-.fourty-percent_width{width: 40%;}
+.fourty-percent-width{width: 45%;}
 
 .vertical-content-center{justify-content: space-around; align-items: center;}
 .horizontal-content-center{justify-content: center;}
-.horizontal_ravnomerno{justify-content: :space-between;}
+
+.ravnomerno{justify-content:space-between;}
 
 
 .operations-list{padding: 0% 20%; }
-
+.exit-block{margin-top: 600px;}
 
 .operations-date{}
 .operations-kontragent{}

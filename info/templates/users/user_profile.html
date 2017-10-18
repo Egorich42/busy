@@ -5,20 +5,27 @@
 {% endblock %}
 {% block content %}
 
-<span class="middle-font-35">
+<!--span class="middle-font-35">
 {{user.client.organization_type}}
 {{user.client.name}}
-</span>
-
-<aside class="text-left">
-<ul class="without-padding-left">
-<a href="/users/{{user.id}}/{{user.username}}/akt_sverki">акт сверки</a>
-<a href="/users/{{user.id}}/{{user.username}}/hvosty">Хвосты</a>
+</span-->
 <!--li class="normal-font-21">СЧЕТ:{{user.client.bank_schet}}</li>
 <li class="normal-font-21">УНП:{{user.client.unp}}</li>
 <li class="normal-font-21">Банк:{{bank}}
 </li-->
-</ul>	
+<section class="main flex row horizontal-content-center">
+<aside class="text-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<ul class="without-padding-left">
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/akt_sverki" style="color:#998383;">Акт сверки</a></li>
+<p></p>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+
+</ul>
+{% if user.is_authenticated %}
+<a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
+{%else%}
+НИЧЕГО
+{% endif %}	
 </aside>
 
 <section class="central-block center"> 
@@ -39,11 +46,7 @@
 </section>
 
 
-{% if user.is_authenticated %}
-<a href="/users/logout" class="btn">выйти</a>
-{%else%}
-НИЧЕГО
-{% endif %}
 
+</section>
 {% endblock %}
 

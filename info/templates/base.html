@@ -31,16 +31,17 @@
 <img src="{%static "/icons/logo-busy-150px.png" %}" alt="background" title="background">
 </a>
 </li>
+<li><a href="#">контакты</a></li>
+<li><a href="#">вакансии</a></li>
 
-<li>кто мы</li>
-<li>контакты</li>
 <li>
 {% if user.is_authenticated %}
 <a href="/users/{{user.id}}/{{user.first_name}}">
-<img src="{%static "/icons/key-green.png" %}" class="key">
+Личный кабинет
+<!--img src="{%static "/icons/key-green.png" %}" class="key"-->
 </a>
 {% else %}
-<a href="/users/login"><img src="static/media/icons/key-red.png"  class="key"></a> 
+<a href="/users/login"><img src="static/media/icons/key-red.png"  class="key">войти</a> 
 {% endif %}	
 </li>
 </ul>
@@ -57,7 +58,6 @@
 
 <nav class="full-width">
 <ul class="flex row">
-<li id="button">кто мы</li>
 <li>блог</li>
 <li>цены</li>
 <li>контакты</li>

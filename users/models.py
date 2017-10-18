@@ -6,6 +6,14 @@
 from django.db import migrations
 from django.db import models
 from django.contrib.auth.models import User
+import sqlite3 
+from django.db import migrations
+from itertools import groupby
+import collections
+from collections import defaultdict
+from operator import itemgetter
+import itertools
+
 
 pp ="contragents_documents.summm != '0'"
 tn = "contragents_documents.summm = '0'"
