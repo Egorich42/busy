@@ -5,18 +5,33 @@
 {% endblock %}
 {% block content %}
 
-<form class="order-form" action="." method="post">
+<p class="midle-font-45">Акт сверки</p>
+
+<section class="main flex row user-profile ravnomerno">
+
+<aside class="text-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<ul class="without-padding-left">
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
+<p></p>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+
+</ul>
+{% if user.is_authenticated %}
+<a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
+{%else%}
+НИЧЕГО
+{% endif %}	
+</aside>
+
+<form class="forma flex column ravnomerno text-right" action="." method="post">
 {{ forma.as_p }}
+
 {% csrf_token %}
-<p> 
+<p class="center"> 
 <input type="submit" class="buttons-all"  value="Отправить">
 </p>
 </form>
 
-    <!--form action="/search/" method="get">
-        <input type="text" name="q">
-        <input type="submit" value="Search">
-
--->
+</section>
 {% endblock %}
 

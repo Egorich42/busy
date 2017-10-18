@@ -50,9 +50,9 @@ def get_pays_balance(pp_list, tn_list, element_name):
 
 
     if pp_suma < tn_suma:
-        resultat = 'их долг'+' '+str(tn_suma-pp_suma)
+        resultat = 'сумма задолженности контрагента составляет'+' '+str(tn_suma-pp_suma)
     if pp_suma > tn_suma:
-        resultat = 'ваш долг'+' '+str(pp_suma-tn_suma)
+        resultat = 'сумма вашей задолженности составляет'+' '+str(pp_suma-tn_suma)
     if pp_suma == tn_suma:
         resultat = 'OK!'
     return resultat
@@ -73,8 +73,8 @@ class Client(models.Model):
     phone =  models.PositiveIntegerField(verbose_name='Телефон', blank = True ,default=1)
 
 class Contragent_identy(models.Model):
-    contragent_id =models.CharField(max_length=200, db_index=True, blank = True, verbose_name='ID Contragent')
-    start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='start_date')
-    end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='end_date')   
+    contragent_id =models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Контрагент')
+    start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Даты с')
+    end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по')   
     
 

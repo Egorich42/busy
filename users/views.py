@@ -164,3 +164,7 @@ def show_main_page(request):
     {'form': form,'contacts': contacts, 
     'temp':temp, 'desc':desc, 'icon':icon, 'mainDesc':mainDesc,
     'about':about, 'descript': descript, }) 
+
+def show_contacts_page(request):
+
+    return render(request, 'landing/contacts.html') 

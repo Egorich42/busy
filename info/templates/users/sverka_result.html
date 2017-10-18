@@ -5,9 +5,10 @@
 {% endblock %}
 {% block content %}
 
-<section class="user-profile">
-Акт сверки с {{contr_name}}<p></p>
-за перидод с {{start_data}}по{{ending_data}}
+<section class="user-profile"><p class="bold">
+Акт сверки с {{contr_name}}<br><br>
+за период с {{start_data}}&nbsp;по&nbsp;{{ending_data}}
+</p>
  <section class="user-profile flex row ravnomerno">
  <section class="fourty-percent-width left">
 
@@ -44,7 +45,8 @@
 
 
  </section> 
- За период с {{start_data}}по{{ending_data}} {{summa_sverki}}  
+ <p  class="bold"> За выбранный период  {{summa_sverki}} </p>
+ 
 </section>
 
 {% endblock %}
