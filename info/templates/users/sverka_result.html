@@ -4,6 +4,22 @@
 &nbsp;|&nbsp;РЕЗУЛЬТАТ
 {% endblock %}
 {% block content %}
+<section class="main flex chahnging-direction-row-col user-profile ravnomerno">
+
+<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<ul class="without-padding-left">
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
+<p></p>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+
+</ul>
+{% if user.is_authenticated %}
+<a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
+{%else%}
+НИЧЕГО
+{% endif %} 
+</aside>
+
 
 <section class="user-profile"><p class="bold">
 Акт сверки с {{contr_name}}<br><br>
@@ -47,6 +63,7 @@
  </section> 
  <p  class="bold"> За выбранный период  {{summa_sverki}} </p>
  
+</section>
 </section>
 
 {% endblock %}

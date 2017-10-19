@@ -17,6 +17,7 @@ import collections
 from collections import defaultdict
 from operator import itemgetter
 import itertools
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
@@ -53,7 +54,18 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-        all_documents = create_list_of_table_values(cur.execute(select_all_documents),cur.description)
+        paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),25)
+
+        page = request.GET.get('page')
+        try:
+            all_documents = paginator.page(page)
+        except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+         all_documents = paginator.page(1)
+        except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+            all_documents = paginator.page(paginator.num_pages)
+
 
         conn.commit()
         conn.close()
@@ -61,7 +73,8 @@ def show_user_profile(request,id, **kwargs):
         return render(request, 'users/user_profile.html',
         {'all_documents':all_documents})
     else:
-         return HttpResponseRedirect("/")   
+         return HttpResponseRedirect("/")
+
 
 #!----------https://djbook.ru/ch07s02.html,    
 def show_sverka(request,id, **kwargs):
@@ -168,3 +181,5 @@ def show_main_page(request):
 def show_contacts_page(request):
 
     return render(request, 'landing/contacts.html') 
+
+

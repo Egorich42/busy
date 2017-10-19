@@ -38,7 +38,7 @@
 {% if user.is_authenticated %}
 <a href="/users/{{user.id}}/{{user.first_name}}">
 Личный кабинет
-<!--img src="{%static "/icons/key-green.png" %}" class="key"-->
+<img src="{%static "/icons/key-green.png" %}" class="key">
 </a>
 {% else %}
 <a href="/users/login"><img src="static/media/icons/key-red.png"  class="key">войти</a> 

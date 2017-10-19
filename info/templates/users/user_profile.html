@@ -42,6 +42,28 @@
     </li>
 </ul>
 {%endfor%}
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if all_documents.has_previous %}
+            <a href="?page={{ all_documents.previous_page_number }}"><</a>
+        {% endif %}
+
+        <span class="current">
+             {{ all_documents.number }} из {{ all_documents.paginator.num_pages }}
+
+             {%for let in all_documents.paginator.num_pages %}
+             {{let}}
+             {%endfor%}
+        </span>
+
+        {% if all_documents.has_next %}
+            <a href="?page={{ all_documents.next_page_number }}">></a>
+        {% endif %}
+    </span>
+</div>
+
 </section>
 </section>
 

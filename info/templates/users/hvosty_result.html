@@ -4,9 +4,27 @@
 &nbsp;|&nbsp;{{user.username}}
 {% endblock %}
 {% block content %}
-{%for a in mm%}
-{{a}}
-{%endfor%}
+
+
+<p class="midle-font-45">Акт сверки</p>
+
+<section class="main flex chahnging-direction-row-col user-profile ravnomerno">
+
+<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<ul class="without-padding-left">
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
+<p></p>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+
+</ul>
+{% if user.is_authenticated %}
+<a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
+{%else%}
+НИЧЕГО
+{% endif %} 
+</aside>
+
+
 
 <section style="width: 50%; float: right;">
 {% for tn_document in sorted_tn %}
@@ -38,6 +56,7 @@
     </li>
 </ul>
 {% endfor %}
+</section>
 </section>
 
 {% if user.is_authenticated %}
