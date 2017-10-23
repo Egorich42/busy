@@ -16,6 +16,7 @@ end_date = "'2016-09-12'"
 
 #select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_contragents_identificator = "SELECT contragents.parent FROM contragents"
   
 #select_tn = select_docs.format(tn, contragent_id, ind)   
 #select_pp = select_docs.format(pp, contragent_id, start_date, end_date)
@@ -37,7 +38,17 @@ def create_list_of_table_values(request_text):
 
 all_pp = create_list_of_table_values(select_pp)
 all_tn = create_list_of_table_values(select_tn)
+gg_hf = create_list_of_table_values(select_contragents_identificator)
 
+
+select_pp = select_docs.format(pp, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+select_tn = select_docs.format(tn, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+
+
+                  
+summa_sverki = get_pays_balance(all_pp, all_tn, 'summ')
+
+contr_name = all_tn[0]['full_name']
 
 sorted_pp = sorted(all_pp, key=lambda item: item['id'])
 sorted_tn = sorted(all_tn, key=lambda item: item['id'])
@@ -48,13 +59,11 @@ def perebor(data_sorted, one, two,  three):
 	albert = []
 	for key, group in itertools.groupby(data_sorted, key=lambda x:x[one]):
 		a = list(sorted(group, key=lambda item: item[two]))
+		print(a)
 		albert += [sum([f[key] for key in[three] for f in a])]
-		beta += [s for s in a]
-		print(a[0]['contragent_name'])
 	return (albert, beta)
 
 
 
 nn = perebor(sorted_tn, 'id', 'doc_date',  'summ')
 mm = perebor(sorted_pp, 'id', 'doc_date', 'summ')
-rt = perebor(sorted_pp, 'contragent_name', 'doc_date', 'summ')

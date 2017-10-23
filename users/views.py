@@ -17,7 +17,7 @@ import collections
 from collections import defaultdict
 from operator import itemgetter
 import itertools
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
@@ -46,6 +46,13 @@ class LogoutView(View):
 
 
 
+def UsersList(request):
+    users = User.objects.all()
+    return render(request, 'users/users_list.html', {'users':users})
+    pass
+
+
+
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
@@ -54,18 +61,9 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-        paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),25)
+        paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
 
-        page = request.GET.get('page')
-        try:
-            all_documents = paginator.page(page)
-        except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-         all_documents = paginator.page(1)
-        except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-            all_documents = paginator.page(paginator.num_pages)
-
+        all_documents = get_pages(request,paginator)
 
         conn.commit()
         conn.close()
@@ -92,12 +90,34 @@ def show_sverka(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
 
-                select_pp = select_docs.format(pp, str(order.contragent_id), order.start_date, order.end_date)
-                select_tn = select_docs.format(tn, str(order.contragent_id), order.start_date, order.end_date)
+                select_pp = select_docs.format(pp, str(order.contragent_id), "'"+start_data+"'", "'"+ending_data+"'")
+                select_tn = select_docs.format(tn, str(order.contragent_id), "'"+start_data+"'", "'"+ending_data+"'")
 
+                contragents_list = [2,5, 6,7,8,9,10, 11,12,13,16,"'     I'"]
+                gg_hf = create_list_of_table_values(cur.execute(select_contragents_identificator),cur.description)
+                archi = [nrm['id'] for nrm in gg_hf]
+                print(archi)
+                print(contragents_list)
+
+
+                credance = []
+                for altair in contragents_list:
+                    select_tn2 = select_docs.format(tn, str(altair), "'"+start_data+"'", "'"+ending_data+"'")
+                    select_pp2 = select_docs.format(pp, str(altair), "'"+start_data+"'", "'"+ending_data+"'")
+                    all_pp2 = create_list_of_table_values(cur.execute(select_pp2),cur.description)
+                    all_tn2 = create_list_of_table_values(cur.execute(select_tn2),cur.description)
+                    summa_sverki = get_pays_balance(all_pp2, all_tn2, 'summ')
+                    contr_name2 = all_tn2[0]['full_name']
+#                    print(summa_sverki)
+#                    print (contr_name2)   
+
+   
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
-                  
+
+
+
+
                 summa_sverki = get_pays_balance(all_pp, all_tn, 'summ')
 
                 contr_name = all_tn[0]['full_name']
@@ -112,15 +132,6 @@ def show_sverka(request,id, **kwargs):
          return HttpResponseRedirect("/")   
 
 
-
-
-def UsersList(request):
-    users = User.objects.all()
-
-    return render(request, 'users/users_list.html', {'users':users})
-    pass
-
-
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
@@ -133,8 +144,8 @@ def show_hvosty(request,id, **kwargs):
                 order = hvosty_forma.save()
                 order.save()
 
-                select_pp = select_docs_for_data.format(pp, order.start_date, order.end_date)
-                select_tn = select_docs_for_data.format(tn, order.start_date, order.end_date)
+                select_pp = select_docs_for_data.format(pp, "'"+order.start_date+"'", "'"+order.end_date+"'")
+                select_tn = select_docs_for_data.format(tn, "'"+order.start_date+"'", "'"+order.end_date+"'")
 
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)

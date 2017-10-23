@@ -13,13 +13,12 @@ import collections
 from collections import defaultdict
 from operator import itemgetter
 import itertools
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 pp ="contragents_documents.summm != '0'"
 tn = "contragents_documents.summm = '0'"
-start_date = "'2014-09-02'"
-end_date = "'2018-09-12'"
 select_all_documents="SELECT * FROM contragents_documents;"
+select_contragents_identificator = "SELECT id FROM contragents;"
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs_for_data = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 
@@ -48,7 +47,6 @@ def get_pays_balance(pp_list, tn_list, element_name):
     pp_suma = sum(float(res[element_name]) for res in pp_list)
     tn_suma = sum(float(res[element_name]) for res in tn_list)
 
-
     if pp_suma < tn_suma:
         resultat = 'сумма задолженности контрагента составляет'+' '+str(tn_suma-pp_suma)
     if pp_suma > tn_suma:
@@ -57,6 +55,19 @@ def get_pays_balance(pp_list, tn_list, element_name):
         resultat = 'OK!'
     return resultat
     pass    
+
+
+
+def get_pages(request,paginator):
+    page = request.GET.get('page')
+    try:
+        all_pages = paginator.page(page)
+    except PageNotAnInteger:
+        all_pages = paginator.page(1)
+    except EmptyPage:
+        all_pages = paginator.page(paginator.num_pages)
+    return all_pages    
+    pass
 
 
 
