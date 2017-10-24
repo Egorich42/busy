@@ -15,10 +15,10 @@ from operator import itemgetter
 import itertools
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-pp ="contragents_documents.summm != '0'"
-tn = "contragents_documents.summm = '0'"
+pp ="contragents_documents.doc_type != '0'"
+tn = "contragents_documents.doc_type = '0'"
 select_all_documents="SELECT * FROM contragents_documents;"
-select_contragents_identificator = "SELECT id FROM contragents;"
+select_contragents_identificator = "SELECT parent FROM contragents_documents;"
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs_for_data = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 
