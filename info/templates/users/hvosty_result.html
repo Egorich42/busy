@@ -1,69 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-&nbsp;|&nbsp;{{user.username}}
+&nbsp;|&nbsp;Хвосты за период
 {% endblock %}
 {% block content %}
 
-
-<p class="midle-font-45">Акт сверки</p>
-
-<section class="main flex chahnging-direction-row-col user-profile ravnomerno">
-
+TAILS
+<section class="main flex chahnging-direction-row-col horizontal-content-center">
 <aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
 <ul class="without-padding-left">
+
+
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
+
 <p></p>
-<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/akt_sverki" style="color:#998383;">Акт сверки</a></li>
 
 </ul>
 {% if user.is_authenticated %}
 <a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
 {%else%}
 НИЧЕГО
-{% endif %} 
+{% endif %}	
 </aside>
 
-
-
-<section style="width: 50%; float: right;">
-{% for tn_document in sorted_tn %}
+<section class="central-block center"> 
+<section class="operations-list "> 
+{%for tor in names %}
 <ul class="full-width without-padding-left">
-    <li>
-        <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
-            <li class="text-right twenty-percent-width right font-18">{{tn_document.summ}}&nbsp;.Р</li>
-            <li class="text-left eighty-percent-width left bold"> {{tn_document.contragent_name}}</li>
-            <li class="text-left bottom-15px">{{tn_document.document_name}}</li>
-            <li class="text-right font-12">{{tn_document.date}}</li>
-        </ul>
-    </li>
+<li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
+
+<span class="bold text-left">{{tor.name}}</span>
+
+<span class="text-right bottom-15px">{{tor.summa}}&nbsp;.Р	</span>
+</li>
 </ul>
-{% endfor %}
+{%endfor%}
+
+
+
+
 </section>
-
-
-
-<section style="width: 50%; float: right;">
-{%for pp_document in sorted_pp %}
-<ul class="full-width without-padding-left">
-    <li>
-        <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
-            <li class="text-right twenty-percent-width right font-18">{{pp_document.summ}}&nbsp;.Р</li>
-            <li class="text-left eighty-percent-width left bold"> {{pp_document.contragent_name}}</li>
-            <li class="text-left bottom-15px">{{pp_document.document_name}}</li>
-            <li class="text-right font-12">{{pp_document.date}}</li>
-        </ul>
-    </li>
-</ul>
-{% endfor %}
 </section>
 </section>
 
-{% if user.is_authenticated %}
-<a href="/users/logout" class="btn">выйти</a>
-{%else%}
-НИЧЕГО
-{% endif %}
 
 {% endblock %}
+
 

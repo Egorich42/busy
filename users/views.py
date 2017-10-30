@@ -17,7 +17,12 @@ import collections
 from collections import defaultdict
 from operator import itemgetter
 import itertools
-
+titles = (
+    ('MR', 'Mr.'),
+    ('MRS', 'Mrs.'),
+    ('MS', 'Ms.'),
+    ('17','17'),
+)
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
@@ -90,38 +95,16 @@ def show_sverka(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
 
-                select_pp = select_docs.format(pp, str(order.contragent_id), "'"+start_data+"'", "'"+ending_data+"'")
-                select_tn = select_docs.format(tn, str(order.contragent_id), "'"+start_data+"'", "'"+ending_data+"'")
-
-                contragents_list = [2,5, 6,7,8,9,10, 11,12,13,16,"'     I'"]
-                gg_hf = create_list_of_table_values(cur.execute(select_contragents_identificator),cur.description)
-                archi = [nrm['parent'] for nrm in gg_hf]
-                print(archi)
-
-
-                credance = []
-                for altair in archi:
-                    select_tn2 = select_docs.format(tn, "'"+str(altair)+"'", "'"+start_data+"'", "'"+ending_data+"'")
-                    select_pp2 = select_docs.format(pp, "'"+str(altair)+"'", "'"+start_data+"'", "'"+ending_data+"'")
-                    all_pp2 = create_list_of_table_values(cur.execute(select_pp2),cur.description)
-                    all_tn2 = create_list_of_table_values(cur.execute(select_tn2),cur.description)
-                    summa_sverki = get_pays_balance(all_pp2, all_tn2, 'summ')
-                    contr_name2 = all_tn2[0]['full_name']
-                    print(summa_sverki)
-                    print (contr_name2)   
-
-   
+                select_pp = select_docs.format(pp, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+                select_tn = select_docs.format(tn, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
 
-
-
-
                 summa_sverki = get_pays_balance(all_pp, all_tn, 'summ')
 
- #               contr_name = all_tn[0]['full_name']
+                contr_name = all_tn[0]['name']
+                
 
-                contr_name = "ttt"
                 return render(request, 'users/sverka_result.html',{'all_pp':all_pp,
                     'all_tn':all_tn,'contr_name':contr_name,'start_data':start_data,
                     'ending_data':ending_data,'summa_sverki':summa_sverki})
@@ -134,6 +117,8 @@ def show_sverka(request,id, **kwargs):
 
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
+    tn ="contragents_documents.doc_type != '0'"
+    pp = "contragents_documents.doc_type = '0'"
     if user == request.user:
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
@@ -143,21 +128,29 @@ def show_hvosty(request,id, **kwargs):
             if hvosty_forma.is_valid():
                 order = hvosty_forma.save()
                 order.save()
+          
+                gg_hf = create_list_of_table_values(cur.execute(select_contragents_identificator),cur.description)
+                names = []
 
-                select_pp = select_docs_for_data.format(pp, "'"+order.start_date+"'", "'"+order.end_date+"'")
-                select_tn = select_docs_for_data.format(tn, "'"+order.start_date+"'", "'"+order.end_date+"'")
+                archi = [nrm['id'] for nrm in gg_hf]
+                start_data = order.start_date
+                ending_data = order.end_date
 
-                all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
-                all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
+                for altair in archi:
+                    select_tn2 = select_docs.format(tn, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'")
+                    select_pp2 = select_docs.format(pp, "'"+str(altair)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+                    all_pp2 = create_list_of_table_values(cur.execute(select_pp2),cur.description)
+                    all_tn2 = create_list_of_table_values(cur.execute(select_tn2),cur.description)
 
-                sorted_pp = sorted(all_pp, key=lambda item: item['id'])
-                sorted_tn = sorted(all_tn, key=lambda item: item['id'])
+                    summa_sverki = get_pays_balance(all_pp2, all_tn2, 'summ')
 
-                nn = perebor(sorted_tn, 'id', 'doc_date', 'summ')
-                mm = perebor(sorted_pp, 'id', 'doc_date', 'summ')
-                print(nn)
+                    if summa_sverki !='OK!' and len(all_tn2)>0:
+                        names += [{'name':all_tn2[0]['name'], 'summa':summa_sverki}]
+                        pass
 
-                return render(request, 'users/hvosty_result.html',{'nn':nn, 'mm':mm,'sorted_pp':sorted_pp,'sorted_tn':sorted_tn })
+                
+            return render(request, 'users/hvosty_result.html',
+                {'names':names,'start_data':start_data,'ending_data':ending_data })
 
         hvosty_forma = HvostyForm()    
 

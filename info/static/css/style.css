@@ -65,14 +65,13 @@ a:visited{color: #2D2D2D;}
 
 .nav ul{display: flex; flex-direction: row;}
 .chahnging-direction-row-col{flex-direction: row;}
-.changing-text-center-left{text-align: left;}
 
 
 .left{float: left;}
 .right{float: right;}
 
-.text-right{text-align: right;}
-.list-block ul,.text-left{text-align: left;}
+.text-right,.changing-text-center-right{text-align: right;}
+.list-block ul,.text-left,.changing-text-center-left{text-align: left;}
 .center{text-align: center;}
 
 
@@ -112,7 +111,7 @@ a:visited{color: #2D2D2D;}
 
 @media screen and (max-width: 720px) {
 
-.changing-text-center-left{text-align: center;}
+.changing-text-center-left,.changing-text-center-right{text-align: center;}
 
 .chahnging-direction-row-col{flex-direction: column;}
 .column-720{display: flex; flex-direction: column;}	

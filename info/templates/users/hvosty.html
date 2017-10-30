@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 
-<p class="midle-font-45">Акт сверки</p>
+<p class="midle-font-45">Хвосты</p>
 
 
 <section class="main flex chahnging-direction-row-col user-profile ravnomerno">
@@ -24,7 +24,7 @@
 {% endif %}	
 </aside>
 
-<form class="forma flex column ravnomerno changing-text-center-left" action="." method="post">
+<form class="forma flex column ravnomerno changing-text-center-right" action="." method="post">
 {{ hvosty_forma.as_p }}
 {% csrf_token %}
 <p class="center"> 

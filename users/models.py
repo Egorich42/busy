@@ -15,13 +15,14 @@ from operator import itemgetter
 import itertools
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-pp ="contragents_documents.doc_type != '0'"
-tn = "contragents_documents.doc_type = '0'"
+tn = "contragents_documents.doc_type != '0'"
+pp ="contragents_documents.doc_type = '0'"
+act = "contragents_documents.doc_type = "
 select_all_documents="SELECT * FROM contragents_documents;"
-select_contragents_identificator = "SELECT parent FROM contragents_documents;"
+
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs_for_data = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-
+select_contragents_identificator = "SELECT id FROM contragents;"
 
 
 def create_list_of_table_values(request_text, massive_from_table):
@@ -69,7 +70,12 @@ def get_pages(request,paginator):
     return all_pages    
     pass
 
-
+TITLE_CHOICES = (
+    ('MR', 'Mr.'),
+    ('MRS', 'Mrs.'),
+    ('MS', 'Ms.'),
+    ('17','17'),
+)
 
 class Client(models.Model):
     user = models.OneToOneField(User)
@@ -86,6 +92,12 @@ class Client(models.Model):
 class Contragent_identy(models.Model):
     contragent_id =models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Контрагент')
     start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Даты с')
-    end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по')   
+    end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по') 
+    title = models.CharField(max_length=3, choices=TITLE_CHOICES,db_index=True, blank = True)
+
+
+
     
+
+
 
