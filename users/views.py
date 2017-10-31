@@ -17,12 +17,8 @@ import collections
 from collections import defaultdict
 from operator import itemgetter
 import itertools
-titles = (
-    ('MR', 'Mr.'),
-    ('MRS', 'Mrs.'),
-    ('MS', 'Ms.'),
-    ('17','17'),
-)
+
+
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
