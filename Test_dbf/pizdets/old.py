@@ -22,20 +22,31 @@ def get_data_from_dbf(table_name):
 
 
 
-def get_data(table_name, *args):
+def get_data(values_list, table_name, *args):
 	values_list = []
+	values_list2=[]
+	vita = [0,1,2,3,4,5]
 	for l in table_name:
-		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", "") ,l[args[2]].encode('latin1').decode('cp1251'), l[args[3]],l[args[4]], l[args[5]].replace(" ", "")]]
+		values_list+=[[l[args[g]] for g in vita]]
 	return values_list	
 	pass
 
+	
 
-def get_data_mudaki(table_name, *args):
-	values_list = []
-	for l in table_name:
-		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].encode('latin1').decode('cp1251') ,l[args[2]], l[args[3]].replace(" ", "")]]
-	return values_list	
-	pass
+
+#[[l[args[0]],l[args[1]],l[args[2]], l[args[3]],l[args[4]], l[args[5]]]]
+
+#[l[args[x]] for x in len(args)] 
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -60,34 +71,35 @@ all_t625 = [get_data_from_dbf(t625.format(i)) for i in bazi]
 #all_t556 = [get_data_from_dbf(t556.format(i)) for i in bazi]
 #all_t497 = [get_data_from_dbf(t497.format(i)) for i in bazi]
 all_t493 = [get_data_from_dbf(t493.format(i)) for i in bazi]
-all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
+#all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
 
 
-def documenty_huevy(numar, *args):
+
+ #'DESCR','PARENTEXT', 'SP609', 'SP611','SP613', 'SP617'
+
+def another_way_to_die(numar, *args):
 	dot = [0,1,2]
 	fiat = []
 	for t in dot:
-		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4], args[5])]
+		documents_table = [get_data('contragent_documents', numar[t], args[0],args[1], args[2], args[3],args[4], args[5])]
 		fiat += [ti for ti in documents_table]
 	return fiat	
 	pass
 
-
-def ebuchie_pidory(numar, *args):
-	dot = [0,1,2]
-	fiat = []
-	for t in dot:
-		documents_table = [get_data_mudaki(numar[t], args[0],args[1], args[2], args[3])]
-		fiat += [ti for ti in documents_table]
-	return fiat	
-	pass
+print(len(another_way_to_die(all_t625,'DESCR','PARENTEXT', 'SP609', 'SP611','SP613', 'SP617')[2]))
+#print(len(another_way_to_die(all_t493,'DESCR','PARENTEXT', 'SP467', 'SP468','SP470','SP482',)[2]))
 
 
 
-documenty_ot_uebkov = documenty_huevy(all_t625,'DESCR','PARENTEXT', 'SP609', 'SP611','SP613', 'SP617')
-documenty_dlya_uebkov = documenty_huevy(all_t493,'DESCR','PARENTEXT', 'SP467', 'SP468','SP470','SP482')
-mrazi =  ebuchie_pidory(all_t167, 'DESCR', 'SP134', 'SP137', 'ID')
+"""
+dot2 = [0,1,2]
+fiat2 = []
+for t2 in dot2:
+	documents_table2 = [get_data('contragent_documents2', all_t497[t],'DESCR', 'PARENTEXT', 'SP467', 'SP468', 'SP482', 'SP470')]
+	fiat2 += [ti2 for ti2 in documents_table2]
 
+print(len(fiat[2]))
+"""
 
 conn1 = sqlite3.connect('1.sqlite')
 conn2 = sqlite3.connect('2.sqlite')
@@ -96,28 +108,17 @@ c1 = conn1.cursor()
 c2 = conn2.cursor()
 c3 = conn3.cursor()
 
-
-c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?)', documenty_ot_uebkov[0])
-c1.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?)', documenty_dlya_uebkov[0])
-c1.executemany('INSERT INTO contragents VALUES (?,?,?,?)', mrazi[0])
-
+"""
+c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?)', fiat[0])
 conn1.commit()
 conn1.close()
-
-
-c2.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?)', documenty_ot_uebkov[1])
-c2.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?)', documenty_dlya_uebkov[1])
-c2.executemany('INSERT INTO contragents VALUES (?,?,?,?)', mrazi[1])
+c2.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?)', fiat[1])
 conn2.commit()
 conn2.close()
-
-
-c3.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?)', documenty_ot_uebkov[2])
-c3.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?)', documenty_dlya_uebkov[2])
-c3.executemany('INSERT INTO contragents VALUES (?,?,?,?)', mrazi[2])
+c3.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?)', fiat[2])
 conn3.commit()
 conn3.close()
-
+"""
 
 
 

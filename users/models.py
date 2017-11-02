@@ -15,6 +15,10 @@ from operator import itemgetter
 import itertools
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
+tn2 = "contragents_documents_two.doc_type = '0'"
+pp2="contragents_documents.doc_type != '0'"
+
 tn = "contragents_documents.doc_type != '0'"
 pp ="contragents_documents.doc_type = '0'"
 act = "contragents_documents.doc_type = "
@@ -23,6 +27,9 @@ select_all_documents="SELECT * FROM contragents_documents;"
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs_for_data = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_contragents_identificator = "SELECT id FROM contragents;"
+
+select_docs_to_mudaky =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} ORDER BY contragents_documents.doc_date;"
+select_docs_from_mudaky = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} ORDER BY contragents_documents_two.doc_date;"
 
 
 def create_list_of_table_values(request_text, massive_from_table):

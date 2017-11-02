@@ -62,6 +62,20 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
+        all_tn_prodanye = create_list_of_table_values(cur.execute(select_tn_to_pidory),cur.description)
+        all_tn_poluchennye = create_list_of_table_values(cur.execute(select_tn_from_pidory),cur.description)
+
+
+        summa_poluchenyh_materyalov = [i['summ'] for i in all_tn_poluchennye]
+        summa_prodannyh_tovarov = [i['summ'] for i in all_tn_prodanye]
+
+        fula = str(sum(summa_prodannyh_tovarov)*0.05)
+
+        nds_polucheny = sum(summa_poluchenyh_materyalov)/6
+        nds_otpravleny = sum(summa_prodannyh_tovarov)/6
+
+        full_nds = str(nds_otpravleny - nds_polucheny)
+
         paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
 
         all_documents = get_pages(request,paginator)
@@ -70,7 +84,7 @@ def show_user_profile(request,id, **kwargs):
         conn.close()
    
         return render(request, 'users/user_profile.html',
-        {'all_documents':all_documents})
+        {'all_documents':all_documents, 'fula':fula,'full_nds':full_nds})
     else:
          return HttpResponseRedirect("/")
 
