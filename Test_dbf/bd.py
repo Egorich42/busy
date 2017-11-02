@@ -15,26 +15,6 @@ contragents_places = 'SC556.dbf'
 odinc_tables = (documents_to, documents_from, contragents_names, contragents_bank_data, contragents_places)
 
 
-def get_data_from_dbf(table_name):
-	dataset = list(DBF(table_name, encoding='iso-8859-1'))
-	return dataset
-	pass
-
-
-
-def get_data(values_list, table_name, *args):
-	values_list = []
-	for l in table_name:
-		if len(args) == 4:
-			values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].encode('latin1').decode('cp1251') ,l[args[2]], l[args[3]].replace(" ", "")]]
-		if len(args) == 6:
-			values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", "") ,l[args[2]].encode('latin1').decode('cp1251'), l[args[3]],l[args[4]], l[args[5]].replace(" ", "")]]
-		if len(args) > 6:
-			values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]] ,l[args[2]],l[args[3]].encode('latin1').decode('cp1251'),l[args[4]].encode('latin1').decode('cp1251'),l[args[5]].encode('latin1').decode('cp1251'),l[args[6].encode('latin1').decode('cp1251')]]]
-	return values_list	
-	pass
-
-
 dipart = 'dipartD'
 avangard = 'avangard'
 ditest = 'ditest'
@@ -49,18 +29,33 @@ t167 = location+'\{}\SC167.DBF'
 
 lyst = (t625,t556,t497,t493,t167)
 
+
+def get_data_from_dbf(table_name):
+	dataset = list(DBF(table_name, encoding='iso-8859-1'))
+	return dataset
+	pass
+
+
+
+def get_data(values_list, table_name, *args):
+	values_list = []
+#	vita = [0,1,2,3,4,5]
+	via = [t for t in range(len(args))]
+	for l in table_name:
+		values_list+=[[l[args[g]] for g in via]]
+	return values_list	
+	pass
+
+
 #проходится через список всех требуемых файлов-таблиц и выдергивает их. 
 #превращая в листы, в внутри - создается по три варианта-листа для каждой из баз клиентов
 
 all_t625 = [get_data_from_dbf(t625.format(i)) for i in bazi]
 #all_t556 = [get_data_from_dbf(t556.format(i)) for i in bazi]
-all_t497 = [get_data_from_dbf(t497.format(i)) for i in bazi]
-#all_t493 = [get_data_from_dbf(t493.format(i)) for i in bazi]
+#all_t497 = [get_data_from_dbf(t497.format(i)) for i in bazi]
+all_t493 = [get_data_from_dbf(t493.format(i)) for i in bazi]
 #all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
 
-
-
- #'DESCR','PARENTEXT', 'SP609', 'SP611','SP613', 'SP617'
 
 def another_way_to_die(numar, *args):
 	dot = [0,1,2]
@@ -72,7 +67,7 @@ def another_way_to_die(numar, *args):
 	pass
 
 print(len(another_way_to_die(all_t625,'DESCR','PARENTEXT', 'SP609', 'SP611','SP613', 'SP617')[2]))
-print(len(another_way_to_die(all_t497,'DESCR','PARENTEXT', 'SP467', 'SP468', 'SP482', 'SP470')[2]))
+#print(len(another_way_to_die(all_t493,'DESCR','PARENTEXT', 'SP467', 'SP468','SP470','SP482',)[2]))
 
 
 
