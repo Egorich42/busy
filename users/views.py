@@ -22,6 +22,8 @@ import itertools
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
+
+
 class LoginFormView(FormView):
     form_class = AuthenticationForm
     # Аналогично регистрации, только используем шаблон аутентификации.
@@ -62,19 +64,8 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-        all_tn_prodanye = create_list_of_table_values(cur.execute(select_tn_to_pidory),cur.description)
-        all_tn_poluchennye = create_list_of_table_values(cur.execute(select_tn_from_pidory),cur.description)
-
-
-        summa_poluchenyh_materyalov = [i['summ'] for i in all_tn_poluchennye]
-        summa_prodannyh_tovarov = [i['summ'] for i in all_tn_prodanye]
-
-        fula = str(sum(summa_prodannyh_tovarov)*0.05)
-
-        nds_polucheny = sum(summa_poluchenyh_materyalov)/6
-        nds_otpravleny = sum(summa_prodannyh_tovarov)/6
-
-        full_nds = str(nds_otpravleny - nds_polucheny)
+        square_fin_states =curent_finace_states(start_square,cur)
+        month_fin_states = curent_finace_states(start_month,cur)
 
         paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
 
@@ -84,7 +75,9 @@ def show_user_profile(request,id, **kwargs):
         conn.close()
    
         return render(request, 'users/user_profile.html',
-        {'all_documents':all_documents, 'fula':fula,'full_nds':full_nds})
+        {'all_documents':all_documents, 'mon_nds':month_fin_states[0],
+          'sqare_nds':square_fin_states[0],'mon_usn':month_fin_states[1],
+            'square_usn':square_fin_states[1]})
     else:
          return HttpResponseRedirect("/")
 
@@ -107,6 +100,7 @@ def show_sverka(request,id, **kwargs):
 
                 select_pp = select_docs.format(pp, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
                 select_tn = select_docs.format(tn, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+
                 all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
                 all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
 
@@ -127,8 +121,8 @@ def show_sverka(request,id, **kwargs):
 
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
-    tn ="contragents_documents.doc_type != '0'"
-    pp = "contragents_documents.doc_type = '0'"
+    tn ="contragents_documents.doc_type = '0'"
+    pp = "contragents_documents.doc_type != '0'"
     if user == request.user:
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
@@ -149,6 +143,7 @@ def show_hvosty(request,id, **kwargs):
                 for altair in archi:
                     select_tn2 = select_docs.format(tn, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'")
                     select_pp2 = select_docs.format(pp, "'"+str(altair)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+
                     all_pp2 = create_list_of_table_values(cur.execute(select_pp2),cur.description)
                     all_tn2 = create_list_of_table_values(cur.execute(select_tn2),cur.description)
 

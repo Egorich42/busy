@@ -6,20 +6,26 @@ import sqlite3
 from dbfread import DBF
 import os
 
-documents_from = 'SC493.dbf'
-documents_to = 'SC625.dbf'
-contragents_bank_data = 'SC497.dbf'
-contragents_names = 'SC167.dbf'
-contragents_places = 'SC556.dbf'
 
-odinc_tables = (documents_to, documents_from, contragents_names, contragents_bank_data, contragents_places)
+dipart = 'dipartD'
+avangard = 'avangard'
+ditest = 'ditest'
+bazi = (dipart, avangard, ditest)
 
+location ='D:\DATA_SETS' 
+
+t625 = location+'\{}\SC625.DBF'
+t556 = location+'\{}\SC556.DBF'
+t497 = location+'\{}\SC497.DBF'
+t493 = location+'\{}\SC493.DBF'
+t167 = location+'\{}\SC167.DBF'
+
+lyst = (t625,t556,t497,t493,t167)
 
 def get_data_from_dbf(table_name):
 	dataset = list(DBF(table_name, encoding='iso-8859-1'))
 	return dataset
 	pass
-
 
 
 def get_data(table_name, *args):
@@ -37,21 +43,6 @@ def get_data_mudaki(table_name, *args):
 	return values_list	
 	pass
 
-
-
-dipart = 'dipartD'
-avangard = 'avangard'
-ditest = 'ditest'
-bazi = (dipart, avangard, ditest)
-
-location ='D:\DATA_SETS' 
-t625 = location+'\{}\SC625.DBF'
-t556 = location+'\{}\SC556.DBF'
-t497 = location+'\{}\SC497.DBF'
-t493 = location+'\{}\SC493.DBF'
-t167 = location+'\{}\SC167.DBF'
-
-lyst = (t625,t556,t497,t493,t167)
 
 #проходится через список всех требуемых файлов-таблиц и выдергивает их. 
 #превращая в листы, в внутри - создается по три варианта-листа для каждой из баз клиентов

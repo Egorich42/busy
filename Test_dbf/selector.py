@@ -1,11 +1,15 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*
 import sqlite3
 from itertools import groupby
 import collections
 from collections import defaultdict
 from operator import itemgetter
 import itertools
+from datetime import *
 
-conn = sqlite3.connect('1.sqlite')
+
+conn = sqlite3.connect('2.sqlite')
 cur = conn.cursor()
 
 contragent_id = "'17'"
@@ -21,26 +25,11 @@ start_date = "'2015-01-01'"
 end_date = "'2018-09-12'"
 
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-#select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_contragents_identificator = "SELECT id FROM contragents;"
 select_id_docs = "SELECT parent FROM contragents_documents;"
  
-select_docs_to_mudaky =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} ORDER BY contragents_documents.doc_date;"
-select_docs_from_mudaky = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} ORDER BY contragents_documents_two.doc_date;"
-
-
-
-
-"""
-AVANGARD(493),DIPART(493),DITEST(493)::
-akty+ttn = 0
-other - other
-
-AKTS+TN - 0
-DPD - 2MM
-PP +?- 2MI
-"""
-
+select_docs_to_mudaky =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_docs_from_mudaky = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
 
 
 def create_list_of_table_values(request_text, massive_from_table):
@@ -65,31 +54,64 @@ def get_pays_balance(pp_list, tn_list, element_name):
         resultat = 'OK!'
     return resultat
     pass   
-"""
-select_tn = select_docs.format(tn, str(contragent_id), start_date,end_date)
-select_pp = select_docs.format(pp, str(contragent_id), start_date, end_date)
-"""
-select_tn_to_pidory = select_docs_to_mudaky.format(tn)
-#select_pp_to_pidory = select_docs.format(pp, str(contragent_id), start_date, end_date)
-
-select_tn_from_pidory = select_docs_from_mudaky.format(tn2)
-#select_pp_from_pidory = select_docs.format(pp, str(contragent_id), start_date, end_date)
-
-#all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
-all_tn_prodanye = create_list_of_table_values(cur.execute(select_tn_to_pidory),cur.description)
-all_tn_poluchennye = create_list_of_table_values(cur.execute(select_tn_from_pidory),cur.description)
 
 
-summa_poluchenyh_materyalov = [i['summ'] for i in all_tn_poluchennye]
-summa_prodannyh_tovarov = [i['summ'] for i in all_tn_prodanye]
+today = date.today()
+this_year = date.today().year
+this_month = date.today().month
 
-fula = sum(summa_prodannyh_tovarov)*0.05
+first_kvartal_end = date(this_year, 3,31)
+second_kvartal_end= date(this_year,6,30)
+third_kvartal_end= date(this_year,9,30)
+four_kvartal_end = date(this_year,12,31)
 
-nds_polucheny = sum(summa_poluchenyh_materyalov)/6
-nds_otpravleny = sum(summa_prodannyh_tovarov)/6
 
-print(nds_otpravleny - nds_polucheny)
-print(fula)
+first_kvartal_start = date(this_year, 1,1)
+second_kvartal_start= date(this_year,4,1)
+third_kvartal_start= date(this_year,7,1)
+four_kvartal_start = date(this_year,10,1)
+
+def current_kvartal():
+    if today<first_kvartal_end:
+        cur_kvart = first_kvartal_start
+    if today > first_kvartal_end and today < second_kvartal_end:
+        cur_kvart = second_kvartal_start
+    if today >third_kvartal_start and today <third_kvartal_end:
+        cur_kvart = third_kvartal_start
+    if today > four_kvartal_start and today < four_kvartal_end:
+        cur_kvart = four_kvartal_start    
+        pass
+
+    return cur_kvart
+
+
+start_square = str(current_kvartal())
+start_month = str(date(this_year, this_month, 1))
+
+def curent_finace_states(start, cursor):
+    select_tn_to_pidory = select_docs_to_mudaky.format(tn,  "'"+start+"'",  "'"+str(today)+"'")
+    select_tn_from_pidory = select_docs_from_mudaky.format(tn2,  "'"+start+"'",  "'"+str(today)+"'")
+
+    sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
+
+    all_docs_tables = [create_list_of_table_values(cursor.execute(f),cursor.description) for f in sql_commands_list]
+
+    summa_poluchenyh_materyalov = [i['summ'] for i in all_docs_tables[1]]
+    summa_prodannyh_tovarov = [i['summ'] for i in all_docs_tables[0]]
+
+    usn = str(round(sum(summa_prodannyh_tovarov)*0.05,2))
+
+    nds_polucheny = sum(summa_poluchenyh_materyalov)/6
+    nds_otpravleny = sum(summa_prodannyh_tovarov)/6
+
+    full_nds = str (round(nds_otpravleny - nds_polucheny,2))
+
+    return(full_nds, usn)
+
+a =curent_finace_states(start_square,cur)
+b = curent_finace_states(start_month,cur)
+print(a,b)
+
 #493 -> documents_two
 
 
