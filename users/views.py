@@ -47,13 +47,10 @@ class LogoutView(View):
         logout(request)
         return HttpResponseRedirect("/")
 
-
-
 def UsersList(request):
     users = User.objects.all()
     return render(request, 'users/users_list.html', {'users':users})
     pass
-
 
 
 def show_user_profile(request,id, **kwargs):
@@ -64,20 +61,37 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-        square_fin_states =curent_finace_states(start_square,cur)
-        month_fin_states = curent_finace_states(start_month,cur)
+        square_fin_states =curent_finace_states(start_square, today,cur)
+        month_fin_states = curent_finace_states(start_month ,today,cur)
 
         paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
 
         all_documents = get_pages(request,paginator)
 
+
+        if request.method == 'POST':
+            fin_states = FinStatesForm(request.POST)     
+            if fin_states.is_valid():
+                order = fin_states.save()
+                order.save()
+          
+                start_data = order.start_date
+                ending_data = order.end_date
+
+                period_fin_states =curent_finace_states(start_data, ending_data,cur)
+
+            return render(request, 'users/fin_states.html',
+                {'start_data':start_data,'ending_data':ending_data,'nds_fin_states':str(period_fin_states[0]), 'usn_fin_states':str(period_fin_states[1]) })   
+
         conn.commit()
-        conn.close()
-   
+        conn.close()  
+
+        fin_states = FinStatesForm()
+ 
         return render(request, 'users/user_profile.html',
         {'all_documents':all_documents, 'mon_nds':month_fin_states[0],
           'sqare_nds':square_fin_states[0],'mon_usn':month_fin_states[1],
-            'square_usn':square_fin_states[1]})
+            'square_usn':square_fin_states[1],'fin_states':fin_states})
     else:
          return HttpResponseRedirect("/")
 
@@ -98,19 +112,16 @@ def show_sverka(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
 
-                select_pp = select_docs.format(pp, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
-                select_tn = select_docs.format(tn, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+                select_docs = [select_docs.format(doc, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp,tn)]
 
-                all_pp = create_list_of_table_values(cur.execute(select_pp),cur.description)
-                all_tn = create_list_of_table_values(cur.execute(select_tn),cur.description)
+                all_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (select_docs)]
 
-                summa_sverki = get_pays_balance(all_pp, all_tn, 'summ')
+                summa_sverki = get_pays_balance(all_pp_and_tn[0], all_pp_and_tn[1], 'summ')
 
                 contr_name = all_tn[0]['name']
                 
-
-                return render(request, 'users/sverka_result.html',{'all_pp':all_pp,
-                    'all_tn':all_tn,'contr_name':contr_name,'start_data':start_data,
+                return render(request, 'users/sverka_result.html',{'all_pp':all_pp_and_tn[0],
+                    'all_tn':all_pp_and_tn[1],'contr_name':contr_name,'start_data':start_data,
                     'ending_data':ending_data,'summa_sverki':summa_sverki})
 
         forma = ContragentIdForm()
@@ -137,27 +148,26 @@ def show_hvosty(request,id, **kwargs):
                 names = []
 
                 archi = [nrm['id'] for nrm in gg_hf]
+
                 start_data = order.start_date
                 ending_data = order.end_date
 
                 for altair in archi:
-                    select_tn2 = select_docs.format(tn, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'")
-                    select_pp2 = select_docs.format(pp, "'"+str(altair)+"'", "'"+start_data+"'", "'"+ending_data+"'")
+                    select_documents = [select_docs.format(doc, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc in (tn,pp)]
 
-                    all_pp2 = create_list_of_table_values(cur.execute(select_pp2),cur.description)
-                    all_tn2 = create_list_of_table_values(cur.execute(select_tn2),cur.description)
+                    all_docs = [create_list_of_table_values(cur.execute(table),cur.description) for table in select_documents]
 
-                    summa_sverki = get_pays_balance(all_pp2, all_tn2, 'summ')
+                    summa_sverki = get_pays_balance(all_docs[1], all_docs[0], 'summ')
 
-                    if summa_sverki !='OK!' and len(all_tn2)>0:
-                        names += [{'name':all_tn2[0]['name'], 'summa':summa_sverki}]
+                    if summa_sverki !='OK!' and len(all_docs[0])>0:
+                        names += [{'name':all_docs[0][0]['name'], 'summa':summa_sverki}]
                         pass
 
                 
             return render(request, 'users/hvosty_result.html',
-                {'names':names,'start_data':start_data,'ending_data':ending_data })
+                {'names':names,'start_data':start_data,'ending_data':ending_data })   
 
-        hvosty_forma = HvostyForm()    
+        hvosty_forma = HvostyForm()
 
     return render(request, 'users/hvosty.html',{'hvosty_forma':hvosty_forma})
     pass

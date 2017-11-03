@@ -88,9 +88,9 @@ def current_kvartal():
 start_square = str(current_kvartal())
 start_month = str(date(this_year, this_month, 1))
 
-def curent_finace_states(start, cursor):
-    select_tn_to_pidory = select_docs_to_mudaky.format(tn,  "'"+start+"'",  "'"+str(today)+"'")
-    select_tn_from_pidory = select_docs_from_mudaky.format(tn2,  "'"+start+"'",  "'"+str(today)+"'")
+def curent_finace_states(start, end, cursor):
+    select_tn_to_pidory = select_docs_to_mudaky.format(tn,  "'"+start+"'",  "'"+str(end)+"'")
+    select_tn_from_pidory = select_docs_from_mudaky.format(tn2,  "'"+start+"'",  "'"+str(end)+"'")
 
     sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
 

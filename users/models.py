@@ -35,6 +35,7 @@ select_docs_to_mudaky =  "SELECT * FROM contragents_documents LEFT JOIN contrage
 select_docs_from_mudaky = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
 
 
+
 def create_list_of_table_values(request_text, massive_from_table):
     request_name = request_text.fetchall()
     list_to_sort = [list(elem) for elem in request_name]
@@ -106,16 +107,16 @@ def current_kvartal():
     if today > four_kvartal_start and today < four_kvartal_end:
         cur_kvart = four_kvartal_start    
         pass
-
     return cur_kvart
+    pass
 
 
 start_square = str(current_kvartal())
 start_month = str(date(this_year, this_month, 1))
 
-def curent_finace_states(start, cursor):
-    select_tn_to_pidory = select_docs_to_mudaky.format(tn,  "'"+start+"'",  "'"+str(today)+"'")
-    select_tn_from_pidory = select_docs_from_mudaky.format(tn2,  "'"+start+"'",  "'"+str(today)+"'")
+def curent_finace_states(start, end, cursor):
+    select_tn_to_pidory = select_docs_to_mudaky.format(tn,  "'"+start+"'",  "'"+str(end)+"'")
+    select_tn_from_pidory = select_docs_from_mudaky.format(tn2,  "'"+start+"'",  "'"+str(end)+"'")
 
     sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
 

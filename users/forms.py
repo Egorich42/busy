@@ -9,10 +9,13 @@ class ContragentIdForm(forms.ModelForm):
         fields = ['contragent_id','start_date','end_date','title']
 
 
-
 class HvostyForm(forms.ModelForm):
     class Meta:
         model = Contragent_identy
         fields = ['start_date','end_date']
 
 
+class FinStatesForm(forms.ModelForm):
+    class Meta:
+        model = Contragent_identy
+        fields = ['start_date','end_date']

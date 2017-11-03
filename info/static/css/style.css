@@ -10,7 +10,7 @@ footer{height: 638px;}
 a{color: #2D2D2D;}
 a:visited{color: #2D2D2D;}
 /*---------------------FONTS-------------------*/
-.great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li {font-weight: bold;}
+.great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li,.bold {font-weight: bold;}
 .great-font{font-size: 60px; color: #2D2D2D;}
 .big-font{font-size: 48px;}
 .midle-font-45{font-size: 45px;}
@@ -21,9 +21,6 @@ a:visited{color: #2D2D2D;}
 .font-18{font-size: 20px;}
 .font-14{font-size: 14px;}
 .font-12{font-size: 12px;}
-
-.bold{font-weight: bold;}
-
 
 /*------------------BLOCK---------------------*/
 .key{width: 25px; margin: 0px 10px;}
@@ -107,6 +104,14 @@ a:visited{color: #2D2D2D;}
 
 .operations-border-bottom{border-bottom: solid 1.5px #9B999B;}
 
+@media screen and (max-width: 1080px) {
+
+.central-block{width: 770px; padding-top: 76px; padding-bottom: 76px;}
+.list-block ul{width: 185px; font-weight: bold; font-size: 21px;}
+.how-it-work-list ul li{width: 240px; margin-left: 40px; margin-top: 40px; margin-bottom: 40px; }
+
+
+}
 
 
 @media screen and (max-width: 720px) {
@@ -126,8 +131,7 @@ img{max-width: 100%;}
 
 .list-block ul{text-align: center; width: 100%; margin-top: 40px;}
 .column-300{flex-direction: column;}
-ul{padding: 0px;
-margin: 0px;}
+ul{padding: 0px;margin: 0px;}
 
 .text-right-300{text-align: right;}
 .text-left-300{text-align: left;}

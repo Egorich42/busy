@@ -19,6 +19,17 @@
 <p></p>
 УСН:&nbsp;{{mon_usn}}&nbsp;руб.
 УСН:&nbsp;{{square_usn}}&nbsp;руб.
+
+
+<form class="forma flex column ravnomerno changing-text-center-right" action="." method="post">
+{{ fin_states.as_p }}
+{% csrf_token %}
+<p class="center"> 
+<input type="submit" class="buttons-all"  value="Отправить">
+</p>
+</form>
+
+
 <section class="main flex chahnging-direction-row-col horizontal-content-center">
 
 <aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">

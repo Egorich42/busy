@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+&nbsp;|&nbsp;Текущий НДС/УСН
+{% endblock %}
+{% block content %}
+<section class="main flex chahnging-direction-row-col user-profile ravnomerno">
+
+<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<ul class="without-padding-left">
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
+<p></p>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+
+</ul>
+{% if user.is_authenticated %}
+<a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
+{%else%}
+НИЧЕГО
+{% endif %} 
+</aside>
+
+
+<section class="user-profile"><p class="bold">
+НДС/УСН сверки за период с {{start_data}}&nbsp;по&nbsp;{{ending_data}}
+</p>
+ <section class="user-profile flex chahnging-direction-row-col ravnomerno">
+
+НДС:&nbsp;{{nds_fin_states}}&nbsp;руб.
+УСН:&nbsp;{{usn_fin_states}}&nbsp;руб.
+
+</section>  
+
+</section>
+</section>
+{% endblock %}
+
