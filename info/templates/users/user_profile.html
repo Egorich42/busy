@@ -14,12 +14,9 @@
 <li class="normal-font-21">Банк:{{bank}}
 </li-->
 
-НДС:&nbsp;{{mon_nds}}&nbsp;руб.
-НДС:&nbsp;{{sqare_nds}}&nbsp;руб.
+{{tax_system}}:&nbsp;за текущий месяц{{month_fin_states}}&nbsp;руб.
+{{tax_system}}:&nbsp;за текущий квартал{{square_fin_states}}&nbsp;руб.
 <p></p>
-УСН:&nbsp;{{mon_usn}}&nbsp;руб.
-УСН:&nbsp;{{square_usn}}&nbsp;руб.
-
 
 <form class="forma flex column ravnomerno changing-text-center-right" action="." method="post">
 {{ fin_states.as_p }}

@@ -23,7 +23,7 @@ pp = "contragents_documents.doc_type = '0'"
 
 
 tn2 = "contragents_documents_two.doc_type = '0'"
-pp2="contragents_documents.doc_type != '0'"
+pp2="contragents_documents_two.doc_type != '0'"
 
 
 select_all_documents="SELECT * FROM contragents_documents;"
@@ -31,6 +31,8 @@ select_contragents_identificator = "SELECT id FROM contragents;"
 select_id_docs = "SELECT parent FROM contragents_documents;"
 
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;" 
+select_docs_two = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+
 select_docs_to_mudaky =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs_from_mudaky = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
 
@@ -135,30 +137,22 @@ def curent_finace_states(start, end, cursor):
     return(full_nds, usn)
 
 
-TITLE_CHOICES = (
-    ('MR', 'Mr.'),
-    ('MRS', 'Mrs.'),
-    ('MS', 'Ms.'),
-    ('17','17'),
-)
+taxes = (('УСН', 'усн.'),('НДС', 'ндс.'),)
 
 class Client(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=200, db_index=True, verbose_name='Название')
-    organization_type = models.CharField(max_length=50, db_index=True, verbose_name='Вид организации')
-    nalog_system = models.CharField(max_length=200, db_index=True, verbose_name='Система налогооблажения')
+    nalog_system = models.CharField(max_length=3, choices=taxes,db_index=True, blank = True,verbose_name='Система налогооблажения')
     unp = models.PositiveIntegerField(verbose_name='УНП', default=1)
     bank_schet = models.CharField(max_length=100, db_index=True,verbose_name='Банковский счет')
     bank_BIK = models.CharField(max_length=100, db_index=True, verbose_name='IBAN')
-    email =  models.EmailField(verbose_name='Е-mail', blank = True) 
-    skype= models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Скайп')
-    phone =  models.PositiveIntegerField(verbose_name='Телефон', blank = True ,default=1)
+    email = models.EmailField(verbose_name='Е-mail', blank = True) 
+
 
 class Contragent_identy(models.Model):
     contragent_id =models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Контрагент')
     start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Даты с')
     end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по') 
-    title = models.CharField(max_length=3, choices=TITLE_CHOICES,db_index=True, blank = True)
 
 
 

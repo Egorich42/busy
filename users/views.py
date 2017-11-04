@@ -64,6 +64,15 @@ def show_user_profile(request,id, **kwargs):
         square_fin_states =curent_finace_states(start_square, today,cur)
         month_fin_states = curent_finace_states(start_month ,today,cur)
 
+        if user.client.nalog_system == 'НДС':
+            month_fin_states = month_fin_states[0]
+            square_fin_states = square_fin_states[0]
+            tax_system = "НДС" 
+        else:
+            month_fin_states = month_fin_states[1]
+            square_fin_states = square_fin_states[1] 
+            tax_system = "УСН"           
+            pass
         paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
 
         all_documents = get_pages(request,paginator)
@@ -80,8 +89,17 @@ def show_user_profile(request,id, **kwargs):
 
                 period_fin_states =curent_finace_states(start_data, ending_data,cur)
 
+                if user.client.nalog_system == 'ндс.' or 'НДС':
+                    period_fin_states = period_fin_states[0]
+                    tax_system = "НДС" 
+
+                else:
+                    period_fin_states = period_fin_states[1]
+                    tax_system = "УСН" 
+
+
             return render(request, 'users/fin_states.html',
-                {'start_data':start_data,'ending_data':ending_data,'nds_fin_states':str(period_fin_states[0]), 'usn_fin_states':str(period_fin_states[1]) })   
+                {'start_data':start_data,'ending_data':ending_data,'period_fin_states':str(period_fin_states),'tax_system':tax_system})   
 
         conn.commit()
         conn.close()  
@@ -89,9 +107,8 @@ def show_user_profile(request,id, **kwargs):
         fin_states = FinStatesForm()
  
         return render(request, 'users/user_profile.html',
-        {'all_documents':all_documents, 'mon_nds':month_fin_states[0],
-          'sqare_nds':square_fin_states[0],'mon_usn':month_fin_states[1],
-            'square_usn':square_fin_states[1],'fin_states':fin_states})
+        {'all_documents':all_documents, 'month_fin_states':month_fin_states,
+          'square_fin_states':square_fin_states,'fin_states':fin_states,'tax_system':tax_system})
     else:
          return HttpResponseRedirect("/")
 
@@ -132,8 +149,6 @@ def show_sverka(request,id, **kwargs):
 
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
-    tn ="contragents_documents.doc_type = '0'"
-    pp = "contragents_documents.doc_type != '0'"
     if user == request.user:
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
@@ -146,6 +161,7 @@ def show_hvosty(request,id, **kwargs):
           
                 gg_hf = create_list_of_table_values(cur.execute(select_contragents_identificator),cur.description)
                 names = []
+                names2=[]
 
                 archi = [nrm['id'] for nrm in gg_hf]
 
@@ -153,19 +169,29 @@ def show_hvosty(request,id, **kwargs):
                 ending_data = order.end_date
 
                 for altair in archi:
-                    select_documents = [select_docs.format(doc, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc in (tn,pp)]
+                    select_documents = [select_docs_two.format(doc, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc in (tn2,pp2)]
+                    select_documents2 = [select_docs.format(doc2, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc2 in (tn,pp)]
+                    
 
                     all_docs = [create_list_of_table_values(cur.execute(table),cur.description) for table in select_documents]
+                    all_docs2 = [create_list_of_table_values(cur.execute(table2),cur.description) for table2 in select_documents2]
 
                     summa_sverki = get_pays_balance(all_docs[1], all_docs[0], 'summ')
+                    summa_sverkii = get_pays_balance(all_docs2[1], all_docs2[0], 'summ')
+
 
                     if summa_sverki !='OK!' and len(all_docs[0])>0:
                         names += [{'name':all_docs[0][0]['name'], 'summa':summa_sverki}]
                         pass
 
+                    if summa_sverkii !='OK!' and len(all_docs2[0])>0:
+                        names2 += [{'name':all_docs2[0][0]['name'], 'summa2':summa_sverkii}]
+                        pass  
+
+      
                 
             return render(request, 'users/hvosty_result.html',
-                {'names':names,'start_data':start_data,'ending_data':ending_data })   
+                {'names':names,'names2':names2,'start_data':start_data,'ending_data':ending_data })   
 
         hvosty_forma = HvostyForm()
 

@@ -9,27 +9,25 @@ import itertools
 from datetime import *
 
 
-conn = sqlite3.connect('2.sqlite')
+conn = sqlite3.connect('1.sqlite')
 cur = conn.cursor()
 
-contragent_id = "'17'"
-tn ="contragents_documents.doc_type != '0'"
-pp = "contragents_documents.doc_type = '0'"
+tn =  "contragents_documents.doc_type != '0'"
+pp =  "contragents_documents.doc_type = '0'"
 
 
 tn2 = "contragents_documents_two.doc_type = '0'"
-pp2="contragents_documents.doc_type != '0'"
+pp2 = "contragents_documents_two.doc_type != '0'"
 
-
-start_date = "'2015-01-01'"
-end_date = "'2018-09-12'"
 
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_contragents_identificator = "SELECT id FROM contragents;"
 select_id_docs = "SELECT parent FROM contragents_documents;"
+
+
  
-select_docs_to_mudaky =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-select_docs_from_mudaky = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+select_docs_to = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_docs_from = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
 
 
 def create_list_of_table_values(request_text, massive_from_table):
@@ -108,18 +106,52 @@ def curent_finace_states(start, end, cursor):
 
     return(full_nds, usn)
 
-a =curent_finace_states(start_square,cur)
-b = curent_finace_states(start_month,cur)
-print(a,b)
 
-#493 -> documents_two
-
-
-#summa_sverki = get_pays_balance(all_pp, all_tn, 'summ')
-#contr_name = all_tn[0]['full_name']
+tn2="contragents_documents_two.doc_type = '0'"
+pp2="contragents_documents_two.doc_type != '0'"
 
 
 
-#gg_hf = create_list_of_table_values(cur.execute(select_contragents_identificator),cur.description)
-#mrt = create_list_of_table_values(cur.execute(select_id_docs),cur.description)
 
+select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_docs_two = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+
+select_docs_to = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_docs_from = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+
+
+gg_hf = create_list_of_table_values(cur.execute(select_contragents_identificator),cur.description)
+names = []
+
+archi = [nrm['id'] for nrm in gg_hf]
+
+start_data = "2015-01-01"
+ending_data = "2017-09-01"
+
+
+
+for altair in archi:
+    select_documents = [select_docs.format(doc, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc in (tn2,pp2)]
+    all_docs = [create_list_of_table_values(cur.execute(table),cur.description) for table in select_documents]
+
+    summa_sverki = get_pays_balance(all_docs[1], all_docs[0], 'summ')
+
+    if summa_sverki !='OK!' and len(all_docs[0])>0:
+        names += [{'name':all_docs[0][0]['name'], 'summa':summa_sverki}]
+        pass
+
+
+for altair2 in archi:
+    select_documents2 = [select_docs.format(doc2, "'"+str(altair2)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc2 in (tn,pp)]
+
+    all_docs2 = [create_list_of_table_values(cur.execute(table2),cur.description) for table2 in select_documents2]
+
+    summa_sverki2 = get_pays_balance(all_docs2[1], all_docs2[0], 'summ')
+
+    if summa_sverki2 !='OK!' and len(all_docs2[0])>0:
+        names2 += [{'name':all_docs2[0][0]['name'], 'summa2':summa_sverki2}]
+        pass
+
+                    
+print(len(names))
+print(select_documents[0])
