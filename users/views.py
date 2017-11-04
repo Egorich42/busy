@@ -18,7 +18,6 @@ from collections import defaultdict
 from operator import itemgetter
 import itertools
 
-
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.

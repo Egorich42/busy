@@ -4,7 +4,7 @@
 &nbsp;|&nbsp;Хвосты за период
 {% endblock %}
 {% block content %}
-{{buyers_debts}}
+
 TAILS
 ЗА ПЕРИОД {{start_data}}
 {{ending_data}}
@@ -36,6 +36,8 @@ TAILS
 <span class="bold text-left">{{grafa_d.name}}</span>
 
 <span class="text-right bottom-15px">{{grafa_d.summa}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{grafa_d.message}}&nbsp;.Р	</span>
+
 </li>
 </ul>
 {%endfor%}
@@ -48,6 +50,8 @@ TAILS
 <span class="bold text-left">{{grafa_p.name}}</span>
 
 <span class="text-right bottom-15px">{{grafa_p.summa}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{grafa_d.message}}&nbsp;.Р	</span>
+
 </li>
 </ul>
 {%endfor%}
@@ -63,9 +67,11 @@ TAILS
 <ul class="full-width without-padding-left">
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
-<span class="bold text-left">{{grafa_p_d.name}}</span>
+<span class="bold text-left">{{grafapd.name}}</span>
 
-<span class="text-right bottom-15px">{{grafa_p_d.summa}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{grafapd.summa}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{grafa_d.message}}&nbsp;.Р	</span>
+
 </li>
 </ul>
 {%endfor%}
