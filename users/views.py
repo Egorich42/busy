@@ -129,9 +129,9 @@ def show_sverka(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
 
-                select_docs = [select_docs.format(doc, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp,tn)]
+                select_docs_buyers = [select_docs_buyers.format(doc, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp,tn)]
 
-                all_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (select_docs)]
+                all_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (select_docs_buyers)]
 
                 summa_sverki = get_pays_balance(all_pp_and_tn[0], all_pp_and_tn[1], 'summ')
 
@@ -150,6 +150,7 @@ def show_sverka(request,id, **kwargs):
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
+
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
 
@@ -159,39 +160,21 @@ def show_hvosty(request,id, **kwargs):
                 order = hvosty_forma.save()
                 order.save()
           
-                gg_hf = create_list_of_table_values(cur.execute(select_contragents_identificator),cur.description)
-                names = []
-                names2=[]
-
-                archi = [nrm['id'] for nrm in gg_hf]
 
                 start_data = order.start_date
                 ending_data = order.end_date
+                
+                providers_debts = get_hvosty_lists(cur,start_data,ending_data)[0]
+                providers_prepay = get_hvosty_lists(cur,start_data,ending_data)[1]
 
-                for altair in archi:
-                    select_documents = [select_docs_two.format(doc, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc in (tn2,pp2)]
-                    select_documents2 = [select_docs.format(doc2, "'"+str(altair)+"'", "'"+start_data+"'","'"+ending_data+"'") for doc2 in (tn,pp)]
-                    
+                buyers_debts = get_hvosty_lists(cur,start_data,ending_data)[2]
+                buyers_prepay = get_hvosty_lists(cur,start_data,ending_data)[3]
 
-                    all_docs = [create_list_of_table_values(cur.execute(table),cur.description) for table in select_documents]
-                    all_docs2 = [create_list_of_table_values(cur.execute(table2),cur.description) for table2 in select_documents2]
-
-                    summa_sverki = get_pays_balance(all_docs[1], all_docs[0], 'summ')
-                    summa_sverkii = get_pays_balance(all_docs2[1], all_docs2[0], 'summ')
-
-
-                    if summa_sverki !='OK!' and len(all_docs[0])>0:
-                        names += [{'name':all_docs[0][0]['name'], 'summa':summa_sverki}]
-                        pass
-
-                    if summa_sverkii !='OK!' and len(all_docs2[0])>0:
-                        names2 += [{'name':all_docs2[0][0]['name'], 'summa2':summa_sverkii}]
-                        pass  
-
-      
+                print(providers_prepay)    
                 
             return render(request, 'users/hvosty_result.html',
-                {'names':names,'names2':names2,'start_data':start_data,'ending_data':ending_data })   
+                {'providers_debts':providers_debts,'providers_prepay':providers_prepay,
+                'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay, 'start_data':start_data,'ending_data':ending_data })   
 
         hvosty_forma = HvostyForm()
 

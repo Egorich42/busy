@@ -4,8 +4,10 @@
 &nbsp;|&nbsp;Хвосты за период
 {% endblock %}
 {% block content %}
-
+{{buyers_debts}}
 TAILS
+ЗА ПЕРИОД {{start_data}}
+{{ending_data}}
 <section class="main flex chahnging-direction-row-col horizontal-content-center">
 <aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
 <ul class="without-padding-left">
@@ -25,25 +27,56 @@ TAILS
 </aside>
 
 <section class="central-block center"> 
+<section class="operations-list ">
+ДОЛГИ ПОКУПАТЕЛЕЙ (Д62) 
+{%for grafa_d in buyers_debts %}
+<ul class="full-width without-padding-left">
+<li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
+
+<span class="bold text-left">{{grafa_d.name}}</span>
+
+<span class="text-right bottom-15px">{{grafa_d.summa}}&nbsp;.Р	</span>
+</li>
+</ul>
+{%endfor%}
+
+АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)
+{%for grafa_p in buyers_prepay %}
+<ul class="full-width without-padding-left">
+<li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
+
+<span class="bold text-left">{{grafa_p.name}}</span>
+
+<span class="text-right bottom-15px">{{grafa_p.summa}}&nbsp;.Р	</span>
+</li>
+</ul>
+{%endfor%}
+
+</section>
+</section>
+
+
+<section class="central-block center"> 
 <section class="operations-list "> 
-{%for tor in names %}
+АВАНСЫ ПОСТАВЩИКАМ(ДЕБ 60)
+{%for grafapd in providers_debts %}
 <ul class="full-width without-padding-left">
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
-<span class="bold text-left">{{tor.name}}</span>
+<span class="bold text-left">{{grafa_p_d.name}}</span>
 
-<span class="text-right bottom-15px">{{tor.summa}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{grafa_p_d.summa}}&nbsp;.Р	</span>
 </li>
 </ul>
 {%endfor%}
-
-{%for tor2 in names2 %}
+ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)
+{%for grafapp in providers_prepay %}
 <ul class="full-width without-padding-left">
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
-<span class="bold text-left">{{tor2.name}}</span>
+<span class="bold text-left">{{grafapp.name}}</span>
 
-<span class="text-right bottom-15px">{{tor2.summa}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{grafapp.summa}}&nbsp;.Р	</span>
 </li>
 </ul>
 {%endfor%}
@@ -51,6 +84,9 @@ TAILS
 
 </section>
 </section>
+
+
+
 </section>
 
 

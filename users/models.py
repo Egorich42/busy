@@ -18,23 +18,23 @@ from datetime import *
 
 
 
-tn ="contragents_documents.doc_type != '0'"
-pp = "contragents_documents.doc_type = '0'"
+tn =  "contragents_documents.doc_type != '0'"
+pp =  "contragents_documents.doc_type = '0'"
 
 
-tn2 = "contragents_documents_two.doc_type = '0'"
-pp2="contragents_documents_two.doc_type != '0'"
-
+tn_providers = "contragents_documents_two.doc_type = '0'"
+pp_providers = "contragents_documents_two.doc_type != '0'"
 
 select_all_documents="SELECT * FROM contragents_documents;"
 select_contragents_identificator = "SELECT id FROM contragents;"
 select_id_docs = "SELECT parent FROM contragents_documents;"
 
-select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;" 
-select_docs_two = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+select_docs_buyers = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_docs_providers = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
 
 select_docs_to_mudaky =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs_from_mudaky = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+
 
 
 
@@ -118,7 +118,7 @@ start_month = str(date(this_year, this_month, 1))
 
 def curent_finace_states(start, end, cursor):
     select_tn_to_pidory = select_docs_to_mudaky.format(tn,  "'"+start+"'",  "'"+str(end)+"'")
-    select_tn_from_pidory = select_docs_from_mudaky.format(tn2,  "'"+start+"'",  "'"+str(end)+"'")
+    select_tn_from_pidory = select_docs_from_mudaky.format(tn_providers,  "'"+start+"'",  "'"+str(end)+"'")
 
     sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
 
@@ -135,6 +135,54 @@ def curent_finace_states(start, end, cursor):
     full_nds = str (round(nds_otpravleny - nds_polucheny,2))
 
     return(full_nds, usn)
+
+
+
+def get_hvosty_lists(cursor,data_start, data_end):
+    
+    contragents_id = create_list_of_table_values(cursor.execute(select_contragents_identificator),cursor.description)
+
+    debts_providers=[]
+    prepayment_providers=[]
+
+    debts_buyers=[]
+    prepayment_buyers=[]
+
+    contargents_id_list = [i['id'] for i in contragents_id]
+
+    for altair in contargents_id_list:
+        select_documents_providers = [select_docs_providers.format(doc_two, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc_two in (tn_providers,pp_providers)]
+        select_documents_buyers = [select_docs_buyers.format(doc, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (tn,pp)]
+
+
+        all_buyers_documents = [create_list_of_table_values(cursor.execute(table_two),cursor.description) for table_two in select_documents_buyers]
+        all_providers_documents = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents_providers]
+
+
+        summa_sverki_providers = get_pays_balance(all_buyers_documents[1], all_buyers_documents[0], 'summ')
+        summa_sverki_buyers = get_pays_balance(all_providers_documents[1], all_providers_documents[0], 'summ')
+
+
+        if summa_sverki_providers[0] =='сумма задолженности контрагента составляет' and len(all_buyers_documents[0])>0:
+            debts_providers += [{'name':all_buyers_documents[0][0]['name'], 'summa':summa_sverki_providers[1]}]
+            pass
+        
+        if summa_sverki_providers[0] =='сумма вашей задолженности составляет' and len(all_buyers_documents[0])>0:
+            prepayment_providers += [{'name':all_buyers_documents[0][0]['name'], 'summa':summa_sverki_providers[1]}]
+            pass
+        
+
+        if summa_sverki_buyers[0] =='сумма задолженности контрагента составляет' and len(all_providers_documents[0])>0:
+            debts_buyers += [{'name':all_providers_documents[0][0]['name'], 'summa':summa_sverki_buyers}]
+            pass
+
+        if summa_sverki_buyers[0]  =='сумма вашей задолженности составляет' and len(all_providers_documents[0])>0:
+            prepayment_buyers += [{'name':all_providers_documents[0][0]['name'], 'summa':summa_sverki_buyers}]
+            pass
+
+    return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
+    pass
+
 
 
 taxes = (('УСН', 'усн.'),('НДС', 'ндс.'),)
