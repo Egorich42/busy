@@ -6,6 +6,5 @@ from django.utils.encoding import python_2_unicode_compatible
 from .models import *
 
 admin.site.register(Contact)
-admin.site.register(ContList)
 
 

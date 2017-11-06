@@ -39,17 +39,11 @@ class LoginFormView(FormView):
         return super(LoginFormView, self).form_valid(form)
 
 
-
 class LogoutView(View):
     def get(self, request):
         # Выполняем выход для пользователя, запросившего данное представление.
         logout(request)
         return HttpResponseRedirect("/")
-
-def UsersList(request):
-    users = User.objects.all()
-    return render(request, 'users/users_list.html', {'users':users})
-    pass
 
 
 def show_user_profile(request,id, **kwargs):
@@ -60,22 +54,12 @@ def show_user_profile(request,id, **kwargs):
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
 
-        square_fin_states =curent_finace_states(start_square, today,cur)
-        month_fin_states = curent_finace_states(start_month ,today,cur)
+        square_fin_states = show_fin_states(start_square, today, cur, user.client.nalog_system)
+        month_fin_states = show_fin_states(start_month, today, cur, user.client.nalog_system)
 
-        if user.client.nalog_system == 'НДС':
-            month_fin_states = month_fin_states[0]
-            square_fin_states = square_fin_states[0]
-            tax_system = "НДС" 
-        else:
-            month_fin_states = month_fin_states[1]
-            square_fin_states = square_fin_states[1] 
-            tax_system = "УСН"           
-            pass
         paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
 
         all_documents = get_pages(request,paginator)
-
 
         if request.method == 'POST':
             fin_states = FinStatesForm(request.POST)     
@@ -86,19 +70,10 @@ def show_user_profile(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
 
-                period_fin_states =curent_finace_states(start_data, ending_data,cur)
-
-                if user.client.nalog_system == 'ндс.' or 'НДС':
-                    period_fin_states = period_fin_states[0]
-                    tax_system = "НДС" 
-
-                else:
-                    period_fin_states = period_fin_states[1]
-                    tax_system = "УСН" 
-
+                period_fin_states =show_fin_states(start_data, ending_data,cur,user.client.nalog_system)
 
             return render(request, 'users/fin_states.html',
-                {'start_data':start_data,'ending_data':ending_data,'period_fin_states':str(period_fin_states),'tax_system':tax_system})   
+                {'start_data':start_data,'ending_data':ending_data,'period_fin_states':str(period_fin_states[0]),'tax_system':period_fin_states[1]})   
 
         conn.commit()
         conn.close()  
@@ -106,8 +81,8 @@ def show_user_profile(request,id, **kwargs):
         fin_states = FinStatesForm()
  
         return render(request, 'users/user_profile.html',
-        {'all_documents':all_documents, 'month_fin_states':month_fin_states,
-          'square_fin_states':square_fin_states,'fin_states':fin_states,'tax_system':tax_system})
+        {'all_documents':all_documents, 'month_fin_states':month_fin_states[0],
+          'square_fin_states':square_fin_states[0],'fin_states':fin_states,'tax_system':month_fin_states[1]})
     else:
          return HttpResponseRedirect("/")
 
@@ -141,7 +116,7 @@ def show_sverka(request,id, **kwargs):
                     'ending_data':ending_data,'summa_sverki':summa_sverki})
 
         forma = ContragentIdForm()
-        return render(request, 'users/akt_sverki.html',{'forma': forma})
+        return render(request, 'users/act_sverki/akt_sverki.html',{'forma': forma})
     else:
          return HttpResponseRedirect("/")   
 
@@ -159,7 +134,6 @@ def show_hvosty(request,id, **kwargs):
                 order = hvosty_forma.save()
                 order.save()
           
-
                 start_data = order.start_date
                 ending_data = order.end_date
                 
@@ -167,46 +141,18 @@ def show_hvosty(request,id, **kwargs):
                 providers_prepay = get_hvosty_lists(cur,start_data,ending_data)[1]
 
                 buyers_debts = get_hvosty_lists(cur,start_data,ending_data)[2]
-                buyers_prepay = get_hvosty_lists(cur,start_data,ending_data)[3]
-
-                print(providers_prepay)    
+                buyers_prepay = get_hvosty_lists(cur,start_data,ending_data)[3]  
                 
-            return render(request, 'users/hvosty_result.html',
+            return render(request, 'users/hvosty/hvosty_result.html',
                 {'providers_debts':providers_debts,'providers_prepay':providers_prepay,
                 'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay, 'start_data':start_data,'ending_data':ending_data })   
 
         hvosty_forma = HvostyForm()
 
-    return render(request, 'users/hvosty.html',{'hvosty_forma':hvosty_forma})
+    return render(request, 'users/hvosty/hvosty.html',{'hvosty_forma':hvosty_forma})
     pass
 
 
 
-def show_main_page(request):
-    contacts = ContList.objects.all()
-
-    if request.method == 'POST':
-        form = ContactCreateForm(request.POST)
-        new_name = Contact.first_name
-        new_mail = Contact.address
-
-        if form.is_valid():
-            order = form.save()
-            order.save()
- 
-            send_mail('Новый клиент', str(order.first_name),  from_who,
-                to_me, fail_silently=False)
-
-            return render(request, 'landing/thanks.html')
-    form = ContactCreateForm()
-
-    return render(request, 'landing/main.html',
-    {'form': form,'contacts': contacts, 
-    'temp':temp, 'desc':desc, 'icon':icon, 'mainDesc':mainDesc,
-    'about':about, 'descript': descript, }) 
-
-def show_contacts_page(request):
-
-    return render(request, 'landing/contacts.html') 
 
 

@@ -8,14 +8,10 @@ from django import forms
 from django.core.mail import send_mass_mail,send_mail
 import requests
 
-
-import json
-
 def show_main_page(request):
     if request.method == 'POST':
         form = ContactCreateForm(request.POST)
         new_name = Contact.first_name
-        new_mail = Contact.address
 
         if form.is_valid():
             order = form.save()
@@ -29,3 +25,6 @@ def show_main_page(request):
 
     return render(request, 'landing/main.html',
     {'form': form}) 
+    
+def show_contacts_page(request):
+    return render(request, 'landing/contacts.html') 
