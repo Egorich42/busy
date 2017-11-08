@@ -8,9 +8,9 @@
 <p class="midle-font-45">Хвосты</p>
 
 
-<section class="main flex chahnging-direction-row-col user-profile ravnomerno">
+<section class="main flex row-to-col user-profile ravnomerno">
 
-<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<aside class="text-left-to-center flex column ravnomerno" style="height: 80%;max-height: 500px;">
 <ul class="without-padding-left">
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
 <p></p>
@@ -24,7 +24,7 @@
 {% endif %}	
 </aside>
 
-<form class="forma flex column ravnomerno changing-text-center-right" action="." method="post">
+<form class="forma flex column ravnomerno text-right-to-center" action="." method="post">
 {{ hvosty_forma.as_p }}
 {% csrf_token %}
 <p class="center"> 

@@ -4,9 +4,9 @@
 &nbsp;|&nbsp;сверка с {{contr_name}}
 {% endblock %}
 {% block content %}
-<section class="main flex chahnging-direction-row-col user-profile ravnomerno">
+<section class="main flex row-to-col user-profile ravnomerno">
 
-<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<aside class="text-left-to-center flex column ravnomerno" style="height: 80%;max-height: 500px;">
 <ul class="without-padding-left">
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
 <p></p>
@@ -25,7 +25,7 @@
 Акт сверки с {{contr_name}}<br><br>
 за период с {{start_data}}&nbsp;по&nbsp;{{ending_data}}
 </p>
- <section class="user-profile flex chahnging-direction-row-col ravnomerno">
+ <section class="user-profile flex row-to-col ravnomerno">
  <section class="half-of-table left">
 
 {%for pp in all_pp%}

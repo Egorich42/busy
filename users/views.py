@@ -53,9 +53,11 @@ def show_user_profile(request,id, **kwargs):
         base_name = str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
+        
+        taxes_system = user.client.nalog_system
 
-        square_fin_states = show_fin_states(start_square, today, cur, user.client.nalog_system)
-        month_fin_states = show_fin_states(start_month, today, cur, user.client.nalog_system)
+        square_fin_states = curent_finace_states(start_square, today, cur, taxes_system)
+        month_fin_states = curent_finace_states(start_month, today, cur, taxes_system)
 
         paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
 
@@ -70,7 +72,7 @@ def show_user_profile(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
 
-                period_fin_states =show_fin_states(start_data, ending_data,cur,user.client.nalog_system)
+                period_fin_states =curent_finace_states(start_data, ending_data,cur,taxes_system)
 
             return render(request, 'users/fin_states.html',
                 {'start_data':start_data,'ending_data':ending_data,'period_fin_states':str(period_fin_states[0]),'tax_system':period_fin_states[1]})   
@@ -137,11 +139,12 @@ def show_hvosty(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
                 
-                providers_debts = get_hvosty_lists(cur,start_data,ending_data)[0]
-                providers_prepay = get_hvosty_lists(cur,start_data,ending_data)[1]
+                list_sverok = [get_hvosty_lists(cur,start_data,ending_data)[i] for i in (0,1,2,3)]
 
-                buyers_debts = get_hvosty_lists(cur,start_data,ending_data)[2]
-                buyers_prepay = get_hvosty_lists(cur,start_data,ending_data)[3]  
+                providers_debts = list_sverok[0]
+                providers_prepay = list_sverok[1]
+                buyers_debts = list_sverok[2]
+                buyers_prepay = list_sverok[3]
                 
             return render(request, 'users/hvosty/hvosty_result.html',
                 {'providers_debts':providers_debts,'providers_prepay':providers_prepay,

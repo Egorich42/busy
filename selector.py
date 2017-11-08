@@ -68,22 +68,6 @@ def perebor(data_sorted, one, two, three):
     return albert
     pass   
 
-def get_pays_balance(pp_list, tn_list, element_name):
-    pp_suma = sum(float(res[element_name]) for res in pp_list)
-    tn_suma = sum(float(res[element_name]) for res in tn_list)
-
-    if pp_suma < tn_suma:
-        resultat = 'сумма задолженности контрагента составляет'
-        res_sum = str(round(tn_suma-pp_suma,2))
-    if pp_suma > tn_suma:
-        resultat = 'сумма вашей задолженности составляет'
-        res_sum =str(round(pp_suma-tn_suma,2))
-    if pp_suma == tn_suma:
-        resultat = 'OK!'
-        res_sum = "OKI"
-    return (resultat,res_sum)
-    pass   
-
 
 
 def get_pages(request,paginator):
@@ -148,6 +132,22 @@ def show_fin_states(data_start, data_end, cursor, nalog_system):
     pass
     return(now_fin_states, tax_system)
 
+def get_pays_balance(pp_list, tn_list, element_name):
+    pp_suma = sum(float(res[element_name]) for res in pp_list)
+    tn_suma = sum(float(res[element_name]) for res in tn_list)
+
+    if pp_suma < tn_suma:
+        resultat = 'сумма задолженности контрагента составляет'
+        res_sum = str(round(tn_suma-pp_suma,2))
+    if pp_suma > tn_suma:
+        resultat = 'сумма вашей задолженности составляет'
+        res_sum =str(round(pp_suma-tn_suma,2))
+    if pp_suma == tn_suma:
+        resultat = 'Задолженности нет!'
+        res_sum = "Ничего"
+    return (resultat,res_sum)
+    pass   
+
 
 def get_hvosty_lists(cursor,data_start, data_end):
     contragents_id = create_list_of_table_values(cursor.execute(select_contragents_identificator),cursor.description)
@@ -173,21 +173,27 @@ def get_hvosty_lists(cursor,data_start, data_end):
 
 
         if summa_sverki_providers[0] =='сумма задолженности контрагента составляет' and len(all_buyers_documents[0])>0:
-            debts_providers += [{'name':all_buyers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+            debts_providers += [{'name':all_buyers_documents[0][0]['name'],'message':summa_sverki_providers[0], 'summa':summa_sverki_providers[1]}]
             pass
         
         if summa_sverki_providers[0] =='сумма вашей задолженности составляет' and len(all_buyers_documents[0])>0:
-            prepayment_providers += [{'name':all_buyers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+            prepayment_providers += [{'name':all_buyers_documents[0][0]['name'], 'message':summa_sverki_providers[0], 'summa':summa_sverki_providers[1]}]
             pass
 
-        if summa_sverki_buyers[0] =='сумма задолженности контрагента составляет' and len(all_providers_documents[0])>0:
-            debts_buyers += [{'name':all_providers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+        if summa_sverki_buyers[0] != 'Задолженности нет!' and summa_sverki_buyers[0] == 'сумма задолженности контрагента составляет':
+            debts_buyers += [{'name':all_providers_documents[0][0]['name'],'message':summa_sverki_buyers[0], 'summa':summa_sverki_buyers[1]}]
             pass
 
         if summa_sverki_buyers[0]  =='сумма вашей задолженности составляет' and len(all_providers_documents[0])>0:
-            prepayment_buyers += [{'name':all_providers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+            prepayment_buyers += [{'name':all_providers_documents[0][0]['name'],'message':summa_sverki_buyers[0], 'summa':summa_sverki_buyers[1]}]
             pass
-
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
     pass
 
+
+providers_debts = get_hvosty_lists(cur,start_data,ending_data)[0]
+providers_prepay = get_hvosty_lists(cur,start_data,ending_data)[1]
+
+buyers_debts = get_hvosty_lists(cur,start_data,ending_data)[2]
+buyers_prepay = get_hvosty_lists(cur,start_data,ending_data)[3]  
+print(buyers_prepay)

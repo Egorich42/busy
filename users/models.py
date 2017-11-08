@@ -83,11 +83,10 @@ def get_pays_balance(pp_list, tn_list, element_name):
         resultat = 'сумма вашей задолженности составляет'
         res_sum =str(round(pp_suma-tn_suma,2))
     if pp_suma == tn_suma:
-        resultat = 'OK!'
-        res_sum = "OKI"
+        resultat = 'Задолженности нет!'
+        res_sum = "Ничего"
     return (resultat,res_sum)
     pass   
-
 
 
 def get_pages(request,paginator):
@@ -120,7 +119,7 @@ def current_kvartal():
 start_square = str(current_kvartal())
 start_month = str(date(this_year, this_month, 1))
 
-def curent_finace_states(start, end, cursor):
+def curent_finace_states(start, end, cursor,nalog_system):
     select_tn_to_pidory = select_docs_to_buyers.format(tn,  "'"+start+"'",  "'"+str(end)+"'")
     select_tn_from_pidory = select_docs_from_providers.format(tn_providers,  "'"+start+"'",  "'"+str(end)+"'")
 
@@ -136,20 +135,13 @@ def curent_finace_states(start, end, cursor):
     nds_otpravleny = sum(summa_prodannyh_tovarov)/6
     full_nds = str (round(nds_otpravleny - nds_polucheny,2))
 
-    return(full_nds, usn)
-
-
-def show_fin_states(data_start, data_end, cursor, nalog_system):
-    current_fin_states = curent_finace_states(data_start, data_end,cursor)
-
     if nalog_system == 'НДС':
-        now_fin_states = current_fin_states[0]
+        now_fin_states = full_nds
         tax_system = "НДС" 
     else:
-        now_fin_states = current_fin_states[1]
-        tax_system = "УСН"           
-        pass    
-    pass
+        now_fin_states = usn
+        tax_system = "УСН" 
+
     return(now_fin_states, tax_system)
 
 
@@ -171,29 +163,40 @@ def get_hvosty_lists(cursor,data_start, data_end):
         all_buyers_documents = [create_list_of_table_values(cursor.execute(table_two),cursor.description) for table_two in select_documents_buyers]
         all_providers_documents = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents_providers]
 
-        summa_sverki_providers = get_pays_balance(all_buyers_documents[1], all_buyers_documents[0], 'summ')
-        summa_sverki_buyers = get_pays_balance(all_providers_documents[1], all_providers_documents[0], 'summ')
+
+        summa_sverki_buyers = get_pays_balance(all_buyers_documents[1], all_buyers_documents[0], 'summ')
+        summa_sverki_providers = get_pays_balance(all_providers_documents[1], all_providers_documents[0], 'summ')
 
 
-        if summa_sverki_providers[0] =='сумма задолженности контрагента составляет' and len(all_buyers_documents[0])>0:
-            debts_providers += [{'name':all_buyers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+        if summa_sverki_providers[0] =='сумма задолженности контрагента составляет' and len(all_providers_documents[0])>0:
+            debts_providers += [{'name':all_providers_documents[0][0]['name'],'message':summa_sverki_providers[0], 'summa':summa_sverki_providers[1]}]
             pass
         
-        if summa_sverki_providers[0] =='сумма вашей задолженности составляет' and len(all_buyers_documents[0])>0:
-            prepayment_providers += [{'name':all_buyers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+        if summa_sverki_providers[0] =='сумма вашей задолженности составляет' and len(all_providers_documents[0])>0:
+            prepayment_providers += [{'name':all_providers_documents[0][0]['name'], 'message':summa_sverki_providers[0], 'summa':summa_sverki_providers[1]}]
             pass
 
-        if summa_sverki_buyers[0] =='сумма задолженности контрагента составляет' and len(all_providers_documents[0])>0:
-            debts_buyers += [{'name':all_providers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+        if summa_sverki_buyers[0]=='сумма задолженности контрагента составляет' and len(all_buyers_documents[0])>0:
+            debts_buyers += [{'name':all_buyers_documents[0][0]['name'],'message':summa_sverki_buyers[0], 'summa':summa_sverki_buyers[1]}]
             pass
 
-        if summa_sverki_buyers[0]  =='сумма вашей задолженности составляет' and len(all_providers_documents[0])>0:
-            prepayment_buyers += [{'name':all_providers_documents[0][0]['name'], 'summa':summa_sverki_buyers[1], 'message':summa_sverki_providers[0]}]
+        if summa_sverki_buyers[0]  =='сумма вашей задолженности составляет' and len(all_buyers_documents[0])>0:
+            prepayment_buyers += [{'name':all_buyers_documents[0][0]['name'],'message':summa_sverki_buyers[0], 'summa':summa_sverki_buyers[1]}]
             pass
-
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
     pass
 
+"""
+contragent_debt = 'сумма задолженности контрагента составляет'
+your_debt = 'сумма вашей задолженности составляет'
+
+def get_list_sverok(right_summ, right_docs,condition ):
+    equal_list = []
+    if right_summ[0]== condition and len(right_docs[0])>0:
+        equal_list += [{'name':right_docs[0][0]['name'],'message':right_summ[0], 'summa':right_summ[1]}]
+    return equal_list    
+    pass
+"""
 
 
 taxes = (('УСН', 'усн.'),('НДС', 'ндс.'),)

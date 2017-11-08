@@ -14,26 +14,22 @@
 <li class="normal-font-21">Банк:{{bank}}
 </li-->
 
-{{tax_system}}:&nbsp;за текущий месяц{{month_fin_states}}&nbsp;руб.
-{{tax_system}}:&nbsp;за текущий квартал{{square_fin_states}}&nbsp;руб.
+{{tax_system}}&nbsp;за текущий месяц&nbsp;:{{month_fin_states}}&nbsp;руб.
+<p></p>
+{{tax_system}}&nbsp;за текущий квартал&nbsp;:{{square_fin_states}}&nbsp;руб.
 <p></p>
 
-<form class="forma flex column ravnomerno changing-text-center-right" action="." method="post">
-{{ fin_states.as_p }}
-{% csrf_token %}
-<p class="center"> 
-<input type="submit" class="buttons-all"  value="Отправить">
-</p>
-</form>
 
 
-<section class="main flex chahnging-direction-row-col horizontal-content-center">
+<section class="main flex row-to-col horizontal-content-center"><!--CHANGING -->
 
-<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<aside class="text-left-to-center flex column ravnomerno" style="height: 80%;max-height: 500px;"><!--CHANGING -->
 <ul class="without-padding-left">
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}/akt_sverki" style="color:#998383;">Акт сверки</a></li>
 <p></p>
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+<p></p>
+<li class="bold control-elem pointer" style="color:#998383;">{{tax_system}}&nbsp; за период</li>
 
 </ul>
 {% if user.is_authenticated %}
@@ -43,8 +39,17 @@
 {% endif %}	
 </aside>
 
-<section class="central-block center"> 
-<section class="operations-list "> 
+<section class="central-block center "> 
+<section class="operations-list block"> 
+<form class="forma column ravnomerno text-right-to-center hidden-form" action="." method="post"><!--CHANGE TEXT RIGHT-->
+{{ fin_states.as_p }}
+{% csrf_token %}
+<p class="center"> 
+<input type="submit" class="buttons-all"  value="Отправить">
+</p>
+</form>
+
+
 {%for document in all_documents %}
 <ul class="full-width without-padding-left">
 	<li>

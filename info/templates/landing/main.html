@@ -16,20 +16,18 @@
 </section>
 
 
-<section class="full-width center grey-back grey-back-contact column flex">
+<section class="full-width center grey-back grey-back-contact column flex"><!--COLUMN CHANGE????  HIDE MB???-->
 <section class="central-block center"> 
 У вас есть вопросы или вы хотите хотите подключиться?
 Отправьте запрос и мы обязательно свяжемся с вами!
-<form class="forma flex horizontal-content-center column-300">
 <!--Я согласен с условиями передачи информации-->
-<form  action="." method="post" >
+<form  action="." method="post" class="forma flex horizontal-content-center column-300" ><!--COLUMN-300  hor cont center-->
 {{ form.as_p }}
 {% csrf_token %}
 
 <p> 
 <input type="submit" class="button-orange-border pointer center"  value="Отправить">
 </p>
-</form>
 </form>
 Звоните  +375 33 351 69 75 или пишите в <a>телеграм</a>
 Расскажем всё о наших услугах, посчитаем стоимость, проконсультируем, подключим. 
@@ -115,7 +113,7 @@
 </section>
 
 
-<section class="full-width center flex  horizontal-content-center" style="background-color: #5D67AE;">
+<section class="full-width center flex  horizontal-content-center" style="background-color: #5D67AE;"><!--HOR CONTENT CENTER-->
 <section  class="central-block center" >
 <section class="colored-paragraph text-left center-300">
 <span class="midle-font-45">Берём бухгалтерию
@@ -132,7 +130,7 @@
 </section>
 </section>
 <article class="vertical-content-center  flex invisible-300">
-<img src="{%static "/icons/account.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы" class="invisible-300">
+<img src="{%static "/icons/account.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы" class="invisible-300"><!--INVISIBLE-->
 </article>
 </section>
 
@@ -172,7 +170,7 @@
 </p>
 </section>
 </section>
-<article class="vertical-content-center  flex invisible-300">
+<article class="vertical-content-center  flex invisible-300"><!--INVISIBLE-->
 <img src="{%static "/icons/5.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
 </article>
 </section>
@@ -269,27 +267,5 @@ IT
 
 </section>
 </section>
-
-
-<!--section class="full-width center center grey-back grey-back-contact column flex">
-<section class="central-block center"> 
-У вас есть вопросы или вы хотите хотите подключиться?
-Отправьте запрос и мы обязательно свяжемся с вами!
-<form class="forma flex horizontal-content-center"-->
-<!--Я согласен с условиями передачи информации-->
-<!--form  action="." method="post" >
-{{ form.as_p }}
-{% csrf_token %}
-
-<p> 
-<input type="submit" class="button-orange-border pointer center"  value="Отправить">
-</p>
-</form>
-</form>
-Звоните на +_________________________ или пишите в <a>телеграм</a>
-Расскажем всё о наших услугах, посчитаем стоимость, проконсультируем, подключим. 
-</section>
-</section>
-<p></p-->
 
 {% endblock %}

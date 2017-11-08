@@ -4,9 +4,9 @@
 &nbsp;|&nbsp;Текущий НДС/УСН
 {% endblock %}
 {% block content %}
-<section class="main flex chahnging-direction-row-col user-profile ravnomerno">
+<section class="main flex row-to-col user-profile ravnomerno">
 
-<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<aside class="text-left-to-center flex column ravnomerno" style="height: 80%;max-height: 500px;">
 <ul class="without-padding-left">
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}" style="color:#998383;">Мой кабинет</a></li>
 <p></p>
@@ -20,18 +20,17 @@
 {% endif %} 
 </aside>
 
-
-<section class="user-profile"><p class="bold">
-НДС/УСН сверки за период с {{start_data}}&nbsp;по&nbsp;{{ending_data}}
+<!--УСН\НДС  - из вьюхи. Отцентровать. Шрифт побольше.- Высота блока - на экран -->
+<section class="center central-block">
+<p class="normal-font-24">
+{{tax_system}} сверки за период с {{start_data}}&nbsp;по&nbsp;{{ending_data}} составляет:
+<p class="bold middle-font-35">
+&nbsp;{{period_fin_states}}&nbsp;руб.
 </p>
- <section class="user-profile flex chahnging-direction-row-col ravnomerno">
-
-{{tax_system}}:&nbsp;{{period_fin_states}}&nbsp;руб.
-
+</p>
 
 </section>  
 
-</section>
 </section>
 {% endblock %}
 

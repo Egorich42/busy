@@ -5,11 +5,11 @@
 {% endblock %}
 {% block content %}
 
-TAILS
-ЗА ПЕРИОД {{start_data}}
+Хвосты
+за период{{start_data}}
 {{ending_data}}
-<section class="main flex chahnging-direction-row-col horizontal-content-center">
-<aside class="changing-text-center-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
+<section class="main flex row-to-col horizontal-content-center"><!--CHANGING -->
+<aside class="text-left-to-center flex column ravnomerno" style="height: 80%;max-height: 500px;"><!--CHANGING -->
 <ul class="without-padding-left">
 
 
@@ -26,31 +26,31 @@ TAILS
 {% endif %}	
 </aside>
 
-<section class="central-block center"> 
-<section class="operations-list ">
+<section class="half-to-full ">
+<section class="operations-list">
 ДОЛГИ ПОКУПАТЕЛЕЙ (Д62) 
-{%for grafa_d in buyers_debts %}
+{%for buyer_debt in buyers_debts %}
 <ul class="full-width without-padding-left">
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
-<span class="bold text-left">{{grafa_d.name}}</span>
+<span class="bold text-left">{{buyer_debt.name}}</span>
 
-<span class="text-right bottom-15px">{{grafa_d.summa}}&nbsp;.Р	</span>
-<span class="text-right bottom-15px">{{grafa_d.message}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{buyer_debt.summa}}&nbsp;.Р	</span>
+<!--span class="text-right bottom-15px">{{buyer_debt.message}}&nbsp;	</span-->
 
 </li>
 </ul>
 {%endfor%}
 
 АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)
-{%for grafa_p in buyers_prepay %}
+{%for buyer_prepay in buyers_prepay %}
 <ul class="full-width without-padding-left">
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
-<span class="bold text-left">{{grafa_p.name}}</span>
+<span class="bold text-left">{{buyer_prepay.name}}</span>
 
-<span class="text-right bottom-15px">{{grafa_p.summa}}&nbsp;.Р	</span>
-<span class="text-right bottom-15px">{{grafa_d.message}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{buyer_prepay.summa}}&nbsp;.Р	</span>
+<!--span class="text-right bottom-15px">{{buyer_prepay.message}}&nbsp;	</span-->
 
 </li>
 </ul>
@@ -59,30 +59,31 @@ TAILS
 </section>
 </section>
 
-
-<section class="central-block center"> 
-<section class="operations-list "> 
+<section class="half-to-full"> 
+<section class="operations-list">
 АВАНСЫ ПОСТАВЩИКАМ(ДЕБ 60)
-{%for grafapd in providers_debts %}
+{%for prov_debt in providers_debts %}
 <ul class="full-width without-padding-left">
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
-<span class="bold text-left">{{grafapd.name}}</span>
+<span class="bold text-left">{{prov_debt.name}}</span>
 
-<span class="text-right bottom-15px">{{grafapd.summa}}&nbsp;.Р	</span>
-<span class="text-right bottom-15px">{{grafa_d.message}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{prov_debt.summa}}&nbsp;.Р	</span>
+<!--span class="text-right bottom-15px">{{prov_debt.message}}&nbsp;.Р	</span-->
 
 </li>
 </ul>
 {%endfor%}
 ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)
-{%for grafapp in providers_prepay %}
+{%for prov_prepay in providers_prepay %}
 <ul class="full-width without-padding-left">
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
-<span class="bold text-left">{{grafapp.name}}</span>
+<span class="bold text-left">{{prov_prepay.name}}</span>
 
-<span class="text-right bottom-15px">{{grafapp.summa}}&nbsp;.Р	</span>
+<span class="text-right bottom-15px">{{prov_prepay.summa}}&nbsp;.Р	</span>
+<!--span class="text-right bottom-15px">{{prov_prepay.message}}&nbsp;</span-->
+
 </li>
 </ul>
 {%endfor%}
@@ -90,7 +91,6 @@ TAILS
 
 </section>
 </section>
-
 
 
 </section>
