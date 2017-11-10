@@ -31,7 +31,7 @@ WHERE {}
 AND contragents_documents_two.parent = {} 
 AND  doc_date >= {} 
 AND  doc_date <= {}
-AND contragents_documents_two.deleted != '*' 
+AND contragents_documents_two.deleted != '*'
 ORDER BY contragents_documents_two.doc_date;
 """
 
@@ -41,7 +41,7 @@ LEFT JOIN contragents ON contragents_documents.parent=contragents.id
 WHERE {} 
 AND  doc_date >= {} 
 AND  doc_date <= {}
-AND contragents_documents.deleted != '*' 
+AND contragents_documents.deleted != '*'
 ORDER BY contragents_documents.doc_date;
 """
 select_docs_from = """
