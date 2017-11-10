@@ -10,13 +10,13 @@ from datetime import *
 import win32com.client
 import commands
 
-conn = sqlite3.connect('1.sqlite')
+conn = sqlite3.connect('3.sqlite')
 cur = conn.cursor()
 
 
 tn =  "contragents_documents.doc_type != '0'"
 pp =  "contragents_documents.doc_type = '0'"
-
+not_del = "contragents_documents.deleted != '*'"
 
 tn_providers = "contragents_documents_two.doc_type = '0'"
 pp_providers = "contragents_documents_two.doc_type != '0'"
@@ -167,9 +167,7 @@ def get_hvosty_lists(cursor,data_start, data_end):
         
 
         all_buyers_documents = [create_list_of_table_values(cursor.execute(table_two),cursor.description) for table_two in select_documents_buyers]
-        print(all_buyers_documents[0])
         all_providers_documents = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents_providers]
-#        print(all_providers_documents[1])
 
         summa_sverki_providers = get_pays_balance(all_buyers_documents[1], all_buyers_documents[0], 'summ')
         summa_sverki_buyers = get_pays_balance(all_providers_documents[1], all_providers_documents[0], 'summ')
@@ -194,9 +192,9 @@ def get_hvosty_lists(cursor,data_start, data_end):
     pass
 
 
-get_hvosty_lists(cur,start_data,ending_data)
+print(get_hvosty_lists(cur,start_data,ending_data))
 
-"""
+
 summs_lists = [[i['summa'] for i in list_sverok[l]] for l in (0,1,2,3)]
 names_lists = [[i['name'] for i in list_sverok[l]] for l in (0,1,2,3)]
 
@@ -209,7 +207,7 @@ debts_providers_names = names_lists[0]
 prepayment_providers_names = names_lists[1]
 debts_buyers_names = names_lists[2]
 prepayment_buyers_names = names_lists[3]
-"""
+
 #-----------------EXCELL!!!!!!!!!!!!!!!1-------
 """
 https://habrahabr.ru/post/99923/
@@ -217,7 +215,7 @@ https://habrahabr.ru/post/232291/
 https://habrahabr.ru/company/otus/blog/331998/
 """
 
-"""
+
 Excel = win32com.client.Dispatch("Excel.Application")
 wb = Excel.Workbooks.Open(u'D:\\Bysy\\Busy\\dipart.xls')
 sheet = wb.ActiveSheet
@@ -269,4 +267,4 @@ wb.Close()
 
 #закрываем COM объект
 Excel.Quit()
-"""
+

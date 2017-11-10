@@ -7,31 +7,30 @@ from collections import defaultdict
 from operator import itemgetter
 import itertools
 from datetime import *
-
 import win32com.client
-Excel = win32com.client.Dispatch("Excel.Application")
+import commands
 
 conn = sqlite3.connect('1.sqlite')
 cur = conn.cursor()
 
+
 tn =  "contragents_documents.doc_type != '0'"
 pp =  "contragents_documents.doc_type = '0'"
-
+not_del = "contragents_documents.deleted != '*'"
 
 tn_providers = "contragents_documents_two.doc_type = '0'"
 pp_providers = "contragents_documents_two.doc_type != '0'"
 
-start_data = "2016-01-01"
+start_data = "2017-01-01"
 ending_data = "2017-11-11"
 
-select_contragents_identificator = "SELECT id FROM contragents;"
-select_id_docs = "SELECT parent FROM contragents_documents;"
+select_contragents_identificator = commands.select_contragents_identificator
+select_id_docs = commands.select_id_docs
+select_docs_buyers = commands.select_docs_buyers
+select_docs_providers = commands.select_docs_providers
 
-select_docs_buyers = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-select_docs_providers = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
-
-select_docs_to = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-select_docs_from = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+select_docs_to = commands.select_docs_to
+select_docs_from = commands.select_docs_from
 
 
 today = date.today()
@@ -165,10 +164,10 @@ def get_hvosty_lists(cursor,data_start, data_end):
         select_documents_providers = [select_docs_providers.format(doc_two, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc_two in (tn_providers,pp_providers)]
         select_documents_buyers = [select_docs_buyers.format(doc, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (tn,pp)]
 
+        
 
         all_buyers_documents = [create_list_of_table_values(cursor.execute(table_two),cursor.description) for table_two in select_documents_buyers]
         all_providers_documents = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents_providers]
-
 
         summa_sverki_providers = get_pays_balance(all_buyers_documents[1], all_buyers_documents[0], 'summ')
         summa_sverki_buyers = get_pays_balance(all_providers_documents[1], all_providers_documents[0], 'summ')
@@ -193,7 +192,8 @@ def get_hvosty_lists(cursor,data_start, data_end):
     pass
 
 
-list_sverok = [get_hvosty_lists(cur,start_data,ending_data)[i] for i in (0,1,2,3)]
+list_sverok = get_hvosty_lists(cur,start_data,ending_data)
+
 
 
 summs_lists = [[i['summa'] for i in list_sverok[l]] for l in (0,1,2,3)]
@@ -210,14 +210,15 @@ debts_buyers_names = names_lists[2]
 prepayment_buyers_names = names_lists[3]
 
 #-----------------EXCELL!!!!!!!!!!!!!!!1-------
-"""
-https://habrahabr.ru/post/99923/
-https://habrahabr.ru/post/232291/
-https://habrahabr.ru/company/otus/blog/331998/
-"""
-#wb = Excel.Workbooks.Open(u'D:\\Bysy\\Busy\\dipart.xls')
-wb = Excel.Workbooks.Open(u'D:\\BUS\\busy\\Test_dbf\\first_test\\dipart.xls')
 
+#https://habrahabr.ru/post/99923/
+#https://habrahabr.ru/post/232291/
+#https://habrahabr.ru/company/otus/blog/331998/
+
+
+
+Excel = win32com.client.Dispatch("Excel.Application")
+wb = Excel.Workbooks.Open(u'D:\\Bysy\\Busy\\dipart.xls')
 sheet = wb.ActiveSheet
 
 
