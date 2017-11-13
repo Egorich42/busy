@@ -47,40 +47,6 @@ third_kvartal_start= date(this_year,7,1)
 four_kvartal_start = date(this_year,10,1)
 
 
-def create_list_of_table_values(request_text, massive_from_table):
-    request_name = request_text.fetchall()
-    list_to_sort = [list(elem) for elem in request_name]
-    cols = [column[0] for column in massive_from_table]
-    result = []
-    for row in list_to_sort:
-        result += [{col.lower():value for col,value in zip(cols,row)}]
-    return result
-    pass 
-
-
-def perebor(data_sorted, one, two, three):
-    albert = []
-    for key, group in itertools.groupby(data_sorted, key=lambda x:x[one]):
-        a = list(sorted(group, key=lambda item: item[two]))
-        suma = sum([f[key] for key in[three] for f in a])
-        albert += [sum([f[key] for key in[three] for f in a])]    
-    return albert
-    pass   
-
-
-
-def get_pages(request,paginator):
-    page = request.GET.get('page')
-    try:
-        all_pages = paginator.page(page)
-    except PageNotAnInteger:
-        all_pages = paginator.page(1)
-    except EmptyPage:
-        all_pages = paginator.page(paginator.num_pages)
-    return all_pages    
-    pass
-
-
 
 def current_kvartal():
     if today<first_kvartal_end:
@@ -99,27 +65,10 @@ def current_kvartal():
 start_square = str(current_kvartal())
 start_month = str(date(this_year, this_month, 1))
 
-def curent_finace_states(start, end, cursor):
-    select_tn_to_pidory = select_docs_to_buyers.format(tn_providers,  "'"+start+"'",  "'"+str(end)+"'")
-    select_tn_from_pidory = select_docs_from_providers.format(tn_buyers,  "'"+start+"'",  "'"+str(end)+"'")
-
-    sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
-
-    all_docs_tables = [create_list_of_table_values(cursor.execute(f),cursor.description) for f in sql_commands_list]
-
-    summa_poluchenyh_materyalov = [i['summ'] for i in all_docs_tables[1]]
-    summa_prodannyh_tovarov = [i['summ'] for i in all_docs_tables[0]]
-
-    usn = str(round(sum(summa_prodannyh_tovarov)*0.05,2))
-    nds_polucheny = sum(summa_poluchenyh_materyalov)/6
-    nds_otpravleny = sum(summa_prodannyh_tovarov)/6
-    full_nds = str (round(nds_otpravleny - nds_polucheny,2))
-
-    return(full_nds, usn)
 
 
 def show_fin_states(data_start, data_end, cursor, nalog_system):
-    current_fin_states = curent_finace_states(data_start, data_end,cursor)
+    current_fin_states = commands.curent_finace_states(data_start, data_end,cursor)
 
     if nalog_system == 'НДС':
         now_fin_states = current_fin_states[0]
@@ -147,26 +96,77 @@ def get_pays_balance(pp_list, tn_list, element_name):
     return (resultat,res_sum)
     pass   
 
+commands.get_pays_balance
+
+
 contragent_id = '6'
-start_data = "2015-12-29"
-ending_data = "2017-11-10"
+start_data = "2016-06-30"
+ending_data = "2017-11-30"
 
 def act_sverki(contragent_id,start_data,ending_data):
     all_docums_providers = [select_docs_poluchenoe.format(doc, "'"+str(contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp_providers,tn_providers)]
     all_docums_buyers = [select_docs_prodanoe.format(doc, "'"+str(contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp_buyers,tn_buyers)]
 
-    buyers_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (all_docums_buyers)]
-    providers_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (all_docums_providers)]
-    print(len(providers_pp_and_tn[0]))
+    buyers_pp_and_tn = [commands.create_list_of_table_values(cur.execute(doc),cur.description) for doc in (all_docums_buyers)]
+    providers_pp_and_tn = [commands.create_list_of_table_values(cur.execute(doc),cur.description) for doc in (all_docums_providers)]
+ #   pp_suma = sum(float(res['summ']) for res in providers_pp_and_tn[0])+sum(float(res['summ']) for res in buyers_pp_and_tn[0])
+  #  tn_suma = sum(float(res['summ']) for res in providers_pp_and_tn[1])+sum(float(res['summ']) for res in buyers_pp_and_tn[0])
+    print(providers_pp_and_tn[0])
+    suma = [res['summ'] for res in providers_pp_and_tn[0]]
+    suma2 = sum(suma)
 
-    pp_suma = sum(float(res['summ']) for res in providers_pp_and_tn[0])+sum(float(res['summ']) for res in buyers_pp_and_tn[0])
-    tn_suma = sum(float(res['summ']) for res in providers_pp_and_tn[1])+sum(float(res['summ']) for res in buyers_pp_and_tn[0])
+    suma21 = [res['summ'] for res in providers_pp_and_tn[1]]
+    suma22 = sum(suma21)
+
+    suma31 = [res['summ'] for res in buyers_pp_and_tn[0]]
+    suma32 = sum(suma31)
+
+    suma41 = [res['summ'] for res in buyers_pp_and_tn[1]]
+    suma42 = sum(suma41)
 
 
+    print(suma2,suma22,suma32,suma42)
+    print(suma,suma21,suma31,suma41)
+    print(suma2 - suma22)
 
+
+#    imena = [res[b] for b in ['document_name', 'summ'] for res in providers_pp_and_tn[0]]
     pass
 
+
 act_sverki(contragent_id,start_data,ending_data)
+
+
+Excel = win32com.client.Dispatch("Excel.Application")
+#wb = Excel.Workbooks.Open(u'D:\\BUS\\busy\\Test_dbf\\dipart.xls')
+wb = Excel.Workbooks.Open(u'D:\\BUS\\busy\\Test_dbf\\dipart_2016.xls')
+#wb = Excel.Workbooks.Open(u'D:\\Bysy\\Busy\\test_dbf\\dipart_train.xls')
+sheet = wb.ActiveSheet
+
+
+ 
+def nuts(some_list, col_name):
+    cell_number = 1
+    for rec in some_list:
+        sheet.Cells(1,col_name).value = "Задолженность поставщиков"
+        sheet.Cells(cell_number,col_name).value = rec
+        cell_number = cell_number + 1    
+        pass
+    pass                
+
+
+#nuts(sums,2)
+#nuts(imens,1)
+
+
+#сохраняем рабочую книгу
+wb.Save()
+
+#закрываем ее
+wb.Close()
+
+#закрываем COM объект
+Excel.Quit()
 
 """
 def get_hvosty_lists(cursor,data_start, data_end):
