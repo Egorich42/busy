@@ -17,11 +17,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import *
 
 
-tn =  "contragents_documents.doc_type != '0'"
-pp =  "contragents_documents.doc_type = '0'"
+tn_providers =  "contragents_documents.doc_type != '0'"
+pp_providers =  "contragents_documents.doc_type = '0'"
 
-tn_providers = "contragents_documents_two.doc_type = '0'"
-pp_providers = "contragents_documents_two.doc_type != '0'"
+tn_buyers = "contragents_documents_two.doc_type = '0'"
+pp_buyers = "contragents_documents_two.doc_type != '0'"
 
 select_all_documents="SELECT * FROM contragents_documents;"
 select_contragents_identificator = "SELECT id FROM contragents;"
@@ -29,8 +29,8 @@ select_id_docs = "SELECT parent FROM contragents_documents;"
 
 select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 
-select_docs_buyers = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-select_docs_providers = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
+select_docs_poluchenoe = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
+select_docs_prodanoe = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
 
 select_docs_to_buyers =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
 select_docs_from_providers = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
@@ -121,7 +121,7 @@ start_month = str(date(this_year, this_month, 1))
 
 def curent_finace_states(start, end, cursor,nalog_system):
     select_tn_to_pidory = select_docs_to_buyers.format(tn,  "'"+start+"'",  "'"+str(end)+"'")
-    select_tn_from_pidory = select_docs_from_providers.format(tn_providers,  "'"+start+"'",  "'"+str(end)+"'")
+    select_tn_from_pidory = select_docs_from_providers.format(tn_buyers,  "'"+start+"'",  "'"+str(end)+"'")
 
     sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
 
@@ -156,8 +156,8 @@ def get_hvosty_lists(cursor,data_start, data_end):
     contargents_id_list = [i['id'] for i in contragents_id]
 
     for altair in contargents_id_list:
-        select_documents_providers = [select_docs_providers.format(doc_two, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc_two in (tn_providers,pp_providers)]
-        select_documents_buyers = [select_docs_buyers.format(doc, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (tn,pp)]
+        select_documents_providers = [select_docs_prodanoe.format(doc_two, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc_two in (tn_buyers,pp_buyers)]
+        select_documents_buyers = [select_docs_poluchenoe.format(doc, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (tn,pp)]
 
 
         all_buyers_documents = [create_list_of_table_values(cursor.execute(table_two),cursor.description) for table_two in select_documents_buyers]

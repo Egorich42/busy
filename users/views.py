@@ -105,13 +105,14 @@ def show_sverka(request,id, **kwargs):
                 start_data = order.start_date
                 ending_data = order.end_date
 
-                select_docs_buyers = [select_docs_buyers.format(doc, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp,tn)]
+                select_docums_buyers = [select_docs_poluchenoe.format(doc, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp,tn)]
 
-                all_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (select_docs_buyers)]
+
+                all_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (select_docums_buyers)]
 
                 summa_sverki = get_pays_balance(all_pp_and_tn[0], all_pp_and_tn[1], 'summ')
 
-                contr_name = all_tn[0]['name']
+                contr_name = all_pp_and_tn[0]['name']
                 
                 return render(request, 'users/sverka_result.html',{'all_pp':all_pp_and_tn[0],
                     'all_tn':all_pp_and_tn[1],'contr_name':contr_name,'start_data':start_data,
