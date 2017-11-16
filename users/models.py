@@ -15,6 +15,7 @@ from operator import itemgetter
 import itertools
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import *
+from django import forms
 
 
 tn_providers =  "contragents_documents.doc_type != '0'"
@@ -120,7 +121,7 @@ start_square = str(current_kvartal())
 start_month = str(date(this_year, this_month, 1))
 
 def curent_finace_states(start, end, cursor,nalog_system):
-    select_tn_to_pidory = select_docs_to_buyers.format(tn,  "'"+start+"'",  "'"+str(end)+"'")
+    select_tn_to_pidory = select_docs_to_buyers.format(tn_providers,  "'"+start+"'",  "'"+str(end)+"'")
     select_tn_from_pidory = select_docs_from_providers.format(tn_buyers,  "'"+start+"'",  "'"+str(end)+"'")
 
     sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
@@ -156,8 +157,8 @@ def get_hvosty_lists(cursor,data_start, data_end):
     contargents_id_list = [i['id'] for i in contragents_id]
 
     for altair in contargents_id_list:
-        select_documents_providers = [select_docs_prodanoe.format(doc_two, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc_two in (tn_buyers,pp_buyers)]
-        select_documents_buyers = [select_docs_poluchenoe.format(doc, "'"+str(altair)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (tn,pp)]
+        select_documents_providers = [select_docs_prodanoe.format(doc_two, "'"+str(altair)+"'", "'"+str(data_start)+"'","'"+data_end+"'") for doc_two in (tn_buyers,pp_buyers)]
+        select_documents_buyers = [select_docs_poluchenoe.format(doc, "'"+str(altair)+"'", "'"+str(data_start)+"'","'"+data_end+"'") for doc in (tn_providers,pp_pr)]
 
 
         all_buyers_documents = [create_list_of_table_values(cursor.execute(table_two),cursor.description) for table_two in select_documents_buyers]
@@ -213,10 +214,8 @@ class Client(models.Model):
 
 class Contragent_identy(models.Model):
     contragent_id =models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Контрагент')
-    start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Даты с')
+    start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по') 
     end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по') 
 
 
-
-
-
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')

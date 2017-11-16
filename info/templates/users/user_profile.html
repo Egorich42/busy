@@ -42,7 +42,8 @@
 <section class="central-block center "> 
 <section class="operations-list block"> 
 <form class="forma column ravnomerno text-right-to-center hidden-form" action="." method="post"><!--CHANGE TEXT RIGHT-->
-{{ fin_states.as_p }}
+{{ fin_states.start_date}}
+{{ fin_states.end_date}}
 {% csrf_token %}
 <p class="center"> 
 <input type="submit" class="buttons-all"  value="Отправить">
