@@ -25,24 +25,25 @@
 
 <body class="center"> 
 <header>
+
+
 <nav class="full-width">
 <ul class="flex">
 <li>
 <a href="/">
-<img src="{%static "/icons/logo-busy-150px.png" %}" alt="background" title="background">
+<img src="{%static "/icons/logo-busy-150px.png" %}" alt="background" title="background" class="mob-hide">
+<img src="{%static "/icons/1.png" %}" alt="background" title="background" class="mob-show">
 </a>
 </li>
 <li><a href="#">контакты</a></li>
-<li><a href="#">вакансии</a></li>
-
 <li>
 {% if user.is_authenticated %}
 <a href="/users/{{user.id}}/{{user.first_name}}">
-Личный кабинет
-<img src="{%static "/icons/key-green.png" %}" class="key">
+<span class="mob-hide">Мой кабинет</span>
+<img src="{%static "/icons/key-green.png" %}" class="key mob-show">
 </a>
 {% else %}
-<a href="/users/login"><img src="static/media/icons/key-red.png"  class="key">войти</a> 
+<a href="/users/login"><img src="static/media/icons/key-red.png"  class="key">Войти</a> 
 {% endif %}	
 </li>
 </ul>

@@ -30,7 +30,7 @@ def get_data_from_dbf(table_name):
 def get_data(table_name, *args):
 	values_list = []
 	for l in table_name:
-		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", "")]]
+		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", ""),l[args[7]].replace(" ", "")]]
 	return values_list	
 	pass
 
@@ -59,7 +59,7 @@ def documenty_huevy(numar, *args):
 	dot = [0,1,2]
 	fiat = []
 	for t in dot:
-		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6])]
+		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7])]
 		fiat += [ti for ti in documents_table]
 	return fiat	
 	pass
@@ -76,8 +76,8 @@ def ebuchie_pidory(numar, *args):
 
 
 
-documenty_ot_uebkov = documenty_huevy(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617')
-documenty_dlya_uebkov = documenty_huevy(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482')
+documenty_dlya_uebkov = documenty_huevy(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP')
+documenty_ot_uebkov = documenty_huevy(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP')
 mrazi =  ebuchie_pidory(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 conn1 = sqlite3.connect('1.sqlite')
@@ -88,13 +88,13 @@ c2 = conn2.cursor()
 c3 = conn3.cursor()
 
 
-c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?)', documenty_ot_uebkov[0])
-c1.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?)', documenty_dlya_uebkov[0])
+c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?)', documenty_dlya_uebkov[0])
+c1.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?)', documenty_ot_uebkov[0])
 c1.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', mrazi[0])
 
 conn1.commit()
 conn1.close()
-
+"""
 c2.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?)', documenty_ot_uebkov[1])
 c2.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?)', documenty_dlya_uebkov[1])
 c2.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', mrazi[1])
@@ -107,3 +107,4 @@ c3.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?)', d
 c3.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', mrazi[2])
 conn3.commit()
 conn3.close()
+"""

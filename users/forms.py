@@ -8,20 +8,6 @@ class ContragentIdForm(forms.ModelForm):
         model = Contragent_identy
         fields = ['contragent_id','start_date','end_date']
 
-
-class ContragentIdForm(forms.ModelForm):
-    class Meta:
-        model = Contragent_identy
-        fields = ['contragent_id','start_date','end_date']
-
-class HvostyForm(forms.ModelForm):
-    class Meta:
-        model = Contragent_identy
-        fields = ['start_date','end_date']
-
-
-class FinStatesForm(forms.ModelForm):
-    class Meta:
-        model = Contragent_identy
-        fields = ['start_date','end_date']
-
+class TimePeriodForm(forms.Form):
+    start_date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type':'tel', 'pattern':"[0-9]{4}-[0-9]{2}-[0-9]{2}"}))
+    end_date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type':'tel', 'pattern':"[0-9]{4}-[0-9]{2}-[0-9]{2}"}))

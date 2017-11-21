@@ -5,25 +5,25 @@
 {% endblock %}
 {% block content %}
 
-<!--span class="middle-font-35">
-{{user.client.organization_type}}
-{{user.client.name}}
-</span-->
-<!--li class="normal-font-21">СЧЕТ:{{user.client.bank_schet}}</li>
-<li class="normal-font-21">УНП:{{user.client.unp}}</li>
-<li class="normal-font-21">Банк:{{bank}}
-</li-->
-
-{{tax_system}}&nbsp;за текущий месяц&nbsp;:{{month_fin_states}}&nbsp;руб.
+<section class="user-profile">
+<ul class="normal-font-20 bold left text-left">
+<li><span class="grey-font">{{tax_system}}&nbsp;за текущий месяц&nbsp;</span><span>:{{month_fin_states}}&nbsp;руб.</span>
 <p></p>
-{{tax_system}}&nbsp;за текущий квартал&nbsp;:{{square_fin_states}}&nbsp;руб.
+</li>
+<li><span class="grey-font">{{tax_system}}&nbsp;за текущий квартал&nbsp;</span><span>:{{square_fin_states}}&nbsp;руб.</span>
 <p></p>
 
+</li>    
+</ul>    
+</section>
 
 
-<section class="main flex row-to-col horizontal-content-center"><!--CHANGING -->
 
-<aside class="text-left-to-center flex column ravnomerno" style="height: 80%;max-height: 500px;"><!--CHANGING -->
+
+
+<section class="main flex row-to-col horizontal-content-center user-profile"><!--CHANGING -->
+
+<aside class="text-left flex column ravnomerno" style="height: 80%;max-height: 500px;"><!--CHANGING -->
 <ul class="without-padding-left">
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}/akt_sverki" style="color:#998383;">Акт сверки</a></li>
 <p></p>
@@ -42,7 +42,9 @@
 <section class="central-block center "> 
 <section class="operations-list block"> 
 <form class="forma column ravnomerno text-right-to-center hidden-form" action="." method="post"><!--CHANGE TEXT RIGHT-->
+<p>с даты:</p>
 {{ fin_states.start_date}}
+<p>по дату:</p>
 {{ fin_states.end_date}}
 {% csrf_token %}
 <p class="center"> 

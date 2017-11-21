@@ -3,54 +3,24 @@
 
 #python manage.py migrate --run-syncdb
 #https://habrahabr.ru/post/313764/
+from . import sql_commands as sq_c
+from . import variables as var
+from datetime import *
+
 from django.db import migrations
 from django.db import models
 from django.contrib.auth.models import User
-import sqlite3 
 from django.db import migrations
+
 from itertools import groupby
-import collections
+
 from collections import defaultdict
+
 from operator import itemgetter
-import itertools
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from datetime import *
+
 from django import forms
-
-
-tn_providers =  "contragents_documents.doc_type != '0'"
-pp_providers =  "contragents_documents.doc_type = '0'"
-
-tn_buyers = "contragents_documents_two.doc_type = '0'"
-pp_buyers = "contragents_documents_two.doc_type != '0'"
-
-select_all_documents="SELECT * FROM contragents_documents;"
-select_contragents_identificator = "SELECT id FROM contragents;"
-select_id_docs = "SELECT parent FROM contragents_documents;"
-
-select_docs = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-
-select_docs_poluchenoe = "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND contragents_documents.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-select_docs_prodanoe = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND contragents_documents_two.parent = {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
-
-select_docs_to_buyers =  "SELECT * FROM contragents_documents LEFT JOIN contragents ON contragents_documents.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents.doc_date;"
-select_docs_from_providers = "SELECT * FROM contragents_documents_two LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id WHERE {} AND  doc_date >= {} AND  doc_date <= {} ORDER BY contragents_documents_two.doc_date;"
-
-
-today = date.today()
-this_year = date.today().year
-this_month = date.today().month
-
-first_kvartal_end = date(this_year, 3,31)
-second_kvartal_end= date(this_year,6,30)
-third_kvartal_end= date(this_year,9,30)
-four_kvartal_end = date(this_year,12,31)
-
-
-first_kvartal_start = date(this_year, 1,1)
-second_kvartal_start= date(this_year,4,1)
-third_kvartal_start= date(this_year,7,1)
-four_kvartal_start = date(this_year,10,1)
 
 
 def create_list_of_table_values(request_text, massive_from_table):
@@ -104,25 +74,25 @@ def get_pages(request,paginator):
 
 
 def current_kvartal():
-    if today<first_kvartal_end:
-        cur_kvart = first_kvartal_start
-    if today > first_kvartal_end and today < second_kvartal_end:
-        cur_kvart = second_kvartal_start
-    if today >third_kvartal_start and today <third_kvartal_end:
+    if var.today<var.first_kvartal_end:
+        cur_kvart = var.first_kvartal_start
+    if var.today > var.first_kvartal_end and var.today < var.second_kvartal_end:
+        cur_kvart = var.second_kvartal_start
+    if var.today >var.third_kvartal_start and var.today <var.third_kvartal_end:
         cur_kvart = third_kvartal_start
-    if today > four_kvartal_start and today < four_kvartal_end:
-        cur_kvart = four_kvartal_start    
+    if var.today > var.four_kvartal_start and var.today < var.four_kvartal_end:
+        cur_kvart = var.four_kvartal_start    
         pass
     return cur_kvart
     pass
 
 
 start_square = str(current_kvartal())
-start_month = str(date(this_year, this_month, 1))
+start_month = str(date(var.this_year, var.this_month, 1))
 
 def curent_finace_states(start, end, cursor,nalog_system):
-    select_tn_to_pidory = select_docs_to_buyers.format(tn_providers,  "'"+start+"'",  "'"+str(end)+"'")
-    select_tn_from_pidory = select_docs_from_providers.format(tn_buyers,  "'"+start+"'",  "'"+str(end)+"'")
+    select_tn_to_pidory = sq_c.select_docs_to_buyers.format(sq_c.tn_providers,  "'"+start+"'",  "'"+str(end)+"'")
+    select_tn_from_pidory = sq_c.select_docs_from_providers.format(sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'")
 
     sql_commands_list = (select_tn_to_pidory,select_tn_from_pidory)
 
@@ -147,7 +117,7 @@ def curent_finace_states(start, end, cursor,nalog_system):
 
 
 def get_hvosty_lists(cursor,data_start, data_end):
-    contragents_id = create_list_of_table_values(cursor.execute(select_contragents_identificator),cursor.description)
+    contragents_id = create_list_of_table_values(cursor.execute(sq_c.select_contragents_identificator),cursor.description)
 
     debts_providers=[]
     prepayment_providers=[]
@@ -157,8 +127,8 @@ def get_hvosty_lists(cursor,data_start, data_end):
     contargents_id_list = [i['id'] for i in contragents_id]
 
     for altair in contargents_id_list:
-        select_documents_providers = [select_docs_prodanoe.format(doc_two, "'"+str(altair)+"'", "'"+str(data_start)+"'","'"+data_end+"'") for doc_two in (tn_buyers,pp_buyers)]
-        select_documents_buyers = [select_docs_poluchenoe.format(doc, "'"+str(altair)+"'", "'"+str(data_start)+"'","'"+data_end+"'") for doc in (tn_providers,pp_pr)]
+        select_documents_providers = [sq_c.select_docs_prodanoe.format(doc_two, "'"+str(altair)+"'", "'"+str(data_start)+"'","'"+data_end+"'") for doc_two in (sq_c.tn_buyers,sq_c.pp_buyers)]
+        select_documents_buyers = [sq_c.select_docs_poluchenoe.format(doc, "'"+str(altair)+"'", "'"+str(data_start)+"'","'"+data_end+"'") for doc in (sq_c.tn_providers,sq_c.pp_providers)]
 
 
         all_buyers_documents = [create_list_of_table_values(cursor.execute(table_two),cursor.description) for table_two in select_documents_buyers]
@@ -187,25 +157,12 @@ def get_hvosty_lists(cursor,data_start, data_end):
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
     pass
 
-"""
-contragent_debt = 'сумма задолженности контрагента составляет'
-your_debt = 'сумма вашей задолженности составляет'
 
-def get_list_sverok(right_summ, right_docs,condition ):
-    equal_list = []
-    if right_summ[0]== condition and len(right_docs[0])>0:
-        equal_list += [{'name':right_docs[0][0]['name'],'message':right_summ[0], 'summa':right_summ[1]}]
-    return equal_list    
-    pass
-"""
-
-
-taxes = (('УСН', 'усн.'),('НДС', 'ндс.'),)
 
 class Client(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=200, db_index=True, verbose_name='Название')
-    nalog_system = models.CharField(max_length=3, choices=taxes,db_index=True, blank = True,verbose_name='Система налогооблажения')
+    nalog_system = models.CharField(max_length=3, choices=var.taxes,db_index=True, blank = True,verbose_name='Система налогооблажения')
     unp = models.PositiveIntegerField(verbose_name='УНП', default=1)
     bank_schet = models.CharField(max_length=100, db_index=True,verbose_name='Банковский счет')
     bank_BIK = models.CharField(max_length=100, db_index=True, verbose_name='IBAN')
@@ -218,4 +175,3 @@ class Contragent_identy(models.Model):
     end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по') 
 
 
-DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')

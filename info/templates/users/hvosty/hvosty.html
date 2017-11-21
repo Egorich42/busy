@@ -25,7 +25,7 @@
 </aside>
 
 <form class="forma flex column ravnomerno text-right-to-center" action="." method="post">
-{{ hvosty_forma.start_date|label_tag:'type:"tel", pattern:"[0-9]{4}-[0-9]{2}-[0-9]{2}"' }}
+{{ hvosty_forma.start_date }}
 {{ hvosty_forma.end_date }}
 
 {% csrf_token %}

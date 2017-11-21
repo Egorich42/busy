@@ -21,8 +21,6 @@ import itertools
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
-
-
 class LoginFormView(FormView):
     form_class = AuthenticationForm
     # Аналогично регистрации, только используем шаблон аутентификации.
@@ -56,21 +54,19 @@ def show_user_profile(request,id, **kwargs):
         
         taxes_system = user.client.nalog_system
 
-        square_fin_states = curent_finace_states(start_square, today, cur, taxes_system)
-        month_fin_states = curent_finace_states(start_month, today, cur, taxes_system)
+        square_fin_states = curent_finace_states(start_square, var.today, cur, taxes_system)
+        month_fin_states = curent_finace_states(start_month, var.today, cur, taxes_system)
 
-        paginator = Paginator(create_list_of_table_values(cur.execute(select_all_documents),cur.description),15)
+        paginator = Paginator(create_list_of_table_values(cur.execute(sq_c.select_all_documents),cur.description),15)
 
         all_documents = get_pages(request,paginator)
 
+
         if request.method == 'POST':
-            fin_states = FinStatesForm(request.POST)     
+            fin_states = TimePeriodForm(request.POST)     
             if fin_states.is_valid():
-                order = fin_states.save()
-                order.save()
-          
-                start_data = order.start_date
-                ending_data = order.end_date
+                start_data = str(fin_states.cleaned_data['start_date'])
+                ending_data = str(fin_states.cleaned_data['end_date'])
 
                 period_fin_states =curent_finace_states(start_data, ending_data,cur,taxes_system)
 
@@ -80,7 +76,7 @@ def show_user_profile(request,id, **kwargs):
         conn.commit()
         conn.close()  
 
-        fin_states = FinStatesForm()
+        fin_states = TimePeriodForm()
  
         return render(request, 'users/user_profile.html',
         {'all_documents':all_documents, 'month_fin_states':month_fin_states[0],
@@ -132,13 +128,11 @@ def show_hvosty(request,id, **kwargs):
         cur = conn.cursor()
 
         if request.method == 'POST':
-            hvosty_forma = HvostyForm(request.POST)     
+            hvosty_forma = TimePeriodForm(request.POST)     
             if hvosty_forma.is_valid():
-                order = hvosty_forma.save()
-                order.save()
           
-                start_data = order.start_date
-                ending_data = order.end_date
+                start_data = str(hvosty_forma.cleaned_data['start_date'])
+                ending_data = str(hvosty_forma.cleaned_data['end_date'])
                 
                 list_sverok = [get_hvosty_lists(cur,start_data,ending_data)[i] for i in (0,1,2,3)]
 
@@ -151,7 +145,7 @@ def show_hvosty(request,id, **kwargs):
                 {'providers_debts':providers_debts,'providers_prepay':providers_prepay,
                 'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay, 'start_data':start_data,'ending_data':ending_data })   
 
-        hvosty_forma = HvostyForm()
+        hvosty_forma = TimePeriodForm()
 
     return render(request, 'users/hvosty/hvosty.html',{'hvosty_forma':hvosty_forma})
     pass
