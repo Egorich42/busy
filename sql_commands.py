@@ -5,13 +5,13 @@ import sqlite3
 tn_providers =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*'"
 tn_providers_no_del = "contragents_documents.doc_type != '0' AND contragents_documents.test_del == '10'"
 
-pp_providers =  "contragents_documents.doc_type = '0'"
+pp_providers =  "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*'"
 
 tn_buyers = "contragents_documents_two.doc_type = '0' AND contragents_documents_two.deleted !='*'"
-pp_buyers = "contragents_documents_two.doc_type != '0'"
+pp_buyers = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*'"
 
 select_all_documents="SELECT * FROM contragents_documents;"
-select_contragents_identificator = "SELECT id FROM contragents;"
+select_contragents_identificator = "SELECT id FROM contragents WHERE contragents.deleted != '*';"
 select_id_docs = "SELECT parent FROM contragents_documents;"
 
 select_docs = """
