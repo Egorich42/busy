@@ -163,3 +163,116 @@ def get_hvosty_lists(cursor,data_start, data_end):
     pass
 
 
+
+
+
+
+
+
+
+        if suma_tn_prov > suma_pp_prov:
+            message = 'сумма задолженности контрагента составляет'
+            summ = str(round(suma_tn_prov-suma_pp_prov,2)) 
+            prepayment_providers += [{'name':suma_tn_prov[0][0]['name'],'message':message, 'summa':str(summ)}]
+     
+
+
+        if suma_tn_buy<suma_pp_buy :
+            message = 'сумма задолженности контрагента составляет'
+            summ = str(round(suma_pp_buy-suma_tn_buy,2)) 
+            debts_buyers += [{'name':suma_tn_buy[0][0]['name'],'message':message, 'summa':str(summ)}]
+ 
+            pass
+
+        if suma_tn_buy > suma_pp_buy:
+            message = 'сумма вашей задолженности составляет'
+            summ = str(round(suma_pp_buy-suma_tn_buy,2))
+            prepayment_buyers += [{'name':suma_tn_buy[0][0]['name'],'message':message, 'summa':str(summ)}]
+            pass
+
+def transform_sql(select_comamnd,docs,pays,cursor,contragent):
+    select_documents = [select_comamnd.format(doc, "'"+str(contragent)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (docs,pays)]
+    documents_list = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents]
+    
+    summa_tn = sum([i['summ']for i in documents_list[0]])
+    summa_pp = sum([i['summ']for i in documents_list[1]])
+    
+    return (бdocuments_list,summa_tn,summa_pp)
+    pass
+    
+
+
+def show_sverka(cursor):
+    summa_buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cur,contragent)
+    summa_providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cur,contragent)
+    summa_providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cur,contragent)
+ 
+    suma1 = summa_providers_docs[1]
+    suma2 = summa_providers_docs[2]
+    suma21 = summa_providers_docs_nodel[1]   
+    suma3 = summa_buyers_docs[1]
+    suma4 = summa_buyers_docs[2]
+
+    testsum = suma1+suma21+suma3
+    testsum2 = suma2+suma4
+    
+    print(suma1,suma2, suma21,suma3,suma4)
+    print(testsum- testsum2)
+    pass
+
+show_sverka(cur)
+
+
+def get_hvosty_lists(cursor,data_start, data_end):
+    contragents_id = create_list_of_table_values(cursor.execute(sq_c.select_contragents_identificator),cursor.description)
+    contargents_id_list = [i['id'] for i in contragents_id]
+    
+    debts_providers=[]
+    prepayment_providers=[]
+    debts_buyers=[]
+    prepayment_buyers=[]
+
+    
+    for altair in contargents_id_list:
+
+        buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cur,altair)
+        providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cur,altair)
+        providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cur,altair)
+ 
+        suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]
+        suma_pp_prov = providers_docs[2]
+#        suma_tn_prov_del = summa_providers_docs_nodel[1]   
+        suma_tn_buy = buyers_docs[1]
+        suma_pp_buy = buyers_docs[2]
+
+
+
+        if suma_tn_prov<suma_pp_prov :
+            message = 'сумма вашей задолженности составляет'
+            summ = str(round(suma_tn_prov-suma_pp_prov,2))
+            debts_providers += [{'name':suma_tn_prov[0][0]['name'],'message':message, 'summa':summ}]
+             
+            pass
+
+        if suma_tn_prov > suma_pp_prov:
+            message = 'сумма задолженности контрагента составляет'
+            summ = str(round(suma_tn_prov-suma_pp_prov,2)) 
+            prepayment_providers += [{'name':suma_tn_prov[0][0]['name'],'message':message, 'summa':summ}]
+     
+
+
+        if suma_tn_buy<suma_pp_buy :
+            message = 'сумма задолженности контрагента составляет'
+            summ = str(round(suma_pp_buy-suma_tn_buy,2)) 
+            debts_buyers += [{'name':suma_tn_buy[0][0]['name'],'message':message, 'summa':summ}]
+ 
+            pass
+
+        if suma_tn_buy > suma_pp_buy:
+            message = 'сумма вашей задолженности составляет'
+            summ = str(round(suma_pp_buy-suma_tn_buy,2))
+            prepayment_buyers += [{'name':suma_tn_buy[0][0]['name'],'message':message, 'summa':summ}]
+            pass
+ 
+    return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
+    pass
