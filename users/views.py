@@ -89,36 +89,44 @@ def show_user_profile(request,id, **kwargs):
 def show_sverka(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
+
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()
 
         if request.method == 'POST':
-            forma = ContragentIdForm(request.POST)     
-            if forma.is_valid():
-                order = forma.save()
-                order.save()
-
-                start_data = order.start_date
-                ending_data = order.end_date
-
-                select_docums_buyers = [select_docs_poluchenoe.format(doc, "'"+str(order.contragent_id)+"'", "'"+start_data+"'", "'"+ending_data+"'") for doc in (pp,tn)]
-
-
-                all_pp_and_tn = [create_list_of_table_values(cur.execute(doc),cur.description) for doc in (select_docums_buyers)]
-
-                summa_sverki = get_pays_balance(all_pp_and_tn[0], all_pp_and_tn[1], 'summ')
-
-                contr_name = all_pp_and_tn[0]['name']
+            sverka_form = ActSverkiForm(request.POST)     
+            if sverka_form.is_valid():
                 
-                return render(request, 'users/sverka_result.html',{'all_pp':all_pp_and_tn[0],
-                    'all_tn':all_pp_and_tn[1],'contr_name':contr_name,'start_data':start_data,
-                    'ending_data':ending_data,'summa_sverki':summa_sverki})
+                contragent_name = str(sverka_form.cleaned_data['name'])
+                start_data = str(sverka_form.cleaned_data['start_date'])
+                ending_data = str(sverka_form.cleaned_data['end_date'])
+                
+                resultaty = get_sverka(cur,contragent_name,start_data,ending_data)    
 
-        forma = ContragentIdForm()
-        return render(request, 'users/act_sverki/akt_sverki.html',{'forma': forma})
+                contr_name = resultaty[0]
+                outer_summ = resultaty[1]
+                inner_summ = resultaty[2]
+                result = resultaty[3]
+                inner_docs_list = resultaty[4]
+                outer_docs_list = resultaty[5]
+                print(contr_name,outer_summ,inner_summ)
+                
+                return render(request, 'users/act_sverki/sverka_result.html',{'all_pp':outer_docs_list,
+                    'all_tn':inner_docs_list,'contr_name':contr_name,'start_data':start_data,
+                    'ending_data':ending_data,'summa_sverki':result,'inner_summ':inner_summ,'outer_summ':outer_summ })
+
+        sverka_form = ActSverkiForm()
+
+        conn.commit()
+        conn.close()  
+
+        return render(request, 'users/act_sverki/akt_sverki.html',{'forma': sverka_form})
     else:
          return HttpResponseRedirect("/")   
 
+
+winorbite.com
+GNFbBH880
 
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
@@ -134,18 +142,20 @@ def show_hvosty(request,id, **kwargs):
                 start_data = str(hvosty_forma.cleaned_data['start_date'])
                 ending_data = str(hvosty_forma.cleaned_data['end_date'])
                 
-                list_sverok = [get_hvosty_lists(cur,start_data,ending_data)[i] for i in (0,1,2,3)]
-
-                providers_debts = list_sverok[0]
-                providers_prepay = list_sverok[1]
-                buyers_debts = list_sverok[2]
-                buyers_prepay = list_sverok[3]
+                providers_debts = get_hvosty_lists(cur,start_data,ending_data)[0]
+                providers_prepay = get_hvosty_lists(cur,start_data,ending_data)[1]
+                buyers_debts = get_hvosty_lists(cur,start_data,ending_data)[2]
+                buyers_prepay = get_hvosty_lists(cur,start_data,ending_data)[3]
                 
             return render(request, 'users/hvosty/hvosty_result.html',
                 {'providers_debts':providers_debts,'providers_prepay':providers_prepay,
                 'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay, 'start_data':start_data,'ending_data':ending_data })   
 
         hvosty_forma = TimePeriodForm()
+
+        conn.commit()
+        conn.close()  
+
 
     return render(request, 'users/hvosty/hvosty.html',{'hvosty_forma':hvosty_forma})
     pass

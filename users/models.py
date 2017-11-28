@@ -47,7 +47,7 @@ def get_pages(request,paginator):
 
 
 
-start_square = str(current_kvartal())
+start_square = str(var.current_kvartal())
 start_month = str(date(var.this_year, var.this_month, 1))
 
 def curent_finace_states(start, end, cursor,nalog_system):
@@ -75,41 +75,42 @@ def curent_finace_states(start, end, cursor,nalog_system):
 
     return(now_fin_states, tax_system)
 
-def show_sverka(cursor):
-    buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cur,contragent)
-    providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cur,contragent)
-    providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cur,contragent)
+
+
+def transform_sql(select_command,docs,pays,cursor,contragent,data_start,data_end):
+    select_documents = [select_command.format(doc, "'"+str(contragent)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (docs,pays)]
+    documents_list = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents]
+    summa_tn = sum([i['summ']for i in documents_list[0]])
+    summa_pp = sum([i['summ']for i in documents_list[1]])
+    
+    return (documents_list,summa_tn,summa_pp)
+    pass
+    
+
+
+
+def get_sverka(cursor,contragent,data_start,data_end):
+    buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cursor,contragent,data_start,data_end)
+    providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,contragent,data_start,data_end)
+    providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,contragent,data_start,data_end)
+
     contragent_name = cursor.execute(sq_c.select_contragent_name.format("'"+str(contragent)+"'")).fetchall()[0]
 
-
+    prov_list = providers_docs_nodel[0][0]+providers_docs[0][0]
+    buyers_list = buyers_docs[0][1]
+    
     suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]
     suma_pp_prov = providers_docs[2]
-    
+
     suma_tn_buy = buyers_docs[1]
     suma_pp_buy = buyers_docs[2]
     
     inner_summ = suma_tn_prov+suma_pp_buy
-    outer_summ = suma_tn_prov+suma_pp_buy
-    result = all_inner- all_outer
+    outer_summ = suma_tn_buy+suma_pp_prov
+    result = inner_summ-outer_summ
 
-
-    if inner_summ>outer_summ and providers_docs[0][0] !=[]:
-        message = 'сумма вашей задолженности составляет'
-        summ = str(round(inner_summ-outer_summ,2))
-        if summ != '0':
-            debts_providers += [{'name':providers_docs[0][0][0]['name'],  'message':message, 'summa':summ}]
-             
-    if inner_summ<outer_summ and providers_docs[0][0] !=[]:
-        message = 'сумма задолженности контрагента составляет'
-        summ = str(round(inner_summ-outer_summ,2))
-        if summ != '0':
-            prepayment_providers += [{'name':providers_docs[0][0][0]['name'],  'message':message, 'summa':summ}]
-
-    
-
-    return (outer_summ,inner_summ,result)
+    return (contragent_name,outer_summ,inner_summ,result,prov_list,buyers_list) 
     pass
-
 
 
 def get_hvosty_lists(cursor,data_start, data_end):
@@ -124,10 +125,9 @@ def get_hvosty_lists(cursor,data_start, data_end):
     
     for altair in contargents_id_list:
 
-        buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cur,altair)
-        providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cur,altair)
-        providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cur,altair)
-         
+        buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cursor,altair,data_start,data_end)
+        providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,altair,data_start,data_end)
+        providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,altair,data_start,data_end)
         suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]
         suma_pp_prov = providers_docs[2]
         suma_tn_buy = buyers_docs[1]
@@ -171,11 +171,4 @@ class Client(models.Model):
     bank_schet = models.CharField(max_length=100, db_index=True,verbose_name='Банковский счет')
     bank_BIK = models.CharField(max_length=100, db_index=True, verbose_name='IBAN')
     email = models.EmailField(verbose_name='Е-mail', blank = True) 
-
-
-class Contragent_identy(models.Model):
-    contragent_id =models.CharField(max_length=200, db_index=True, blank = True, verbose_name='Контрагент')
-    start_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='с') 
-    end_date = models.CharField(max_length=200, db_index=True, blank = True, verbose_name='по') 
-
 
