@@ -11,12 +11,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
 import sqlite3 
-from django.db import migrations
-from itertools import groupby
-import collections
-from collections import defaultdict
-from operator import itemgetter
-import itertools
 
 #python manage.py version
 # Функция для установки сессионного ключа.
@@ -57,9 +51,17 @@ def show_user_profile(request,id, **kwargs):
         square_fin_states = curent_finace_states(start_square, var.today, cur, taxes_system)
         month_fin_states = curent_finace_states(start_month, var.today, cur, taxes_system)
 
-        paginator = Paginator(create_list_of_table_values(cur.execute(sq_c.select_all_documents),cur.description),15)
 
-        all_documents = get_pages(request,paginator)
+        all_pp_buyers=get_paginator(cur, 'contragents_documents_two',sq_c.pp_buyers,15,request)
+        all_buyers_docs=get_paginator(cur, 'contragents_documents_two',sq_c.tn_buyers,15,request)
+        all_pp_providers=get_paginator(cur, 'contragents_documents',sq_c.pp_providers,15,request)
+        all_providers_docs=get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request)
+
+        
+        providers_debts = get_hvosty_lists(cur,'2014-01-01',str(var.today))[0]
+        providers_prepay = get_hvosty_lists(cur,'2014-01-01',str(var.today))[1]
+        buyers_debts = get_hvosty_lists(cur,'2014-01-01',str(var.today))[2]
+        buyers_prepay = get_hvosty_lists(cur,'2014-01-01',str(var.today))[3]
 
 
         if request.method == 'POST':
@@ -79,8 +81,10 @@ def show_user_profile(request,id, **kwargs):
         fin_states = TimePeriodForm()
  
         return render(request, 'users/user_profile.html',
-        {'all_documents':all_documents, 'month_fin_states':month_fin_states[0],
-          'square_fin_states':square_fin_states[0],'fin_states':fin_states,'tax_system':month_fin_states[1]})
+        {'all_pp_buyers':all_pp_buyers,'all_buyers_docs':all_buyers_docs,'all_pp_providers':all_pp_providers,'all_providers_docs':all_providers_docs,'month_fin_states':month_fin_states[0],
+          'square_fin_states':square_fin_states[0],'fin_states':fin_states,'tax_system':month_fin_states[1],
+          'providers_debts':providers_debts,'providers_prepay':providers_prepay,
+                'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay,})
     else:
          return HttpResponseRedirect("/")
 
@@ -109,7 +113,6 @@ def show_sverka(request,id, **kwargs):
                 result = resultaty[3]
                 inner_docs_list = resultaty[4]
                 outer_docs_list = resultaty[5]
-                print(contr_name,outer_summ,inner_summ)
                 
                 return render(request, 'users/act_sverki/sverka_result.html',{'all_pp':outer_docs_list,
                     'all_tn':inner_docs_list,'contr_name':contr_name,'start_data':start_data,
@@ -125,8 +128,6 @@ def show_sverka(request,id, **kwargs):
          return HttpResponseRedirect("/")   
 
 
-winorbite.com
-GNFbBH880
 
 def show_hvosty(request,id, **kwargs):
     user = get_object_or_404(User, id=id)

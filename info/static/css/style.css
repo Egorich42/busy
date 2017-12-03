@@ -25,7 +25,8 @@ a:visited{color: #2D2D2D;}
 .font-12{font-size: 12px;}
 .grey-font{color: #998383;}
 
-
+.red-text{color: red;}
+.green-text{color: green;}
 .hidden-form{
 display: none;
 }

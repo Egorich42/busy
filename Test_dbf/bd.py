@@ -5,7 +5,10 @@
 import sqlite3
 from dbfread import DBF
 import os
+import sql_commands as sq_c
 
+conn = sqlite3.connect('1.sqlite')
+cur = conn.cursor()
 
 dipart = 'dipartD'
 avangard = 'avangard'
@@ -65,7 +68,7 @@ def documenty_huevy(numar, *args):
 	pass
 
 
-def ebuchie_pidory(numar, *args):
+def contragents_list(numar, *args):
 	dot = [0,1,2]
 	fiat = []
 	for t in dot:
@@ -74,11 +77,50 @@ def ebuchie_pidory(numar, *args):
 	return fiat	
 	pass
 
+contragents_docs_sql = sq_c.select_all_documents
+contragents_docs_two_sql = sq_c.select_all_documents_two
+contragents_sql = sq_c.select_contragents
+documenty_dlya_contragentov= documenty_huevy(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP')
+documenty_ot_contragentov = documenty_huevy(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP')
+contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 
-documenty_dlya_uebkov = documenty_huevy(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP')
-documenty_ot_uebkov = documenty_huevy(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP')
-mrazi =  ebuchie_pidory(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
+
+
+def update_from_dbf(dbf_list, sq_command,db_number):
+	dbf_data = dbf_list[0]#0 - порядковый номер в функции, выводящей три листа ,три - по числу баз, соответсветнно, нужно с этим думать
+	sql_data = (cur.execute(sq_command).fetchall())
+	result = len(dbf_data)-len(sql_data)
+	print(result)
+	if result > 0:
+		vnos_obnovlenia = dbf_data[-result:]
+		conn = sqlite3.connect(str(db_number)+'.sqlite')
+		c = conn.cursor()
+		c.executemany(sq_c.insert_into_table, vnos_obnovlenia)
+		conn.commit()
+		conn.close()
+	pass
+
+dbf_data = documenty_dlya_contragentov[0]#0 - порядковый номер в функции, выводящей три листа ,три - по числу баз, соответсветнно, нужно с этим думать
+sql_data = (cur.execute(contragents_docs_sql).fetchall())
+result = len(dbf_data)-len(sql_data)
+
+print(len(dbf_data),len(sql_data),result)	
+#c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?)', dbf_data[-result:])
+
+update_from_dbf(documenty_dlya_contragentov,contragents_docs_sql,1)
+update_from_dbf(documenty_ot_contragentov,contragents_docs_two_sql,i,'contragents_documents_two', '(?,?,?,?,?,?,?,?)')
+update_from_dbf(contragenty,contragents_sql,i,'contragents', '(?,?,?,?,?)')
+
+
+
+dbf_data = documenty_dlya_contragentov[0]#0 - порядковый номер в функции, выводящей три листа ,три - по числу баз, соответсветнно, нужно с этим думать
+sql_data = (cur.execute(contragents_docs_sql).fetchall())
+result = len(dbf_data)-len(sql_data)
+
+print(len(dbf_data),len(sql_data),result)
+
+"""
 
 conn1 = sqlite3.connect('1.sqlite')
 conn2 = sqlite3.connect('2.sqlite')
@@ -88,13 +130,13 @@ c2 = conn2.cursor()
 c3 = conn3.cursor()
 
 
-c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?)', documenty_dlya_uebkov[0])
-c1.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?)', documenty_ot_uebkov[0])
-c1.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', mrazi[0])
+#c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?)', dbf_data[-result:])
+#c1.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?)', documenty_ot_uebkov[0])
+#c1.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', contragenty[0])
 
 conn1.commit()
 conn1.close()
-"""
+ 
 c2.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?)', documenty_ot_uebkov[1])
 c2.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?)', documenty_dlya_uebkov[1])
 c2.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', mrazi[1])

@@ -11,15 +11,10 @@ from django.db import migrations
 from django.db import models
 from django.contrib.auth.models import User
 from django.db import migrations
-
 from itertools import groupby
-
 from collections import defaultdict
-
 from operator import itemgetter
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
 from django import forms
 
 
@@ -44,6 +39,14 @@ def get_pages(request,paginator):
         all_pages = paginator.page(paginator.num_pages)
     return all_pages    
     pass
+
+
+
+def get_paginator(cursor, table_name, request_name, vals_on_page,request):
+    paginator = Paginator(create_list_of_table_values(cursor.execute(sq_c.docs_on_main.format(table_name,request_name)),cursor.description),vals_on_page)
+    all_documents = get_pages(request,paginator)
+    return all_documents
+
 
 
 

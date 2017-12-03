@@ -72,11 +72,8 @@
 </footer>
 <script type="text/javascript">
 
-$(document).ready(function() {
-	$('.block').on('click', '.extremum-click', function() {
-		$(this).toggleClass('red').siblings('.extremum-slide').slideToggle(0);
-	});
-});
+document.getElementByID("green").style.color = "red";
+document.getElementById("p2").style.color = "green";
 
 
 $(document).ready(function(){
@@ -84,6 +81,8 @@ $(document).ready(function(){
         $(".hidden-form").toggleClass("show-hide-element");
     });
 });
+
+
 
 </script>
 
