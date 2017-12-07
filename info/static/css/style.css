@@ -34,10 +34,13 @@ display: none;
 .show-hide-element{
 display: flex;}
 
-
+.show-hide-main{
+display: block;}
 
 /*------------------BLOCK---------------------*/
 .key{width: 25px; margin: 0px 10px;}
+
+.side-menu li{color:#998383;}
 
 .main{height: 100%;}
 
@@ -93,6 +96,7 @@ display: flex;}
 .full-width{width: 100%;}
 .user-profile{width: 90%;}
 .half{width: 50%;}
+.main-scren-data{width: 42%; }
 .twenty-percent-width{width: 20%;}
 .eighty-percent-width{width: 80%;}
 .fourty-percent-width{width: 45%;}
@@ -100,6 +104,17 @@ display: flex;}
 .vertical-content-center{justify-content: space-around; align-items: center;}
 .horizontal-content-center{justify-content: center;}
 .ravnomerno{justify-content:space-between;}
+
+2379GhZ653
+2379Ghz653
+GNFbBH880
+Egorich42
+
+
+Логин суперпользователя - Egorich42
+email - e.g.hutter@gmail.com
+пароль - KLM475aot 
+
 
 .operations-list{padding: 0% 20%; }
 .exit-block{margin-top: 600px;}
@@ -113,6 +128,8 @@ display: flex;}
 .without-padding-left{padding-left: 0px;}
 
 .side-paddings-20{padding: 0% 20%;}
+.side-paddings-10{padding: 0% 10%;}
+
 
 .without-margin{margin: 0px;}
 .bottom-5px{margin-bottom: 5px;}

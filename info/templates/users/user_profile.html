@@ -18,25 +18,49 @@
 </section>
 
 
-<section class="main flex row-to-col horizontal-content-center user-profile"><!--CHANGING -->
+<section class="main flex row-to-col horizontal-content-center user-profile">
 
-<aside class="text-left flex column ravnomerno" style="height: 80%;max-height: 500px;"><!--CHANGING -->
+<aside class="text-left flex column ravnomerno" style="height: 80%;max-height: 500px;">
 <ul class="without-padding-left">
-<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/akt_sverki" style="color:#998383;">Акт сверки</a></li>
+
+<li class="bold" id="ops">Операции</li>
+<li class="hidden-form" id="ops-list">
+<ul>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/akt_sverki">Акт сверки</a></li>
 <p></p>
-<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty" style="color:#998383;">Хвосты</a></li>
+<li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty">Хвосты за период</a></li>
 <p></p>
-<li class="bold control-elem pointer" style="color:#998383;">{{tax_system}}&nbsp; за период</li>
+<li class="bold pointer" id="control-elem">{{tax_system}}&nbsp; за период</li>
+</ul>
+</li>
 <p></p>
-<li class="bold">платежки</li>
+
+
+<li class="bold" id="doc-menu">Документы</li>
+
+
+<li class="hidden-form" id="doc-list">
+<ul>
+<li class="bold" id ="pp">платежки</li>
 <p></p>
-<li class="bold">накладные</li>
+<li class="bold" id ="naklad">накладные</li>
 <p></p>
-<li class="bold">приходка</li>
+<li class="bold" id = "tn-and-acts">приходка</li>
+</ul>
+</li>
+
+
 <p></p>
-<li class="bold">мои долги</li>
+
+<li class="bold" id="hvosty">Хвосты</li>
+<li class="hidden-form" id="hvosty-list">
+<ul>
+<li class="bold" id="my-debts">мои покупатели</li>
 <p></p>
-<li class="bold">мои авансы</li>
+<li class="bold" id = "they-debts">мои поставщики</li>
+</ul>
+</li>
+
 </ul>
 {% if user.is_authenticated %}
 <a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
@@ -46,8 +70,8 @@
 </aside>
 
 <section class="central-block center "> 
-<section class="operations-list block"> 
-<form class="forma column ravnomerno text-right-to-center hidden-form" action="." method="post"><!--CHANGE TEXT RIGHT-->
+<section class="side-paddings-10"> 
+<form class="forma column ravnomerno text-right-to-center hidden-form" id="nalog-form" action="." method="post">   
 <p>с даты:</p>
 {{ fin_states.start_date}}
 <p>по дату:</p>
@@ -58,7 +82,8 @@
 </p>
 </form>
 
-
+<section class="hidden-form"  id="pp-list">
+<section class="main-scren-data right">
 {%for proviser_pp in all_pp_providers %}
 <ul class="full-width without-padding-left">
 	<li>
@@ -89,11 +114,49 @@
         {% endif %}
     </span>
 </div>
+</section>
 
 
+<section class="main-scren-data left">
+{%for buyer_pp in all_pp_buyers %}
+<ul class="full-width without-padding-left"  id="pp-list">
+    <li>
+        <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
+            <li class="text-right twenty-percent-width right font-18 green-text">{{buyer_pp.summ}}&nbsp;.Р</li>
+            <li class="text-left eighty-percent-width left bold"> {{buyer_pp.contragent_name}}</li>
+            <li class="text-left bottom-15px">{{buyer_pp.document_name}}</li>
+            <li class="text-right font-12">{{buyer_pp.date}}</li>
+        </ul>
+    </li>
+</ul>
+{%endfor%}
 
+
+<div class="pagination"  id="pp-list">
+    <span class="step-links">
+        {% if all_pp_buyers.has_previous %}
+            <a href="?page={{ all_pp_buyers.previous_page_number }}"><</a>
+        {% endif %}
+
+        <span class="current">
+             {{ all_pp_buyers.number }} из {{ all_pp_buyers.paginator.num_pages }}
+
+        </span>
+
+        {% if all_pp_buyers.has_next %}
+            <a href="?page={{ all_pp_buyers.next_page_number }}">></a>
+        {% endif %}
+    </span>
+</div>
+
+</section>
+
+</section>
+
+<!--DOCUMENTS BLOCK-->
+<section class="hidden-form side-paddings-20" id="tn-and-acts-list">
 {%for provider_doc in all_providers_docs %}
-<ul class="full-width without-padding-left">
+<ul class="full-width without-padding-left" id="tn-and-acts-list">
     <li>
         <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
             <li class="text-right twenty-percent-width right font-18">{{provider_doc.summ}}&nbsp;.Р</li>
@@ -122,38 +185,10 @@
         {% endif %}
     </span>
 </div>
-
-{%for buyer_pp in all_pp_buyers %}
-<ul class="full-width without-padding-left">
-    <li>
-        <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
-            <li class="text-right twenty-percent-width right font-18 green-text">{{buyer_pp.summ}}&nbsp;.Р</li>
-            <li class="text-left eighty-percent-width left bold"> {{buyer_pp.contragent_name}}</li>
-            <li class="text-left bottom-15px">{{buyer_pp.document_name}}</li>
-            <li class="text-right font-12">{{buyer_pp.date}}</li>
-        </ul>
-    </li>
-</ul>
-{%endfor%}
+</section>
 
 
-<div class="pagination">
-    <span class="step-links">
-        {% if all_pp_buyers.has_previous %}
-            <a href="?page={{ all_pp_buyers.previous_page_number }}"><</a>
-        {% endif %}
-
-        <span class="current">
-             {{ all_pp_buyers.number }} из {{ all_pp_buyers.paginator.num_pages }}
-
-        </span>
-
-        {% if all_pp_buyers.has_next %}
-            <a href="?page={{ all_pp_buyers.next_page_number }}">></a>
-        {% endif %}
-    </span>
-</div>
-
+<section class="hidden-form side-paddings-20" id="naklad-list">
 
 {%for buyer_doc in all_buyers_docs %}
 <ul class="full-width without-padding-left">
@@ -169,7 +204,7 @@
 {%endfor%}
 
 
-<div class="pagination">
+<div class="pagination" >
     <span class="step-links">
         {% if all_buyers_docs.has_previous %}
             <a href="?page={{ all_buyers_docs.previous_page_number }}"><</a>
@@ -186,48 +221,10 @@
     </span>
 </div>
 </section>
-</section>
 
 
-
-
-
-
-<section class="half-to-full ">
-<section class="operations-list">
-ДОЛГИ ПОКУПАТЕЛЕЙ (Д62) 
-{%for buyer_debt in buyers_debts %}
-<ul class="full-width without-padding-left">
-<li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
-
-<span class="bold text-left">{{buyer_debt.name}}</span>
-
-<span class="text-right bottom-15px">{{buyer_debt.summa}}&nbsp;.Р   </span>
-<!--span class="text-right bottom-15px">{{buyer_debt.message}}&nbsp;    </span-->
-
-</li>
-</ul>
-{%endfor%}
-
-АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)
-{%for buyer_prepay in buyers_prepay %}
-<ul class="full-width without-padding-left">
-<li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
-
-<span class="bold text-left">{{buyer_prepay.name}}</span>
-
-<span class="text-right bottom-15px">{{buyer_prepay.summa}}&nbsp;.Р </span>
-<!--span class="text-right bottom-15px">{{buyer_prepay.message}}&nbsp;  </span-->
-
-</li>
-</ul>
-{%endfor%}
-
-</section>
-</section>
-
-<section class="half-to-full"> 
-<section class="operations-list">
+<section class="hidden-form" id="they-debts-list">
+<section class="main-scren-data right">
 АВАНСЫ ПОСТАВЩИКАМ(ДЕБ 60)
 {%for prov_debt in providers_debts %}
 <ul class="full-width without-padding-left">
@@ -236,11 +233,14 @@
 <span class="bold text-left">{{prov_debt.name}}</span>
 
 <span class="text-right bottom-15px">{{prov_debt.summa}}&nbsp;.Р    </span>
-<!--span class="text-right bottom-15px">{{prov_debt.message}}&nbsp;.Р   </span-->
 
 </li>
 </ul>
 {%endfor%}
+</section>
+
+
+<section class="main-scren-data left">
 ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)
 {%for prov_prepay in providers_prepay %}
 <ul class="full-width without-padding-left">
@@ -249,20 +249,50 @@
 <span class="bold text-left">{{prov_prepay.name}}</span>
 
 <span class="text-right bottom-15px">{{prov_prepay.summa}}&nbsp;.Р  </span>
-<!--span class="text-right bottom-15px">{{prov_prepay.message}}&nbsp;</span-->
 
 </li>
 </ul>
 {%endfor%}
-
-
 </section>
 </section>
 
 
 
+<section class="hidden-form" id="my-debts-list">
+<section class="main-scren-data right">
+АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)
+{%for buyer_prepay in buyers_prepay %}
+<ul class="full-width without-padding-left">
+<li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
+
+<span class="bold text-left">{{buyer_prepay.name}}</span>
+
+<span class="text-right bottom-15px">{{buyer_prepay.summa}}&nbsp;.Р </span>
+
+</li>
+</ul>
+{%endfor%}
+</section>
 
 
+<section class="main-scren-data left">
+ДОЛГИ ПОКУПАТЕЛЕЙ (Д62) 
+{%for buyer_debt in buyers_debts %}
+<ul class="full-width without-padding-left">
+<li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
+
+<span class="bold text-left">{{buyer_debt.name}}</span>
+
+<span class="text-right bottom-15px">{{buyer_debt.summa}}&nbsp;.Р   </span>
+
+</li>
+</ul>
+{%endfor%}
+</section>
+
+</section>
+
+</section>
 
 </section>
 {% endblock %}

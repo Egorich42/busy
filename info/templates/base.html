@@ -71,19 +71,62 @@
 </section>
 </footer>
 <script type="text/javascript">
-
-document.getElementByID("green").style.color = "red";
-document.getElementById("p2").style.color = "green";
-
-
 $(document).ready(function(){
-    $(".control-elem").click(function(){
-        $(".hidden-form").toggleClass("show-hide-element");
+    $("#control-elem").click(function(){
+        $("#nalog-form").toggleClass("show-hide-element");
     });
 });
 
 
+$(document).ready(function(){
+    $("#pp").click(function(){
+        $("#pp-list").toggleClass("show-hide-main");
+    });
+});
 
+$(document).ready(function(){
+    $("#naklad").click(function(){
+        $("#naklad-list").toggleClass("show-hide-main");
+    });
+});
+
+
+$(document).ready(function(){
+    $("#tn-and-acts").click(function(){
+        $("#tn-and-acts-list").toggleClass("show-hide-main");
+    });
+});
+
+
+$(document).ready(function(){
+    $("#my-debts").click(function(){
+        $("#my-debts-list").toggleClass("show-hide-main");
+    });
+});
+
+$(document).ready(function(){
+    $("#they-debts").click(function(){
+        $("#they-debts-list").toggleClass("show-hide-main");
+    });
+});
+
+$(document).ready(function(){
+    $("#doc-menu").click(function(){
+        $("#doc-list").toggleClass("show-hide-main");
+    });
+});
+
+$(document).ready(function(){
+    $("#ops").click(function(){
+        $("#ops-list").toggleClass("show-hide-main");
+    });
+});
+
+$(document).ready(function(){
+    $("#hvosty").click(function(){
+        $("#hvosty-list").toggleClass("show-hide-main");
+    });
+});
 </script>
 
 </body>

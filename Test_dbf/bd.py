@@ -10,10 +10,7 @@ import sql_commands as sq_c
 conn = sqlite3.connect('1.sqlite')
 cur = conn.cursor()
 
-dipart = 'dipartD'
-avangard = 'avangard'
-ditest = 'ditest'
-bazi = (dipart, avangard, ditest)
+bazi = ('dipartD', 'avangard', 'ditest','bus','centrupakovki','ipmatusev','mitada')
 
 location ='D:\DATA_SETS' 
 t625 = location+'\{}\SC625.DBF'
@@ -87,16 +84,15 @@ contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137
 
 
 
-def update_from_dbf(dbf_list, sq_command,db_number):
-	dbf_data = dbf_list[0]#0 - порядковый номер в функции, выводящей три листа ,три - по числу баз, соответсветнно, нужно с этим думать
+def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
+	conn = sqlite3.connect(str(db_number)+'.sqlite')
+	cur = conn.cursor()
+	dbf_data = dbf_list#0 - порядковый номер в функции, выводящей три листа ,три - по числу баз, соответсветнно, нужно с этим думать
 	sql_data = (cur.execute(sq_command).fetchall())
 	result = len(dbf_data)-len(sql_data)
-	print(result)
 	if result > 0:
 		vnos_obnovlenia = dbf_data[-result:]
-		conn = sqlite3.connect(str(db_number)+'.sqlite')
-		c = conn.cursor()
-		c.executemany(sq_c.insert_into_table, vnos_obnovlenia)
+		cur.executemany(insert_command, vnos_obnovlenia)
 		conn.commit()
 		conn.close()
 	pass
@@ -108,45 +104,9 @@ result = len(dbf_data)-len(sql_data)
 print(len(dbf_data),len(sql_data),result)	
 #c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?)', dbf_data[-result:])
 
-update_from_dbf(documenty_dlya_contragentov,contragents_docs_sql,1)
-update_from_dbf(documenty_ot_contragentov,contragents_docs_two_sql,i,'contragents_documents_two', '(?,?,?,?,?,?,?,?)')
-update_from_dbf(contragenty,contragents_sql,i,'contragents', '(?,?,?,?,?)')
+update_from_dbf(documenty_dlya_contragentov[0],contragents_docs_sql,1,sq_c.insert_into_docs)
+update_from_dbf(documenty_ot_contragentov[0],contragents_docs_two_sql,1,sq_c.insert_into_docs_two)
+update_from_dbf(contragenty[0],contragents_sql,1,sq_c.insert_into_contragents)
 
-
-
-dbf_data = documenty_dlya_contragentov[0]#0 - порядковый номер в функции, выводящей три листа ,три - по числу баз, соответсветнно, нужно с этим думать
-sql_data = (cur.execute(contragents_docs_sql).fetchall())
-result = len(dbf_data)-len(sql_data)
 
 print(len(dbf_data),len(sql_data),result)
-
-"""
-
-conn1 = sqlite3.connect('1.sqlite')
-conn2 = sqlite3.connect('2.sqlite')
-conn3 = sqlite3.connect('3.sqlite')
-c1 = conn1.cursor()
-c2 = conn2.cursor()
-c3 = conn3.cursor()
-
-
-#c1.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?)', dbf_data[-result:])
-#c1.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?)', documenty_ot_uebkov[0])
-#c1.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', contragenty[0])
-
-conn1.commit()
-conn1.close()
- 
-c2.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?)', documenty_ot_uebkov[1])
-c2.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?)', documenty_dlya_uebkov[1])
-c2.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', mrazi[1])
-conn2.commit()
-conn2.close()
-
-
-c3.executemany('INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?)', documenty_ot_uebkov[2])
-c3.executemany('INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?)', documenty_dlya_uebkov[2])
-c3.executemany('INSERT INTO contragents VALUES (?,?,?,?,?)', mrazi[2])
-conn3.commit()
-conn3.close()
-"""
