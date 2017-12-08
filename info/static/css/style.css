@@ -20,7 +20,8 @@ a:visited{color: #2D2D2D;}
 .normal-font-24{font-size: 24px;}
 .normal-font-21{font-size: 21px;}
 .normal-font-20{font-size: 20px;}
-.font-18{font-size: 20px;}
+.font-18{font-size: 18px;}
+.font-16{font-size: 16px;}
 .font-14{font-size: 14px;}
 .font-12{font-size: 12px;}
 .grey-font{color: #998383;}
@@ -37,8 +38,12 @@ display: flex;}
 .show-hide-main{
 display: block;}
 
+.margin-top-15,.margin-top-15 ul li,.margin-top-15 li{margin-top: 15px;}
+
 /*------------------BLOCK---------------------*/
 .key{width: 25px; margin: 0px 10px;}
+
+.pp-name-agent{width: 70%; padding-right: 10%;}
 
 .side-menu li{color:#998383;}
 
@@ -147,7 +152,7 @@ email - e.g.hutter@gmail.com
 @media screen and (max-width: 720px) {
 .mob-show{display: block; width: 90px;}
 
-
+.main-scren-data{width: 100%; }
 
 .text-left-to-center,.text-right-to-center{text-align: center;}
 
