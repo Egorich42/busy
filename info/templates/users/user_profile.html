@@ -22,7 +22,7 @@
 <ul class="without-padding-left">
 
 <li class="bold" id="ops">Операции</li>
-<li class="hidden-form " id="ops-list">
+<li class="hidden-form side-menu" id="ops-list">
 <ul>
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}/akt_sverki">акт сверки</a></li>
 <li class="bold"><a href="/users/{{user.id}}/{{user.username}}/hvosty">хвосты за период</a></li>
@@ -34,7 +34,7 @@
 <li class="bold" id="doc-menu">Документы</li>
 
 
-<li class="hidden-form" id="doc-list">
+<li class="hidden-form side-menu" id="doc-list">
 <ul>
 <li class="bold" id ="pp">платежки</li>
 <li class="bold" id ="naklad">накладные</li>
@@ -45,7 +45,7 @@
 
 
 <li class="bold" id="hvosty">Хвосты</li>
-<li class="hidden-form" id="hvosty-list">
+<li class="hidden-form side-menu" id="hvosty-list">
 <ul>
 <li class="bold" id="my-debts">мои покупатели</li>
 <li class="bold" id = "they-debts">мои поставщики</li>
@@ -54,7 +54,7 @@
 
 </ul>
 {% if user.is_authenticated %}
-<a href="/users/logout" class="btn"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
+<a href="/users/logout" class="mob-hide"><img src="{%static "/icons/key-red-hor.png" %}" class="key">выйти</a>
 {%else%}
 НИЧЕГО
 {% endif %}	

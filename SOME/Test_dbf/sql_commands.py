@@ -20,7 +20,7 @@ select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
 
 insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?);"
 insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?);"
-insert_into_contragents ="INSERT INTO contragents VALUES (?,?,?,?,?,?,?,?);"
+insert_into_contragents ="INSERT INTO contragents VALUES (?,?,?,?,?);"
 
 select_docs = """
 SELECT * FROM contragents_documents

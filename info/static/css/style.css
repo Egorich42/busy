@@ -28,6 +28,7 @@ a:visited{color: #2D2D2D;}
 
 .red-text{color: red;}
 .green-text{color: green;}
+
 .hidden-form{
 display: none;
 }
@@ -37,6 +38,8 @@ display: flex;}
 
 .show-hide-main{
 display: block;}
+
+
 
 .margin-top-15,.margin-top-15 ul li,.margin-top-15 li{margin-top: 15px;}
 
@@ -110,16 +113,6 @@ display: block;}
 .horizontal-content-center{justify-content: center;}
 .ravnomerno{justify-content:space-between;}
 
-2379GhZ653
-2379Ghz653
-GNFbBH880
-Egorich42
-
-
-Логин суперпользователя - Egorich42
-email - e.g.hutter@gmail.com
-пароль - KLM475aot 
-
 
 .operations-list{padding: 0% 20%; }
 .exit-block{margin-top: 600px;}
@@ -150,9 +143,20 @@ email - e.g.hutter@gmail.com
 
 
 @media screen and (max-width: 720px) {
-.mob-show{display: block; width: 90px;}
+.mob-show{display: block;}
 
-.main-scren-data{width: 100%; }
+.user-profile{width: 100%;}
+
+.side-paddings-20{padding: 0% 5%;}
+
+
+.side-menu ul li{list-style-type: square; margin-left: 20px;}
+
+.hiden-top-menu{display: none}
+.show-top-menu{display: flex; flex-direction: column;}
+
+
+.main-scren-data{width: 100%; margin-bottom: 100px }
 
 .text-left-to-center,.text-right-to-center{text-align: center;}
 
@@ -181,22 +185,27 @@ ul{padding: 0px;margin: 0px;}
 .operations-list{padding: 0%; }
 
 .mob-hide{display: none;}
-.mob-show{display: block; width: 90px;}
 
 }
 @media screen and (max-width: 480px) {
-.mob-show{display: block; width: 60px;}
 
 }
 
 @media screen and (max-width: 360px) {
-.mob-show{display: block; width: 60px;}
 
 }
 
 
 
+2379GhZ653
+2379Ghz653
+GNFbBH880
+Egorich42
 
+
+Логин суперпользователя - Egorich42
+email - e.g.hutter@gmail.com
+пароль - KLM475aot 
 
 
 orange - #F7A416, #FD761F, #FF4400

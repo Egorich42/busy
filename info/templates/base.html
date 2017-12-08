@@ -28,27 +28,43 @@
 
 
 <nav class="full-width">
-<ul class="flex">
+
+<span class="mob-show" id="top-menu">показать</span>
+
+<ul class="flex hiden-top-menu margin-top: 15px;" id="top-menu-list">
 <li>
 <a href="/">
 <img src="{%static "/icons/logo-busy-150px.png" %}" alt="background" title="background" class="mob-hide">
-<img src="{%static "/icons/1.png" %}" alt="background" title="background" class="mob-show">
+<span class="mob-show">главная</span>
 </a>
 </li>
+
 <li><a href="#">контакты</a></li>
+
 <li>
 {% if user.is_authenticated %}
 <a href="/users/{{user.id}}/{{user.first_name}}">
-<span class="mob-hide">мой кабинет</span>
-<img src="{%static "/icons/key-green.png" %}" class="key mob-show">
+<span >мой кабинет</span>
 </a>
 {% else %}
 <a href="/users/login"><img src="static/media/icons/key-red.png"  class="key">Войти</a> 
 {% endif %}	
 </li>
+
+{% if user.is_authenticated %}
+<a href="/users/logout" class="mob-show bold">выйти</a>
+{%else%}
+НИЧЕГО
+{% endif %} 
+
 </ul>
 </nav>
+
+
+
 </header>
+
+
 
 <section class="main flex column vertical-content-center">
 {% block content %}{% endblock %}	
@@ -71,6 +87,7 @@
 </section>
 </footer>
 <script type="text/javascript">
+
 $(document).ready(function(){
     $("#control-elem").click(function(){
         $("#nalog-form").toggleClass("show-hide-element");
@@ -127,6 +144,15 @@ $(document).ready(function(){
         $("#hvosty-list").toggleClass("show-hide-main");
     });
 });
+
+
+$(document).ready(function(){
+    $("#top-menu").click(function(){
+        $("#top-menu-list").toggleClass("show-top-menu");
+    });
+});
+
+
 </script>
 
 </body>

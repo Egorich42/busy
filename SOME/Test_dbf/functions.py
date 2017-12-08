@@ -12,8 +12,6 @@ import win32com.client
 import sql_commands as sq_c
 import variables as var
 
-conn = sqlite3.connect('1.sqlite')
-cur = conn.cursor()
 
 def create_list_of_table_values(request_text, massive_from_table):
     request_name = request_text.fetchall()
@@ -197,7 +195,6 @@ def get_hvosty_lists(cursor,data_start, data_end):
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
     pass
 
-get_hvosty_lists(cur,data_start, data_end)
 
 
 
