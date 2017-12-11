@@ -50,10 +50,17 @@ all_t493 = [get_data_from_dbf(t493.format(i)) for i in bazi]
 all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
 
 
-#SC245 - POSTAVKI
+#SC245 - товары, похоже
+#SC173 - DOGOVORA
+#SC199 - вероятно, это покупки
+#SC309 - 
+#SC368 - список сотрудников
+#SC505 - спиок банков
+#SC591 - список профессий
+#DH1294, DH1310 - узнать, что за оно
 
 def documenty_huevy(numar, *args):
-	dot = [0,1,2]
+	dot = range(len(bazi))
 	fiat = []
 	for t in dot:
 		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7])]
@@ -63,7 +70,7 @@ def documenty_huevy(numar, *args):
 
 
 def contragents_list(numar, *args):
-	dot = [0,1,2]
+	dot = range(len(bazi))
 	fiat = []
 	for t in dot:
 		documents_table = [get_data_mudaki(numar[t], args[0], args[1], args[2],args[3], args[4])]
@@ -99,10 +106,3 @@ def full_update(list_number, base_number):
 	update_from_dbf(contragenty[list_number],sq_c.select_contragents,base_number,sq_c.insert_into_contragents)
 	pass
 
-full_update(0,1)
-full_update(1,2)
-full_update(2,3)
-full_update(3,4)
-full_update(4,5)
-full_update(5,6)
-full_update(6,7)

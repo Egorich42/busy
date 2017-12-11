@@ -19,6 +19,7 @@
 <meta property="og:image" content="/media/s-logo.png"/>
 <link rel="shortcut icon" href="/media/favicon.ico">
 <link rel="stylesheet" href="{% static "/css/style.css" %}">
+<script src="{% static "/JS/script.js" %}"></script>
 <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
@@ -54,7 +55,6 @@
 {% if user.is_authenticated %}
 <a href="/users/logout" class="mob-show bold">выйти</a>
 {%else%}
-НИЧЕГО
 {% endif %} 
 
 </ul>
@@ -88,65 +88,58 @@
 </footer>
 <script type="text/javascript">
 
+
+function toggle_elem(elem_name) {
+    $(elem_name).toggleClass("show-hide-main");
+}
+
 $(document).ready(function(){
+
     $("#control-elem").click(function(){
         $("#nalog-form").toggleClass("show-hide-element");
     });
-});
 
 
-$(document).ready(function(){
     $("#pp").click(function(){
-        $("#pp-list").toggleClass("show-hide-main");
+        toggle_elem("#pp-list")
     });
-});
 
-$(document).ready(function(){
+
     $("#naklad").click(function(){
-        $("#naklad-list").toggleClass("show-hide-main");
+        toggle_elem("#naklad-list");
     });
-});
 
 
-$(document).ready(function(){
     $("#tn-and-acts").click(function(){
-        $("#tn-and-acts-list").toggleClass("show-hide-main");
+        toggle_elem("#tn-and-acts-list");
     });
-});
 
 
-$(document).ready(function(){
     $("#my-debts").click(function(){
-        $("#my-debts-list").toggleClass("show-hide-main");
+        toggle_elem("#my-debts-list");
     });
-});
 
-$(document).ready(function(){
+
     $("#they-debts").click(function(){
-        $("#they-debts-list").toggleClass("show-hide-main");
+        toggle_elem("#they-debts-list");
     });
-});
 
-$(document).ready(function(){
+
     $("#doc-menu").click(function(){
-        $("#doc-list").toggleClass("show-hide-main");
+        toggle_elem("#doc-list");
     });
-});
 
-$(document).ready(function(){
+
     $("#ops").click(function(){
-        $("#ops-list").toggleClass("show-hide-main");
+        toggle_elem("#ops-list");
     });
-});
 
-$(document).ready(function(){
+
     $("#hvosty").click(function(){
-        $("#hvosty-list").toggleClass("show-hide-main");
+        toggle_elem("#hvosty-list");
     });
-});
 
 
-$(document).ready(function(){
     $("#top-menu").click(function(){
         $("#top-menu-list").toggleClass("show-top-menu");
     });

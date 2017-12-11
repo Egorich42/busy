@@ -10,8 +10,17 @@ pp_providers =  "contragents_documents.doc_type = '0' AND contragents_documents.
 tn_buyers = "contragents_documents_two.doc_type = '0' AND contragents_documents_two.deleted !='*'"
 pp_buyers = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*'"
 
+select_contragents = "SELECT * FROM contragents;"
 select_all_documents="SELECT * FROM contragents_documents;"
 select_all_documents_two="SELECT * FROM contragents_documents_two;"
+
+select_contragents_identificator = "SELECT id FROM contragents WHERE contragents.deleted != '*';"
+select_id_docs = "SELECT parent FROM contragents_documents;"
+select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
+
+insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?);"
+insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?);"
+insert_into_contragents ="INSERT INTO contragents VALUES (?,?,?,?,?);"
 
 
 select_every_docs = """

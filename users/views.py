@@ -10,8 +10,8 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
-import sqlite3 
-
+import sqlite3
+from . import update as upd
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
@@ -45,6 +45,8 @@ def show_user_profile(request,id, **kwargs):
         base_name = str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
+        upd.full_update(user.id-1,user.id)
+
         
         taxes_system = user.client.nalog_system
 
