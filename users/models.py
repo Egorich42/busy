@@ -16,7 +16,9 @@ from collections import defaultdict
 from operator import itemgetter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
-
+import win32com.client
+import os
+import xlwt
 
 def create_list_of_table_values(request_text, massive_from_table):
     request_name = request_text.fetchall()
@@ -163,6 +165,14 @@ def get_hvosty_lists(cursor,data_start, data_end):
  
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
     pass
+
+
+
+
+
+
+
+
 
 
 

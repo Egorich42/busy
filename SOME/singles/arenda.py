@@ -9,11 +9,8 @@ Excel = win32com.client.Dispatch("Excel.Application")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-
-
 first_list = Excel.Workbooks.Open(BASE_DIR+'transkom_in.xls')
 first_dataset = first_list.ActiveSheet
-
 
 
 company_list = ('united', 'mitada','bona_kauza')
