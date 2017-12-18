@@ -18,10 +18,10 @@ import os
 import xlwt
 
 
-Excel = win32com.client.Dispatch("Excel.Application")
+#Excel = win32com.client.Dispatch("Excel.Application")
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
-
+#BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
+"""
 def import_into_excel(document_name, names_list, numbers_list):
     book = xlwt.Workbook('utf8')
     sheet = book.add_sheet('отчет')
@@ -48,6 +48,8 @@ def import_into_excel(document_name, names_list, numbers_list):
     active_doc.Close()
     Excel.Quit()
     pass
+"""
+
 #python manage.py version
 # Функция для установки сессионного ключа.
 # По нему django будет определять, выполнил ли вход пользователь.
@@ -82,7 +84,7 @@ def show_user_profile(request,id, **kwargs):
         base_name = str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
-        upd.full_update(user.id-1,user.id)
+#        upd.full_update(user.id-1,user.id)
 
         
         taxes_system = user.client.nalog_system
@@ -102,7 +104,7 @@ def show_user_profile(request,id, **kwargs):
         buyers_debts = get_hvosty_lists(cur,'2016-06-30',str(var.today))[2]
         buyers_prepay = get_hvosty_lists(cur,'2016-06-30',str(var.today))[3]
 
-        import_into_excel('otchet.xls',['gg','ggg','dgdgdg'], ['gg','ggg','dgdgdg'])
+#        import_into_excel('otchet.xls',['gg','ggg','dgdgdg'], ['gg','ggg','dgdgdg'])
 
         if request.method == 'POST':
             fin_states = TimePeriodForm(request.POST)     

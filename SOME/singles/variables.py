@@ -19,3 +19,16 @@ third_kvartal_start= date(this_year,7,1)
 four_kvartal_start = date(this_year,10,1)
 
 taxes = (('УСН', 'усн.'),('НДС', 'ндс.'),)
+
+def current_kvartal():
+    if today<first_kvartal_end:
+        cur_kvart = first_kvartal_start
+    if today > first_kvartal_end and today < second_kvartal_end:
+        cur_kvart = second_kvartal_start
+    if today >third_kvartal_start and today <third_kvartal_end:
+        cur_kvart = third_kvartal_start
+    if today > four_kvartal_start and today < four_kvartal_end:
+        cur_kvart = four_kvartal_start    
+        pass
+    return cur_kvart
+    pass 
