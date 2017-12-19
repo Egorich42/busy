@@ -135,6 +135,8 @@ def show_user_profile(request,id, **kwargs):
 def show_sverka(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
+ #       upd.full_update(user.id-1,user.id)
+
 
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()

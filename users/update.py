@@ -11,12 +11,10 @@ bazi = ('dipartD', 'avangard', 'ditest','bus','centrupakovki','ipmatusev','mitad
 
 location ='D:\DATA_SETS' 
 t625 = location+'\{}\SC625.DBF'
-t556 = location+'\{}\SC556.DBF'
-t497 = location+'\{}\SC497.DBF'
 t493 = location+'\{}\SC493.DBF'
 t167 = location+'\{}\SC167.DBF'
 
-lyst = (t625,t556,t497,t493,t167)
+lyst = (t625,t493,t167)
 
 def get_data_from_dbf(table_name):
 	dataset = list(DBF(table_name, encoding='iso-8859-1'))
@@ -27,7 +25,7 @@ def get_data_from_dbf(table_name):
 def get_data(table_name, *args):
 	values_list = []
 	for l in table_name:
-		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", ""),l[args[7]].replace(" ", "")]]
+		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", ""),l[args[7]].replace(" ", ""),l[args[8]]]]
 	return values_list	
 	pass
 
@@ -48,7 +46,7 @@ def documenty_list(numar, *args):
 	dot = range(len(bazi))
 	fiat = []
 	for t in dot:
-		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7])]
+		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7],args[8])]
 		fiat += [ti for ti in documents_table]
 	return fiat	
 	pass
@@ -64,8 +62,8 @@ def contragents_list(numar, *args):
 	pass
 
 
-documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP')
-documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP')
+documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615')
+documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP15435')
 contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 

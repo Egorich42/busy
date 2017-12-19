@@ -27,10 +27,9 @@ def get_data_from_dbf(table_name):
 def get_data(table_name, *args):
 	values_list = []
 	for l in table_name:
-		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", ""),l[args[7]].replace(" ", "")]]
+		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", ""),l[args[7]].replace(" ", ""),str(l[args[8]]).replace(" ", "")]]
 	return values_list	
 	pass
-
 
 def get_data_mudaki(table_name, *args):
 	values_list = []
@@ -59,15 +58,14 @@ all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
 #SC591 - список профессий
 #DH1294, DH1310 - узнать, что за оно
 
-def documenty_huevy(numar, *args):
+def documenty_list(numar, *args):
 	dot = range(len(bazi))
 	fiat = []
 	for t in dot:
-		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7])]
+		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7],args[8])]
 		fiat += [ti for ti in documents_table]
 	return fiat	
 	pass
-
 
 def contragents_list(numar, *args):
 	dot = range(len(bazi))
@@ -79,10 +77,9 @@ def contragents_list(numar, *args):
 	pass
 
 
-documenty_dlya_contragentov= documenty_huevy(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP')
-documenty_ot_contragentov = documenty_huevy(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP')
+documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615')
+documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482')
 contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
-
 
 def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
 	conn = sqlite3.connect(str(db_number)+'.sqlite')
@@ -106,3 +103,6 @@ def full_update(list_number, base_number):
 	update_from_dbf(contragenty[list_number],sq_c.select_contragents,base_number,sq_c.insert_into_contragents)
 	pass
 
+
+for i in [1,2,3,4,5,6,7]:
+	full_update(i-1,i)
