@@ -7,7 +7,7 @@ from dbfread import DBF
 import os
 import sql_commands as sq_c
 
-bazi = ('dipartD', 'avangard', 'ditest','bus','centrupakovki','ipmatusev','mitada')
+bazi = ('dipartD', 'avangard', 'ditest','bus','centrupakovki','ipmatusev','mitada', 'smdpark','komikHS','himbaza','belwestagro')
 
 location ='D:\DATA_SETS' 
 t625 = location+'\{}\SC625.DBF'
@@ -57,6 +57,10 @@ all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
 #SC505 - спиок банков
 #SC591 - список профессий
 #DH1294, DH1310 - узнать, что за оно
+
+
+#Sc 38349, 3745437440
+
 
 def documenty_list(numar, *args):
 	dot = range(len(bazi))

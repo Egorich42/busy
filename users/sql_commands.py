@@ -8,8 +8,9 @@ tn_providers_no_del = "contragents_documents.doc_type != '0' AND contragents_doc
 pp_providers =  "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.act_detector != '3'"
 
 tn_buyers = "contragents_documents_two.doc_type = '0' AND contragents_documents_two.deleted !='*'"
-pp_buyers = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector !='S5B'"
+pp_buyers = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector !='S5B' AND contragents_documents_two.pp_detector !='2MM'"
 pp_buyers_vozvr = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector =='S5B'"
+pp_buyers_dpd = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector =='2MM'"
 
 
 

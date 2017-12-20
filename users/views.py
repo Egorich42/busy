@@ -99,10 +99,10 @@ def show_user_profile(request,id, **kwargs):
         all_providers_docs=get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request)
 
         
-        providers_debts = get_hvosty_lists(cur,'2016-06-30',str(var.today))[0]
-        providers_prepay = get_hvosty_lists(cur,'2016-06-30',str(var.today))[1]
-        buyers_debts = get_hvosty_lists(cur,'2016-06-30',str(var.today))[2]
-        buyers_prepay = get_hvosty_lists(cur,'2016-06-30',str(var.today))[3]
+        providers_debts = get_hvosty_lists(cur,'2015-06-30',str(var.today))[0]
+        providers_prepay = get_hvosty_lists(cur,'2015-06-30',str(var.today))[1]
+        buyers_debts = get_hvosty_lists(cur,'2015-06-30',str(var.today))[2]
+        buyers_prepay = get_hvosty_lists(cur,'2015-06-30',str(var.today))[3]
 
 #        import_into_excel('otchet.xls',['gg','ggg','dgdgdg'], ['gg','ggg','dgdgdg'])
 
