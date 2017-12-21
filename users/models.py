@@ -97,29 +97,33 @@ def transform_sql(select_command,docs,pays,cursor,contragent,data_start,data_end
 
 def get_sverka(cursor,contragent,data_start,data_end):
     buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cursor,contragent,data_start,data_end)
-    buyers_docs_vozvr = transform_sql(sq_c.select_documents_to_buyers,sq_c.pp_buyers_vozvr, sq_c.pp_buyers,cursor,contragent,data_start,data_end)
+    buyers_docs_vozvr = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers_vozvr,cursor,contragent,data_start,data_end)
 
     providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,contragent,data_start,data_end)
     providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,contragent,data_start,data_end)
 
+    providers_docs_vozvr = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers_vozvr,cursor,contragent,data_start,data_end)
+
     contragent_name = cursor.execute(sq_c.select_contragent_name.format("'"+str(contragent)+"'")).fetchall()[0]
 
-    prov_list = providers_docs_nodel[0][0]+providers_docs[0][0]+buyers_docs[0][0]+buyers_docs_vozvr[0][0]
-    buyers_list = buyers_docs[0][1]+providers_docs[0][1]+providers_docs_nodel[0][1]
-
+    prov_list = providers_docs_nodel[0][0]+providers_docs[0][0]+buyers_docs[0][0]+buyers_docs_vozvr[0][0]+providers_docs_vozvr[0][1]
+    buyers_list = buyers_docs[0][1]+providers_docs[0][1]+providers_docs_nodel[0][0]
     
-    suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]
+    suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]+providers_docs_vozvr[2]
     suma_pp_prov = providers_docs[2]+buyers_docs_vozvr[1]
 
     suma_tn_buy = buyers_docs[1]
     suma_pp_buy = buyers_docs[2]
-#    print(buyers_docs_vozvr[1])
     
-    inner_summ = suma_tn_prov+suma_pp_buy
-    outer_summ = suma_tn_buy+suma_pp_prov
+    
+    inner_summ = round(suma_tn_prov+suma_pp_buy,2)
+    outer_summ = round(suma_tn_buy+suma_pp_prov,2)  
+
     result = inner_summ-outer_summ
 
-    return (contragent_name,outer_summ,inner_summ,result,prov_list,buyers_list) 
+    #PROVIDER DOC NODEL - с ними работал
+
+    return (contragent_name,outer_summ,inner_summ,round(result,2),prov_list,buyers_list) 
     pass
 
 
@@ -140,8 +144,9 @@ def get_hvosty_lists(cursor,data_start, data_end):
 
         providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,altair,data_start,data_end)
         providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,altair,data_start,data_end)
-        
-        suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]
+        providers_docs_vozvr = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers_vozvr,cursor,altair,data_start,data_end)
+
+        suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]+providers_docs_vozvr[2]
         suma_pp_prov = providers_docs[2]+buyers_docs_vozvr[1]
         
 

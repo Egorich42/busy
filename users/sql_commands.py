@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*
 import sqlite3 
 
-tn_providers =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*' AND contragents_documents.act_detector != '3'"
+tn_providers =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*'"
 tn_providers_no_del = "contragents_documents.doc_type != '0' AND contragents_documents.test_del == '10'"
 
-pp_providers =  "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.act_detector != '3'"
-pp_providers_vozvr = "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.act_detector != '3'"
+pp_providers =  "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.act_detector != '3' AND contragents_documents.pay_identif != 'S5C'"
+pp_providers_vozvr = "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.pay_identif == 'S5C'"
 
 
 tn_buyers = "contragents_documents_two.doc_type = '0' AND contragents_documents_two.deleted !='*'"
@@ -26,8 +26,8 @@ select_contragents_identificator = "SELECT id FROM contragents WHERE contragents
 select_id_docs = "SELECT parent FROM contragents_documents;"
 select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
 
-insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?);"
-insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?);"
+insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?);"
+insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?);"
 insert_into_contragents ="INSERT INTO contragents VALUES (?,?,?,?,?);"
 
 

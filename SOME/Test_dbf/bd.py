@@ -27,7 +27,7 @@ def get_data_from_dbf(table_name):
 def get_data(table_name, *args):
 	values_list = []
 	for l in table_name:
-		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", ""),l[args[7]].replace(" ", ""),str(l[args[8]]).replace(" ", "")]]
+		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),l[args[1]].replace(" ", ""),l[args[2]].replace(" ", "") ,l[args[3]].encode('latin1').decode('cp1251'), l[args[4]],l[args[5]], l[args[6]].replace(" ", ""),l[args[7]].replace(" ", ""),str(l[args[8]]).replace(" ", ""),str(l[args[9]]).replace(" ", "")]]
 	return values_list	
 	pass
 
@@ -66,7 +66,7 @@ def documenty_list(numar, *args):
 	dot = range(len(bazi))
 	fiat = []
 	for t in dot:
-		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7],args[8])]
+		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],args[5], args[6],args[7],args[8],args[9])]
 		fiat += [ti for ti in documents_table]
 	return fiat	
 	pass
@@ -81,8 +81,8 @@ def contragents_list(numar, *args):
 	pass
 
 
-documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615')
-documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482')
+documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619')
+documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480')
 contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
