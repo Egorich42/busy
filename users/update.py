@@ -7,7 +7,7 @@ from dbfread import DBF
 import os
 from .models import *
 
-bazi = ('dipartD', 'avangard', 'ditest','bus','centrupakovki','ipmatusev','mitada', 'smdpark','komikHS','himbaza','ertex','belwestagro')
+bazi = ('dipartD', 'avangard', 'ditest','bus','centrupakovki','ipmatusev','mitada', 'smdpark','komikHS','himbaza','belwestagro')
 
 location ='D:\DATA_SETS' 
 t625 = location+'\{}\SC625.DBF'
