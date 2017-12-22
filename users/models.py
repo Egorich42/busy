@@ -16,6 +16,7 @@ from collections import defaultdict
 from operator import itemgetter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
+
 import win32com.client
 import os
 import xlwt
@@ -101,7 +102,6 @@ def get_sverka(cursor,contragent,data_start,data_end):
 
     providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,contragent,data_start,data_end)
     providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,contragent,data_start,data_end)
-
     providers_docs_vozvr = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers_vozvr,cursor,contragent,data_start,data_end)
 
     contragent_name = cursor.execute(sq_c.select_contragent_name.format("'"+str(contragent)+"'")).fetchall()[0]
