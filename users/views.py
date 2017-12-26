@@ -60,6 +60,7 @@ class LoginFormView(FormView):
     # В случае успеха перенаправим на главную.
     success_url = "/"
 
+
     def form_valid(self, form):
         # Получаем объект пользователя на основе введённых в форму данных.
         self.user = form.get_user()
@@ -115,7 +116,8 @@ def show_user_profile(request,id, **kwargs):
                 period_fin_states =curent_finace_states(start_data, ending_data,cur,taxes_system)
 
             return render(request, 'users/fin_states.html',
-                {'start_data':start_data,'ending_data':ending_data,'period_fin_states':str(period_fin_states[0]),'tax_system':period_fin_states[1]})   
+                {'start_data':start_data,'ending_data':ending_data,
+                'period_fin_states':str(period_fin_states[0]),'tax_system':period_fin_states[1]})   
 
         conn.commit()
         conn.close()  
@@ -123,7 +125,8 @@ def show_user_profile(request,id, **kwargs):
         fin_states = TimePeriodForm()
  
         return render(request, 'users/user_profile.html',
-        {'all_pp_buyers':all_pp_buyers,'all_buyers_docs':all_buyers_docs,'all_pp_providers':all_pp_providers,'all_providers_docs':all_providers_docs,'month_fin_states':month_fin_states[0],
+        {'all_pp_buyers':all_pp_buyers,'all_buyers_docs':all_buyers_docs,'all_pp_providers':all_pp_providers,
+        'all_providers_docs':all_providers_docs,'month_fin_states':month_fin_states[0],
           'square_fin_states':square_fin_states[0],'fin_states':fin_states,'tax_system':month_fin_states[1],
           'providers_debts':providers_debts,'providers_prepay':providers_prepay,
                 'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay,})
@@ -149,7 +152,9 @@ def show_sverka(request,id, **kwargs):
                 start_data = str(sverka_form.cleaned_data['start_date'])
                 ending_data = str(sverka_form.cleaned_data['end_date'])
                 
-                resultaty = get_sverka(cur,contragent_name,start_data,ending_data)    
+                resultaty = get_sverka(cur,contragent_name,start_data,ending_data)
+                resultaty_past = get_sverka(cur,contragent_name,'2016-06-30',start_data)
+                past_result = resultaty_past[3]
 
                 contr_name = resultaty[0]
                 outer_summ = resultaty[1]
@@ -160,7 +165,8 @@ def show_sverka(request,id, **kwargs):
                 
                 return render(request, 'users/act_sverki/sverka_result.html',{'all_pp':outer_docs_list,
                     'all_tn':inner_docs_list,'contr_name':contr_name,'start_data':start_data,
-                    'ending_data':ending_data,'summa_sverki':result,'inner_summ':inner_summ,'outer_summ':outer_summ })
+                    'ending_data':ending_data,'summa_sverki':result,'inner_summ':inner_summ,
+                    'outer_summ':outer_summ,'past_result':past_result })
 
         sverka_form = ActSverkiForm()
 
@@ -194,7 +200,8 @@ def show_hvosty(request,id, **kwargs):
                 
             return render(request, 'users/hvosty/hvosty_result.html',
                 {'providers_debts':providers_debts,'providers_prepay':providers_prepay,
-                'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay, 'start_data':start_data,'ending_data':ending_data })   
+                'buyers_debts':buyers_debts, 'buyers_prepay':buyers_prepay, 
+                'start_data':start_data,'ending_data':ending_data })   
 
         hvosty_forma = TimePeriodForm()
 
