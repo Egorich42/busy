@@ -89,8 +89,8 @@ contragent = '1Y'
 
 
 
-def transform_sql(select_comand,docs,pays,cursor,contragent):
-    select_documents = [select_comand.format(doc, "'"+str(contragent)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (docs,pays)]
+def transform_sql(select_comamnd,docs,pays,cursor,contragent):
+    select_documents = [select_comamnd.format(doc, "'"+str(contragent)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (docs,pays)]
     documents_list = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents]
     
     summa_tn = sum([i['summ']for i in documents_list[0]])
