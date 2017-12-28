@@ -15,8 +15,12 @@ t556 = location+'\{}\SC556.DBF'
 t497 = location+'\{}\SC497.DBF'
 t493 = location+'\{}\SC493.DBF'
 t167 = location+'\{}\SC167.DBF'
+t38349 = location+'\{}\SC38349.DBF'
+t37440 = location+'\{}\SC37440.DBF'
+t37454 = location+'\{}\SC37454.DBF'
 
-lyst = (t625,t556,t497,t493,t167)
+
+#lyst = (t625,t556,t497,t493,t167,t38349,t37440,t37454)
 
 def get_data_from_dbf(table_name):
 	dataset = list(DBF(table_name, encoding='iso-8859-1'))
@@ -49,6 +53,11 @@ all_t493 = [get_data_from_dbf(t493.format(i)) for i in bazi]
 all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
 
 
+all_t38349 = [get_data_from_dbf(t38349.format(i)) for i in bazi]
+all_t37440 = [get_data_from_dbf(t37440.format(i)) for i in bazi] 
+all_t37454 = [get_data_from_dbf(t37454.format(i)) for i in bazi]
+
+
 #SC245 - товары, похоже
 #SC173 - DOGOVORA
 #SC199 - вероятно, это покупки
@@ -60,7 +69,7 @@ all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
 
 
 #Sc 38349, 3745437440
-
+#18687   SC22163  SC 245
 
 def documenty_list(numar, *args):
 	dot = range(len(bazi))
@@ -83,6 +92,10 @@ def contragents_list(numar, *args):
 
 documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619')
 documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480')
+
+#eschf_inner = documenty_list(all_t37440,'ID','DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480')
+
+
 contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
