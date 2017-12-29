@@ -10,18 +10,14 @@ import sql_commands as sq_c
 import variables as var
 
 
-
-
 conn = sqlite3.connect('avangard.sqlite')
 cur = conn.cursor()
-
-
 
 Excel = win32com.client.Dispatch("Excel.Application")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-first_list = Excel.Workbooks.Open(BASE_DIR+'avangard_in.xls')
+first_list = Excel.Workbooks.Open(BASE_DIR+'avangard_in_min.xls')
 first_dataset = first_list.ActiveSheet
 
 
@@ -67,8 +63,6 @@ def get_docs_lists(cursor,data_start, data_end):
         providers_docs = get_from_base(sq_c.select_documents_to_buyers,sq_c.tn_buyers,cursor,altair,data_start,data_end)
         if providers_docs != []:
         	docum += [providers_docs]
-
-
     return docum
     pass
 
@@ -103,27 +97,45 @@ full_summ = excol_to_list(first_dataset,"AP")
 def create_eschf_list():
 	spisok_eschf = []
 	for i in range(len(country_code)):
-		eschf = {'country_code':country_code[i],'unp':provider_unp[i],'contragent_name':provider_name[i],
+		eschf = {'country_code':country_code[i],'unp':int(provider_unp[i]),'contragent_name':provider_name[i],
 		'numb':doc_number[i],'doc_type':doc_type[i], 'summ':full_summ[i], 
-		'summ_without_nds':summ_without_nds[i], 'nds':summ_nds[i],'doc_date':doc_date[i]}
+		'summ_without_nds':summ_without_nds[i], 'nds':summ_nds[i],'doc_date':str(doc_date[i])}
 		spisok_eschf +=[eschf]
-	return	spisok_eschf 
+	return spisok_eschf 
 
-create_eschf_list()
-print(create_eschf_list())
 
 
 a = get_docs_lists(cur,'2017-11-01','2017-11-30')
 
 #!!!!!!!!!!!!!!!!!!!https://ru.stackoverflow.com/questions/628315/%D0%9A%D0%B0%D0%BA-%D0%BE%D0%B1%D1%8A%D0%B5%D0%B4%D0%B8%D0%BD%D0%B8%D1%82%D1%8C-%D0%BD%D0%B5%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%D1%80%D0%B5%D0%B9/628329
-def all_to_one():
+#https://habrahabr.ru/post/85459/
+#https://ru.stackoverflow.com/questions/427942/%D0%A1%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-2-%D1%83%D1%85-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-python
+#https://ru.stackoverflow.com/questions/427942/%D0%A1%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-2-%D1%83%D1%85-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-python
+
+def create_tn_and_acts_list():
 	vse=[]
 	for i in a:
 		vse =vse+i
-
 	return vse
 
 
-all_to_one()
-print(all_to_one())
 
+def dif_list():
+	spisok_edin = []
+	not_in_base =[]
+	not_in_portal = []
+
+	for i in create_eschf_list():
+		for k in range(len(create_tn_and_acts_list())):
+			if create_tn_and_acts_list()[k]['summ'] == i['summ']:
+				spisok_edin += ((i['contragent_name'],i['unp'],i['summ'],i['summ_without_nds'],i['nds']))
+	return spisok_edin
+
+dif_list()
+
+print(type(create_tn_and_acts_list()))
+print(type(dif_list()))
+
+
+Res = [x for x in dif_list() if x in create_tn_and_acts_list()]
+print(Res)
