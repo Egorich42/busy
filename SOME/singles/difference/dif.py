@@ -54,6 +54,7 @@ def get_from_base(select_command,doc,cursor,contragent,data_start,data_end):
     select_documents = select_command.format(doc, "'"+str(contragent)+"'", "'"+data_start+"'","'"+data_end+"'") 
     documents_list = var.create_list_of_table_values(cursor.execute(select_documents),cursor.description)
     return documents_list
+    pass
     
 
 
@@ -63,13 +64,13 @@ def get_docs_lists(cursor,data_start, data_end):
     contargents_id_list = [i['id'] for i in contragents_id]
     
     for altair in contargents_id_list:
-
         providers_docs = get_from_base(sq_c.select_documents_to_buyers,sq_c.tn_buyers,cursor,altair,data_start,data_end)
         if providers_docs != []:
         	docum += [providers_docs]
 
 
     return docum
+    pass
 
 
 country_code = excol_to_list(first_dataset,"A")
@@ -97,21 +98,32 @@ summ_nds = excol_to_list(first_dataset,"AO")
 full_summ = excol_to_list(first_dataset,"AP")
 
 
-for i in range(4):
-	nn = {'code':country_code[i],'unp':provider_unp[i],'numb':doc_number[i]}
 
 
+def create_eschf_list():
+	spisok_eschf = []
+	for i in range(len(country_code)):
+		eschf = {'country_code':country_code[i],'unp':provider_unp[i],'contragent_name':provider_name[i],
+		'numb':doc_number[i],'doc_type':doc_type[i], 'summ':full_summ[i], 
+		'summ_without_nds':summ_without_nds[i], 'nds':summ_nds[i],'doc_date':doc_date[i]}
+		spisok_eschf +=[eschf]
+	return	spisok_eschf 
+
+create_eschf_list()
+print(create_eschf_list())
 
 
+a = get_docs_lists(cur,'2017-11-01','2017-11-30')
 
-print(len(full_summ))
-a= get_docs_lists(cur,'2017-11-01','2017-11-30')
-print(len(a))
 #!!!!!!!!!!!!!!!!!!!https://ru.stackoverflow.com/questions/628315/%D0%9A%D0%B0%D0%BA-%D0%BE%D0%B1%D1%8A%D0%B5%D0%B4%D0%B8%D0%BD%D0%B8%D1%82%D1%8C-%D0%BD%D0%B5%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%D1%80%D0%B5%D0%B9/628329
 def all_to_one():
 	vse=[]
 	for i in a:
-		vse=vse+i
+		vse =vse+i
 
 	return vse
+
+
+all_to_one()
+print(all_to_one())
 
