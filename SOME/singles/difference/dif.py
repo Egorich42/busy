@@ -103,14 +103,14 @@ def create_eschf_list():
 		spisok_eschf +=[eschf]
 	return spisok_eschf 
 
-
-
-a = get_docs_lists(cur,'2017-11-01','2017-11-30')
-
 #!!!!!!!!!!!!!!!!!!!https://ru.stackoverflow.com/questions/628315/%D0%9A%D0%B0%D0%BA-%D0%BE%D0%B1%D1%8A%D0%B5%D0%B4%D0%B8%D0%BD%D0%B8%D1%82%D1%8C-%D0%BD%D0%B5%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%D1%80%D0%B5%D0%B9/628329
 #https://habrahabr.ru/post/85459/
 #https://ru.stackoverflow.com/questions/427942/%D0%A1%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-2-%D1%83%D1%85-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-python
 #https://ru.stackoverflow.com/questions/427942/%D0%A1%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-2-%D1%83%D1%85-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-python
+
+
+
+a = get_docs_lists(cur,'2017-11-01','2017-11-30')
 
 def create_tn_and_acts_list():
 	vse=[]
@@ -128,14 +128,27 @@ def dif_list():
 	for i in create_eschf_list():
 		for k in range(len(create_tn_and_acts_list())):
 			if create_tn_and_acts_list()[k]['summ'] == i['summ']:
-				spisok_edin += ((i['contragent_name'],i['unp'],i['summ'],i['summ_without_nds'],i['nds']))
+				spisok_edin += [(i['contragent_name'],i['unp'],i['summ'],i['summ_without_nds'],i['nds'])]
 	return spisok_edin
 
 dif_list()
+create_eschf_list()
+create_tn_and_acts_list()
 
-print(type(create_tn_and_acts_list()))
-print(type(dif_list()))
 
 
-Res = [x for x in dif_list() if x in create_tn_and_acts_list()]
-print(Res)
+alt = [i['summ'] for i in create_tn_and_acts_list() if i['summ'] not in create_eschf_list()]
+bb = [i['summ'] for i in create_eschf_list() if i['summ'] not in create_tn_and_acts_list()]
+print(len(bb))
+
+>>> import itertools
+
+>>> a = [{'a': '1'}, {'c': '2'}]
+>>> b = [{'a': '1'}, {'b': '2'}]
+>>> intersec = [item for item in a if item in b]
+>>> sym_diff = [item for item in itertools.chain(a,b) if item not in intersec]
+
+>>> intersec
+[{'a': '1'}]
+>>> sym_diff
+[{'c': '2'}, {'b': '2'}

@@ -125,23 +125,43 @@ display: block;}
 .bottom-15px{margin-bottom: 15px;}
 .operations-border-bottom{border-bottom: solid 1.5px #9B999B;}
 
+
+
+
+
 @media screen and (max-width: 1080px) {
+
 .invisible-300 img{margin: 0px 20px;}
 .mob-show{display: block;}
 .hiden-top-menu{display: none}
 .show-top-menu{display: flex; flex-direction: column;}
 .mob-hide{display: none;}
 
+#top-menu img{width: 120px;}
+nav ul{padding: 0px;}
+nav ul li{padding-top: 36px;}
+nav ul li a{font-size: 52px;}
 
 .central-block{width: 770px; padding-top: 76px; padding-bottom: 76px;}
-.central-block ul li p,.colored-paragraph-text,.down-description p{font-size: 23px;}
+.central-block,.colored-paragraph-text,.down-description p,.central-block p,.forma input,.user-profile ul li{font-size: 36px;}
+.central-block ul li p{font-size: 32px;}
+.colored-paragraph-text{width: 90%;}
+.user-profile ul li{padding-top: 20px;}
 
 
+.main-scren-data{width: 48%;}
+.main-scren-data  p{font-size: 24px; color: red;}
+.main-scren-data  ul li{font-size: 22px;}
 
-.list-block ul{width: 185px; font-weight: bold; font-size: 21px;}
-.how-it-work-list ul li{width: 300px; margin-left: 40px; margin-top: 40px; margin-bottom: 40px; }
+.list-block ul{width: 185px; font-weight: bold; font-size: 31px}
+
+.list-block ul li {font-size: 26px;}
+
+.how-it-work-list ul li{width: 300px; margin: 30px; }
+.how-it-work-list ul li img {width: 120px;}
+
+
 }
-
 
 @media screen and (max-width: 720px) {
 .user-profile{width: 100%;}
@@ -178,7 +198,7 @@ ul{padding: 0px;margin: 0px;}
 .center-300{text-align: center;}
 .nav ul{flex-direction: column;}
 nav ul li{padding-top: 15px;}
-nav ul li a{font-size: 22px;}
+nav ul li a{font-size: 26px;}
 .half-of-table{width: 100%;}
 
 .operations-list{padding: 0%; }
