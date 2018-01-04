@@ -9,6 +9,8 @@ import sqlite3
 import sql_commands as sq_c
 import variables as var
 
+from functools import reduce
+
 
 conn = sqlite3.connect('avangard.sqlite')
 cur = conn.cursor()
@@ -97,7 +99,7 @@ full_summ = excol_to_list(first_dataset,"AP")
 def create_eschf_list():
 	spisok_eschf = []
 	for i in range(len(country_code)):
-		eschf = {'country_code':country_code[i],'unp':int(provider_unp[i]),'contragent_name':provider_name[i],
+		eschf = {'country_code':country_code[i],'unp':str(provider_unp[i]),'contragent_name':provider_name[i],
 		'numb':doc_number[i],'doc_type':doc_type[i], 'summ':full_summ[i], 
 		'summ_without_nds':summ_without_nds[i], 'nds':summ_nds[i],'doc_date':str(doc_date[i])}
 		spisok_eschf +=[eschf]
@@ -111,12 +113,28 @@ def create_eschf_list():
 
 
 a = get_docs_lists(cur,'2017-11-01','2017-11-30')
-
 def create_tn_and_acts_list():
 	vse=[]
 	for i in a:
 		vse =vse+i
 	return vse
+
+
+def create_podgot_base_list(in_list):
+	out_list =[]
+	for i in in_list:
+		out_list +=[{'unp':i['unp'],'name':i['contragent_name'],'summ':i['summ']}]
+	return out_list
+
+
+
+in_base = create_tn_and_acts_list()
+in_eschf = create_eschf_list()
+
+
+podgot_base_list = create_podgot_base_list(in_base)
+podgot_eshf_list = create_podgot_base_list(in_eschf)
+
 
 
 
@@ -131,10 +149,16 @@ def dif_list():
 				spisok_edin += [(i['contragent_name'],i['unp'],i['summ'],i['summ_without_nds'],i['nds'])]
 	return spisok_edin
 
-dif_list()
-create_eschf_list()
-create_tn_and_acts_list()
 
+
+
+print(podgot_base_list)
+print(podgot_eshf_list)
+
+print(len(podgot_base_list))
+print(len(podgot_eshf_list))
+
+palg = [x for x in podgot_eshf_list + podgot_base_list if x not in podgot_eshf_list or x not in podgot_base_list]
 
 
 alt = [i['summ'] for i in create_tn_and_acts_list() if i['summ'] not in create_eschf_list()]
@@ -152,3 +176,56 @@ print(len(bb))
 [{'a': '1'}]
 >>> sym_diff
 [{'c': '2'}, {'b': '2'}
+
+[{'unp': '691817469', 'summ': 49299.17, 'name': 'ООО "Авангардспецмонтажплюс"'}, 
+{'unp': '691817469', 'summ': 8.4, 'name': 'ООО "Авангардспецмонтажплюс"'}, 
+{'unp': '691817469', 'summ': 21007.74, 'name': 'ООО "Авангардспецмонтажплюс"'}, 
+{'unp': '691817469', 'summ': 73836.66, 'name': 'ООО "Авангардспецмонтажплюс"'}, 
+{'unp': '101272822', 'summ': 289.02, 'name': 'ОДО "Авангардспецмонтаж"'}, 
+{'unp': '191800325', 'summ': 995.5, 'name': 'ООО "Огнеспас"'}, 
+{'unp': '102302863', 'summ': 106.19, 'name': 'Минский филиал РУП "Белтелеком"'},
+{'unp': '100071593', 'summ': 3310.36, 'name': 'РУП "Минскэнерго" филиад "Энергосбыт"'}, 
+{'unp': '100071593', 'summ': 13.98, 'name': 'РУП "Минскэнерго" филиад "Энергосбыт"'}, 
+{'unp': '100646299', 'summ': 260.64, 'name': 'ЗАО "ПРОМЭНЕРГОСТРОЙ"'}, 
+{'unp': '100308563', 'summ': 714.63, 'name': 'УП "Мингаз"'}, 
+{'unp': '100308563', 'summ': 45.06, 'name': 'УП "Мингаз"'},
+{'unp': '691536883', 'summ': 35.68, 'name': 'Государственное предприятие Водоканал Минского района'}, 
+{'unp': '800013732', 'summ': 106.0, 'name': 'СООО "Мобильные ТелеСистемы"'}, 
+{'unp': '101120215', 'summ': 1.44, 'name': 'Минский филиал РУП  "Белпочта"'}, 
+{'unp': '192514775', 'summ': 40.84, 'name':'ЧУП "Портал цен"'}, 
+{'unp': '192287331', 'summ': 28.69, 'name': 'Торговое унитарное предприятие "Проект дилбай"'}, 
+{'unp': '191118996', 'summ': 635.48, 'name': 'ИООО Газпромнефть Белнефтепродукт'},
+{'unp': '391399801', 'summ': 319.9, 'name': 'ООО "Суперасуп"'}, 
+{'unp': '600112981', 'summ': 1339.2,'name': 'ЧУП МАВ'}, 
+{'unp': '191307958', 'summ': 105.6, 'name': 'СООО "Ремондис"'}, 
+{'unp': '191307958', 'summ': 7.92, 'name': 'СООО "Ремондис"'}, 
+{'unp': '191307958', 'summ': 105.6, 'name': 'СООО "Ремондис"'}, 
+{'unp': '100162047', 'summ': 52.13, 'name': 'НП ОДО "Фармэкс"'}, 
+{'unp': '391395821', 'summ': 222.0, 'name': 'ООО "Вольтра"'},
+{'unp': '192743895', 'summ': 535.0, 'name': 'ООО "Аймаркет трейд"'},
+{'unp': '690301556', 'summ': 208.83, 'name': 'ООО "Капитанарти"'},
+{'unp': '190908204', 'summ': 264.0, 'name': 'ЧТУП "Комлайнсервис"'}]
+
+
+[{'unp': '691817469.0', 'summ': 8.4, 'name': 'ООО "Авангардспецмонтажплюс"'}, 
+{'unp': '100646299.0', 'summ': 260.64, 'name': 'ЗАО "ПРОМЭНЕРГОСТРОЙ"'},
+{'unp': '691817469.0', 'summ': 21007.74, 'name': 'ООО "Авангардспецмонтажплюс"'}, 
+{'unp': '691817469.0', 'summ': 49299.17, 'name': 'ООО "Авангардспецмонтажплюс"'}, 
+{'unp': '100162047.0', 'summ': 52.13, 'name': 'НПОДО "ФАРМЭК"'}, 
+{'unp': '391395821.0', 'summ': 222.0, 'name': 'Общество с ограниченнойответственностью "Вольтра"'}, 
+{'unp': '600112981.0', 'summ': 1339.2, 'name': 'ЧУП "МАВ" РБ'}, 
+{'unp': '192743895.0', 'summ': 535.0, 'name': 'Обществос ограниченной ответственностью "Аймаркет Трейд"'}, 
+{'unp': '100071593.0', 'summ': -13.98, 'name': 'РУП"Минскэнерго" ф-л"Энергосбыт" г.Минск,РБ'}, 
+{'unp': '102302863.0', 'summ': 106.19, 'name': 'МИНСКИЙ ФИЛИАЛ РУП "БЕЛТЕЛЕКОМ"'}, 
+{'unp': '191118996.0', 'summ': 635.48, 'name': 'ИООО "Газпромнефть-Белнефтепродукт"'}, 
+{'unp': '691536883.0', 'summ': 35.68, 'name': 'Государственное предприятие Водоканал Минского района'}, 
+{'unp': '101120215.0', 'summ': 1.44, 'name': 'Минский филиал РУП Белпочта'}, 
+{'unp': '192514775.0', 'summ': 40.84, 'name': 'Частное унитарное предприятие по оказанию услуг "Портал цен"'}, 
+{'unp': '191800325.0', 'summ': 995.5, 'name': 'ООО "Огнеспас"'}, 
+{'unp': '100308563.0', 'summ': -45.06, 'name': 'Производственное республиканское унитарное предприятие "МИНГАЗ"'}, 
+{'unp': '100308563.0', 'summ': 714.63, 'name': 'Производственное республиканское унитарное предприятие "МИНГАЗ"'}, 
+{'unp': '391399801.0', 'summ': 319.9, 'name': 'ООО "СуперАСуп", РБ'}, 
+{'unp': '800013732.0', 'summ': 106.0, 'name': 'Совместное общество с ограниченной ответственностью "Мобильные ТелеСистемы"'}, 
+{'unp': '190908204.0', 'summ': 264.0, 'name': 'ЧТУП "КомЛайнСервис"'}, 
+{'unp': '191307958.0', 'summ': 105.6, 'name': 'Совместное общество с ограниченной ответственностью "РЕМОНДИС Минск"'}, 
+{'unp': '191307958.0', 'summ': 7.92, 'name': 'Совместное общество с ограниченной ответственностью "РЕМОНДИС Минск"'}
