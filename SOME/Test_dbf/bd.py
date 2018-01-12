@@ -7,7 +7,8 @@ from dbfread import DBF
 import os
 import sql_commands as sq_c
 
-bazi = ('dipartD', 'avangard', 'ditest','bus','centrupakovki','ipmatusev','mitada', 'smdpark','komikHS','himbaza','belwestagro')
+bazi = ('dipartD', 'avangard', 'ditest','ipmatusev','mitada', 'smdpark','himbaza','belwestagro', 'himprom_den', 'polymia_den')
+
 
 location ='D:\DATA_SETS' 
 t625 = location+'\{}\SC625.DBF'
@@ -15,9 +16,11 @@ t556 = location+'\{}\SC556.DBF'
 t497 = location+'\{}\SC497.DBF'
 t493 = location+'\{}\SC493.DBF'
 t167 = location+'\{}\SC167.DBF'
-t38349 = location+'\{}\SC38349.DBF'
-t37440 = location+'\{}\SC37440.DBF'
-t37454 = location+'\{}\SC37454.DBF'
+
+#t7749 = location+'\{}\DH37749.DBF'
+#t38349 = location+'\{}\SC38349.DBF'
+#t37440 = location+'\{}\SC37440.DBF'
+#t37454 = location+'\{}\SC37454.DBF'
 
 
 #lyst = (t625,t556,t497,t493,t167,t38349,t37440,t37454)
@@ -51,11 +54,12 @@ all_t625 = [get_data_from_dbf(t625.format(i)) for i in bazi]
 #all_t497 = [get_data_from_dbf(t497.format(i)) for i in bazi]
 all_t493 = [get_data_from_dbf(t493.format(i)) for i in bazi]
 all_t167 = [get_data_from_dbf(t167.format(i)) for i in bazi]
+#all_t7749 = [get_data_from_dbf(t7749.format(i)) for i in bazi]
 
 
-all_t38349 = [get_data_from_dbf(t38349.format(i)) for i in bazi]
-all_t37440 = [get_data_from_dbf(t37440.format(i)) for i in bazi] 
-all_t37454 = [get_data_from_dbf(t37454.format(i)) for i in bazi]
+#all_t38349 = [get_data_from_dbf(t38349.format(i)) for i in bazi]
+#all_t37440 = [get_data_from_dbf(t37440.format(i)) for i in bazi] 
+#all_t37454 = [get_data_from_dbf(t37454.format(i)) for i in bazi]
 
 
 #SC245 - товары, похоже
@@ -67,10 +71,12 @@ all_t37454 = [get_data_from_dbf(t37454.format(i)) for i in bazi]
 #SC591 - список профессий
 #DH1294, DH1310 - узнать, что за оно
 
-
+#DH3050, DH32635 - акты
 #Sc 38349, 3745437440
 #18687   SC22163  SC 245
 
+
+#37749
 def documenty_list(numar, *args):
 	dot = range(len(bazi))
 	fiat = []
@@ -92,10 +98,6 @@ def contragents_list(numar, *args):
 
 documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619')
 documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480')
-
-#eschf_inner = documenty_list(all_t37440,'ID','DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480')
-
-
 contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
@@ -118,6 +120,7 @@ def full_update(list_number, base_number):
 	update_from_dbf(documenty_dlya_contragentov[list_number],sq_c.select_all_documents,base_number,sq_c.insert_into_docs)
 	update_from_dbf(documenty_ot_contragentov[list_number],sq_c.select_all_documents_two,base_number,sq_c.insert_into_docs_two)
 	update_from_dbf(contragenty[list_number],sq_c.select_contragents,base_number,sq_c.insert_into_contragents)
+
 	pass
 
 

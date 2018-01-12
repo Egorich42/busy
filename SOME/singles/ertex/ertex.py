@@ -9,7 +9,7 @@ Excel = win32com.client.Dispatch("Excel.Application")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-first_list = Excel.Workbooks.Open(BASE_DIR+'ert_dec.xls')
+first_list = Excel.Workbooks.Open(BASE_DIR+'ertex_in.xls')
 first_dataset = first_list.ActiveSheet
 
 
@@ -138,7 +138,7 @@ def import_into_excel(document_name, *args):
 	pass
 
 #import_into_excel('ertex_out.xls',codes,comings,prices)
-#import_into_excel('ertex_out_new.xls',new_codes,new_comings,new_prices)
-print(len(codes))
+import_into_excel('ertex_out_new.xls',new_codes,new_comings,new_prices)
+
 
 #сохраняем рабочую книгу

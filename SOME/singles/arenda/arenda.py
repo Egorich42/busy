@@ -86,8 +86,8 @@ def import_into_excel(document_name, names, arenda):
 	pass
 
 import_into_excel('bonanaa!!!.xls',names_list, arenda[2])
-#mport_into_excel(mitada,names_list, arenda[1])
-#import_into_excel(united,names_list, arenda[0])
+import_into_excel('mitadamnd.xls',names_list, arenda[1])
+import_into_excel('bonamnt.xls',names_list, arenda[0])
 
 
 

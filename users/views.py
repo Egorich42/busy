@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
 import sqlite3
-from . import update as upd
+#from . import update as upd
 
 import win32com.client
 import os

@@ -7,16 +7,21 @@ import sqlite3
 
 import sql_commands as sq_c
 import variables as var
+import itertools    
+
+import itertools
+from operator import itemgetter
+from itertools import groupby
 
 
-conn = sqlite3.connect('avangard.sqlite')
+conn = sqlite3.connect('hpo.sqlite')
 cur = conn.cursor()
 
 Excel = win32com.client.Dispatch("Excel.Application")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-first_list = Excel.Workbooks.Open(BASE_DIR+'avangard_in.xls')
+first_list = Excel.Workbooks.Open(BASE_DIR+'hpo_in.xls')
 first_dataset = first_list.ActiveSheet
 
 
@@ -91,77 +96,95 @@ summ_nds = excol_to_list(first_dataset,"AO")
 full_summ = excol_to_list(first_dataset,"AP")
 
 
-
-
 def create_eschf_list():
 	spisok_eschf = []
 	for i in range(len(country_code)):
-		eschf = {'country_code':country_code[i],'unp':str(int(provider_unp[i])),'contragent_name':provider_name[i],
+		eschf = {'unp':str(int(provider_unp[i])),'contragent_name':provider_name[i],
 		'numb':doc_number[i],'doc_type':doc_type[i], 'summ':full_summ[i], 
 		'summ_without_nds':summ_without_nds[i], 'nds':summ_nds[i],'doc_date':str(doc_date[i])}
 		spisok_eschf +=[eschf]
 	return spisok_eschf 
 
-#!!!!!!!!!!!!!!!!!!!https://ru.stackoverflow.com/questions/628315/%D0%9A%D0%B0%D0%BA-%D0%BE%D0%B1%D1%8A%D0%B5%D0%B4%D0%B8%D0%BD%D0%B8%D1%82%D1%8C-%D0%BD%D0%B5%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%BE-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%D1%80%D0%B5%D0%B9/628329
-#https://habrahabr.ru/post/85459/
-#https://ru.stackoverflow.com/questions/427942/%D0%A1%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-2-%D1%83%D1%85-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-python
-#https://ru.stackoverflow.com/questions/427942/%D0%A1%D1%80%D0%B0%D0%B2%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-2-%D1%83%D1%85-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%BE%D0%B2-%D0%B2-python
+
+docs_from_base = get_docs_lists(cur,'2017-11-01','2017-11-30')
+
+def create_base_dicts_list(incoming_list):
+	outcoming_list = []
+	for i in incoming_list:
+		outcoming_list+=[{'contragent_name': i[0]['contragent_name'], 'unp':i[0]['unp'], 'summ':round(sum([x['summ'] for x in i]),2)}]
+	return outcoming_list
+	pass
 
 
 
-a = get_docs_lists(cur,'2017-11-01','2017-11-30')
 
-def create_tn_and_acts_list():
-	vse=[]
-	for i in a:
-		vse =vse+i
-	return vse
+def create_eschf_dict_list():
+	sorted_eschf = sorted(create_eschf_list(), key=itemgetter('unp'))
+	full = []
+	for key, group in itertools.groupby(sorted_eschf, key=lambda x:x['unp']):
+		art = list(group)
+		full+=[art]
+	return create_base_dicts_list(full)
 
-
-def create_podgot_base_list(in_list):
-	out_list =[]
-	for i in in_list:
-		out_list +=[{'unp':i['unp'],'name':i['contragent_name'],'summ':i['summ']}]
-	return out_list
+base_list = create_base_dicts_list(docs_from_base)
+eschf_list = create_eschf_dict_list()
 
 
 
-in_base = create_tn_and_acts_list()
-in_eschf = create_eschf_list()
+def not_in_base():
+	paskuda = create_eschf_dict_list()
+	for i in create_base_dicts_list(docs_from_base):
+		for k in range(len(create_eschf_dict_list())):
+			if create_eschf_dict_list()[k]['summ'] == i['summ'] and create_eschf_dict_list()[k]['unp'] == i['unp']:
+				paskuda.remove(create_eschf_dict_list()[k])
+	return paskuda
 
 
-podgot_base_list = create_podgot_base_list(in_base)
-podgot_eshf_list = create_podgot_base_list(in_eschf)
-
-
-def dif_list():
-	if len(create_tn_and_acts_list()) > len(in_eschf):
-		paskuda = "в базе больше"+create_tn_and_acts_list()
-		for i in in_eschf:
-			for k in range(len(create_tn_and_acts_list())):
-				if create_tn_and_acts_list()[k]['summ'] == i['summ'] and create_tn_and_acts_list()[k]['unp'] == i['unp']:
-					paskuda.remove(create_tn_and_acts_list()[k])
-
-
-	if len(create_tn_and_acts_list()) < len(in_eschf):
-		paskuda = "на портале больше:"+ create_eschf_list()
-		for i in in_base:
-			for k in range(len(create_eschf_list())):
-				if create_eschf_list()[k]['summ'] == i['summ'] and create_eschf_list()[k]['unp'] == i['unp']:
-					paskuda.remove(create_eschf_list()[k])
-	if len(create_tn_and_acts_list()) == len(in_eschf):
-		paskuda = "heil 8888snudra ыглф"		
-
-
+def not_in_portal():
+	paskuda = create_base_dicts_list(docs_from_base)
+	for i in create_eschf_dict_list():
+		for k in range(len(create_base_dicts_list(docs_from_base))):
+			if create_base_dicts_list(docs_from_base)[k]['summ'] == i['summ'] and create_base_dicts_list(docs_from_base)[k]['unp'] == i['unp']:
+				paskuda.remove(create_base_dicts_list(docs_from_base)[k])
 	return paskuda
 
 
 
-print(len(dif_list()))
+def not_in_suka():
+	paskuda = not_in_base()
+	cortney = not_in_portal()
+	net_v_baze = []
+	net_na_port = []
+	
+	for i in not_in_portal():
+		for k in not_in_base():
+			if k['unp'] == i['unp'] and i['summ'] > k['summ']:
+				net_na_port += [{'contragent_name':i['contragent_name'],'unp':i['unp'], 'summ': round(i['summ'] - k['summ'], 3)}]
+				
+			if k['unp'] == i['unp'] and i['summ'] < k['summ']:
+				net_v_baze += [{'contragent_name':i['contragent_name'],'unp':i['unp'], 'summ': round(k['summ'] - i['summ'], 3)}]	
+				
+			if k['unp'] == i['unp']:
+				paskuda.remove(k)#not in base
+				cortney.remove(i)#not in eschf
+		
+
+	return (net_na_port+net_v_baze,paskuda+cortney)
 
 
-"""
-def import_into_excel(document_name, *args):
+
+def final_list(listik):
+	names = [i['contragent_name'] for i in listik]
+	unps = [i['unp'] for i in listik]
+	sums = [i['summ'] for i in listik]
+	ndses = [round(i['summ']/6, 2) for i in listik]
+	return (names,unps,sums,ndses)
+
+
+col_names = ("Контрагент","УНП","Полная сумма","НДС")
+
+
+def import_into_excel(document_name, inner_list):
 	book = xlwt.Workbook('utf8')
 	sheet = book.add_sheet('разница')
 
@@ -170,38 +193,19 @@ def import_into_excel(document_name, *args):
 	sheet.set_print_scaling(85)
 	created_book = book.save(document_name)
 	active_doc = Excel.Workbooks.Open(BASE_DIR+document_name)
-	active_sheet = active_doc.ActiveSheet
-	active_sheet.Cells(2,2).value ="test"
+	active_sheet = active_doc.ActiveSheet	
 
 	a = 3
-	active_sheet.Cells(2,1).value ="Код в 1С"
-	for code in args[0]:
-		active_sheet.Cells(a,1).value = code
-		a = a + 1
-
-	b = 3
-	active_sheet.Cells(2,2).value ="Приход за месяц"
-	for coming in args[1]:
-		active_sheet.Cells(b,2).value = coming
-		b = b + 1
-
-
-	c = 3
-	if args[2] == new_prices:
-		active_sheet.Cells(2,3).value ="Новая цена"
-	else: 
-		active_sheet.Cells(2,3).value ="Цена за единицу"	
-		pass
-	for price in args[2]:
-		active_sheet.Cells(c,3).value = price
-		c = c + 1
-
+	for i in range(len(inner_list)):
+		active_sheet.Cells(2,i+1).value = col_names[i]
+		for code in inner_list[i]:
+			active_sheet.Cells(a,i+1).value = code
+			a = a + 1
 
 	active_doc.Save()
 	active_doc.Close()
 	Excel.Quit()
 	pass
 
-#import_into_excel('ertex_out.xls',codes,comings,prices)
-#import_into_excel('ertex_out_new.xls',new_codes,new_comings,new_prices)
-"""
+import_into_excel('himpro_out_base.xls',final_list(not_in_suka()[0]))	
+import_into_excel('himpro_out_portal.xls',final_list(not_in_suka()[1]))	

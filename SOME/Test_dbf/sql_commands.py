@@ -13,6 +13,7 @@ pp_buyers = "contragents_documents_two.doc_type != '0' AND contragents_documents
 select_contragents = "SELECT * FROM contragents;"
 select_all_documents="SELECT * FROM contragents_documents;"
 select_all_documents_two="SELECT * FROM contragents_documents_two;"
+#select_all_inner_eschf="SELECT * FROM inner_eschf;"
 
 select_contragents_identificator = "SELECT id FROM contragents WHERE contragents.deleted != '*';"
 select_id_docs = "SELECT parent FROM contragents_documents;"
@@ -21,6 +22,10 @@ select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
 insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?);"
 insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?);"
 insert_into_contragents ="INSERT INTO contragents VALUES (?,?,?,?,?);"
+
+#insert_into_inner_eschf ="INSERT INTO inner_eschf VALUES (?,?,?,?,?,?,?,?,?,?);"
+
+
 
 select_docs = """
 SELECT * FROM contragents_documents
