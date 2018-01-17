@@ -1,0 +1,32 @@
+dbfread
+pillow
+
+
+pypiwin32/pywin32
+
+xlwt #EXCEL
+win32com.client
+
+#websites:
+requests
+wget
+scrapy
+
+#math/datas
+Fuzzywuzzy
+NumPY
+scit-learn
+PyMC
+
+itertools
+collections
+groupby
+
+#other
+uuid - генератор id
+sh - для shell комманд
+
+
+#http://python.su/blogs/python/5-interesnyie-moduli-kotoryie-oblegchayut-nam-zhizn/
+#https://tproger.ru/translations/10-python-libraries-you-might-not-know/
+#https://pythonworld.ru/moduli

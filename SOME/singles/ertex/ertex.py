@@ -9,7 +9,7 @@ Excel = win32com.client.Dispatch("Excel.Application")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-first_list = Excel.Workbooks.Open(BASE_DIR+'ertex_in.xls')
+first_list = Excel.Workbooks.Open(BASE_DIR+'ertex_in_dec.xls')
 first_dataset = first_list.ActiveSheet
 
 
@@ -75,7 +75,7 @@ def get_warehouse_data():
 
 
 		if i['остаток на складе'] != None:
-			if i['остаток на складе']* i['цена'] != i['сумма остатка']:
+			if i['сумма остатка']/i['остаток на складе'] != i['цена']:
 				new_codes+=[i['1C_код']]
 				new_prices +=[i['сумма остатка']/i['остаток на складе']]
 				new_comings_to_stocs += [i['приход на склад']]		
