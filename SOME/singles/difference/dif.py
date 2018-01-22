@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
-import win32com.client
 import os
-import xlwt
 import sqlite3
 
 import sql_commands as sq_c
@@ -14,14 +12,22 @@ from operator import itemgetter
 from itertools import groupby
 
 
+import sys
+path_to_file = os.path.dirname(os.path.abspath(__file__))+'\\'
+convert_to_list = path_to_file.split('\\')[:-2]
+root_path = '\\'.join(convert_to_list)
+sys.path.append(root_path)
+import base
+
+
 conn = sqlite3.connect('hpo.sqlite')
 cur = conn.cursor()
 
-Excel = win32com.client.Dispatch("Excel.Application")
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-first_list = Excel.Workbooks.Open(BASE_DIR+'hpo_in.xls')
+first_list = base.Excel.Workbooks.Open(BASE_DIR+'hpo_in.xls')
 first_dataset = first_list.ActiveSheet
 
 
@@ -42,11 +48,6 @@ def find_endpoint(dataset,start):
 start_point = find_first_point(first_dataset)
 endpoint = find_endpoint(first_dataset,start_point)
 interval = "{}"+str(start_point)+":"+"{}"+str(endpoint)
-
-def excol_to_list(dataset_name, col_name):
-	list_name = [r[0].value for r in dataset_name.Range(interval.format(col_name,col_name))]
-	return list_name
-	pass
 
 
 
@@ -71,29 +72,29 @@ def get_docs_lists(cursor,data_start, data_end):
     pass
 
 
-country_code = excol_to_list(first_dataset,"A")
-provider_unp= excol_to_list(first_dataset,"B")
-provider_name = excol_to_list(first_dataset,"D")
+country_code = base.excol_to_list(first_dataset,"A",interval)
+provider_unp= base.excol_to_list(first_dataset,"B",interval)
+provider_name = base.excol_to_list(first_dataset,"D",interval)
 
-eschf_number = excol_to_list(first_dataset,"N")
-eschf_type = excol_to_list(first_dataset,"P")
-eschf_status = excol_to_list(first_dataset,"Q")
+eschf_number = base.excol_to_list(first_dataset,"N",interval)
+eschf_type = base.excol_to_list(first_dataset,"P",interval)
+eschf_status = base.excol_to_list(first_dataset,"Q",interval)
 
-expose_date = excol_to_list(first_dataset,"R")
-sovershenia_date = excol_to_list(first_dataset,"S")
-sign_date = excol_to_list(first_dataset,"T")
-to_zero_date = excol_to_list(first_dataset,"U")
+expose_date = base.excol_to_list(first_dataset,"R",interval)
+sovershenia_date = base.excol_to_list(first_dataset,"S",interval)
+sign_date = base.excol_to_list(first_dataset,"T",interval)
+to_zero_date =base. excol_to_list(first_dataset,"U",interval)
 
-contract_number = excol_to_list(first_dataset,"AE")
-contract_date = excol_to_list(first_dataset,"AF")
+contract_number = base.excol_to_list(first_dataset,"AE",interval)
+contract_date = base.excol_to_list(first_dataset,"AF",interval)
 
-doc_type = excol_to_list(first_dataset,"AG")
-doc_number = excol_to_list(first_dataset,"AK")
-doc_date = excol_to_list(first_dataset,"AL")
+doc_type = base.excol_to_list(first_dataset,"AG",interval)
+doc_number = base.excol_to_list(first_dataset,"AK",interval)
+doc_date = base.excol_to_list(first_dataset,"AL",interval)
 
-summ_without_nds = excol_to_list(first_dataset,"AM")
-summ_nds = excol_to_list(first_dataset,"AO")
-full_summ = excol_to_list(first_dataset,"AP")
+summ_without_nds = base.excol_to_list(first_dataset,"AM",interval)
+summ_nds = base.excol_to_list(first_dataset,"AO",interval)
+full_summ = base.excol_to_list(first_dataset,"AP",interval)
 
 
 def create_eschf_list():
@@ -185,14 +186,14 @@ col_names = ("Контрагент","УНП","Полная сумма","НДС")
 
 
 def import_into_excel(document_name, inner_list):
-	book = xlwt.Workbook('utf8')
+	book = base.xlwt.Workbook('utf8')
 	sheet = book.add_sheet('разница')
 
 	sheet.portrait = False
 
 	sheet.set_print_scaling(85)
 	created_book = book.save(document_name)
-	active_doc = Excel.Workbooks.Open(BASE_DIR+document_name)
+	active_doc = base.Excel.Workbooks.Open(BASE_DIR+document_name)
 	active_sheet = active_doc.ActiveSheet	
 
 	a = 3
@@ -204,8 +205,8 @@ def import_into_excel(document_name, inner_list):
 
 	active_doc.Save()
 	active_doc.Close()
-	Excel.Quit()
+	base.Excel.Quit()
 	pass
 
-import_into_excel('himpro_out_base.xls',final_list(not_in_suka()[0]))	
-import_into_excel('himpro_out_portal.xls',final_list(not_in_suka()[1]))	
+#import_into_excel('himpro_out_base.xls',final_list(not_in_suka()[0]))	
+#import_into_excel('himpro_out_portal.xls',final_list(not_in_suka()[1]))	

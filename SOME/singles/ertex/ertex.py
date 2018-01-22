@@ -1,49 +1,34 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
-import win32com.client
 import os
-import xlwt
-import numpy as np
+import sys
+path_to_file = os.path.dirname(os.path.abspath(__file__))+'\\'
+convert_to_list = path_to_file.split('\\')[:-2]
+root_path = '\\'.join(convert_to_list)
+sys.path.append(root_path)
+import base
 
-Excel = win32com.client.Dispatch("Excel.Application")
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
-
-first_list = Excel.Workbooks.Open(BASE_DIR+'ertex_in_nov.xls')
+first_list = base.Excel.Workbooks.Open(base.BASE_DIR+'ertex_in_nov.xls')
 first_dataset = first_list.ActiveSheet
 
 
-def find_first_point(dataset):
-	for i in range(1,10):
-		if dataset.Cells(i,3).value != None and dataset.Cells(i,2).value == 1.0:
-			dataset.Cells(i,2).value
-			return i
-			pass
 
-def find_endpoint(dataset,start):
-	for i in range(start,510):
-		if dataset.Cells(i,5).value =='ИТОГО:':
-			return i-1
-			pass
-
-
-start_point = find_first_point(first_dataset)
-endpoint = find_endpoint(first_dataset,start_point)
+start_point = base.find_first_point(first_dataset)
+endpoint = base.find_endpoint(first_dataset,start_point,'ИТОГО:')
 interval = "{}"+str(start_point)+":"+"{}"+str(endpoint)
 
 
-def excol_to_list(dataset_name, col_name):
-	list_name = np.array([r[0].value for r in dataset_name.Range(interval.format(col_name,col_name))])
-	return list_name
-	pass
+
+numbers = base.excol_to_list(first_dataset,"B",interval)
+odinc_code= base.excol_to_list(first_dataset,"F",interval)
+remains_on_warehouse= base.excol_to_list(first_dataset,"H",interval)
+remains_summ= base.excol_to_list(first_dataset,"I",interval)
+coming_to_warehouse= base.excol_to_list(first_dataset,"J",interval)
+price= base.excol_to_list(first_dataset,"K",interval)
 
 
-numbers = excol_to_list(first_dataset,"B")
-odinc_code= excol_to_list(first_dataset,"F")
-remains_on_warehouse= excol_to_list(first_dataset,"H")
-remains_summ= excol_to_list(first_dataset,"I")
-coming_to_warehouse= excol_to_list(first_dataset,"J")
-price= excol_to_list(first_dataset,"K")
+
 
 
 list_of_cols = (numbers,odinc_code,remains_on_warehouse,remains_summ,coming_to_warehouse,price)
@@ -81,7 +66,7 @@ def get_warehouse_data():
 	return (change_price,no_change+new_items_on_warehouse)
 	pass
 
-transformed_warehouse_data = np.array(get_warehouse_data())
+transformed_warehouse_data = base.np.array(get_warehouse_data())
 
 
 
@@ -93,14 +78,14 @@ def import_into_excel(document_name, number):
 	prices =[x['цена'] for x in transformed_warehouse_data[number]]
 
 
-	book = xlwt.Workbook('utf8')
+	book = base.xlwt.Workbook('utf8')
 	sheet = book.add_sheet('поступление на склад')
 
 	sheet.portrait = False
 
 	sheet.set_print_scaling(85)
 	created_book = book.save(document_name)
-	active_doc = Excel.Workbooks.Open(BASE_DIR+document_name)
+	active_doc = base.Excel.Workbooks.Open(base.BASE_DIR+document_name)
 	active_sheet = active_doc.ActiveSheet
 
 
@@ -126,7 +111,7 @@ def import_into_excel(document_name, number):
 
 	active_doc.Save()
 	active_doc.Close()
-	Excel.Quit()
+	base.Excel.Quit()
 	pass
 
 #import_into_excel('ertex_out.xls',1)

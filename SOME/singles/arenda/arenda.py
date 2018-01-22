@@ -1,15 +1,19 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
-import win32com.client
 import os
-import xlwt
+import sys
+path_to_file = os.path.dirname(os.path.abspath(__file__))+'\\'
+convert_to_list = path_to_file.split('\\')[:-2]
+root_path = '\\'.join(convert_to_list)
+sys.path.append(root_path)
+import base
 
 
-Excel = win32com.client.Dispatch("Excel.Application")
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-first_list = Excel.Workbooks.Open(BASE_DIR+'transkom_in.xls')
+first_list = base.Excel.Workbooks.Open(BASE_DIR+'transkom_in.xls')
 first_dataset = first_list.ActiveSheet
 
 
@@ -53,20 +57,18 @@ arenda = [create_all_lists()[i][0] for i in (0,1,2)]
 
 #http://www.py-my.ru/post/4e15588e1d41c81105000003
 
-first_list = Excel.Workbooks.Open(BASE_DIR+'transkom_in.xls')
-first_dataset = first_list.ActiveSheet
 
 
 #записываем последовательность
 def import_into_excel(document_name, names, arenda):
-	book = xlwt.Workbook('utf8')
+	book = base.xlwt.Workbook('utf8')
 	sheet = book.add_sheet('аренда')
 
 	sheet.portrait = False
 
 	sheet.set_print_scaling(85)
 	created_book = book.save(document_name)
-	active_doc = Excel.Workbooks.Open(BASE_DIR+document_name)
+	active_doc = base.Excel.Workbooks.Open(BASE_DIR+document_name)
 	active_sheet = active_doc.ActiveSheet
 
 	i = 30
@@ -82,7 +84,7 @@ def import_into_excel(document_name, names, arenda):
 
 	active_doc.Save()
 	active_doc.Close()
-	Excel.Quit()
+	base.Excel.Quit()
 	pass
 
 import_into_excel('bonanaa!!!.xls',names_list, arenda[2])
