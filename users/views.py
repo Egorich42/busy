@@ -11,44 +11,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
 import sqlite3
-#from . import update as upd
-
-import win32com.client
-import os
-import xlwt
-
-
-#Excel = win32com.client.Dispatch("Excel.Application")
-
-#BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
-"""
-def import_into_excel(document_name, names_list, numbers_list):
-    book = xlwt.Workbook('utf8')
-    sheet = book.add_sheet('отчет')
-
-    sheet.portrait = False
-
-    sheet.set_print_scaling(85)
-    created_book = book.save(document_name)
-    active_doc = Excel.Workbooks.Open(BASE_DIR+document_name)
-    active_sheet = active_doc.ActiveSheet
-
-    i = 4
-    for rec in names_list:
-        active_sheet.Cells(i,1).value = rec
-        i = i + 1
-
-    m = 4
-    for sec in numbers_list:
-        active_sheet.Cells(m,2).value = sec
-        m = m + 1
-
-
-    active_doc.Save()
-    active_doc.Close()
-    Excel.Quit()
-    pass
-"""
 
 #python manage.py version
 # Функция для установки сессионного ключа.
@@ -80,13 +42,10 @@ class LogoutView(View):
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
-
         
         base_name = str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
-#        upd.full_update(user.id-1,user.id)
-
         
         taxes_system = user.client.nalog_system
 
@@ -105,7 +64,6 @@ def show_user_profile(request,id, **kwargs):
         buyers_debts = get_hvosty_lists(cur,'2016-06-30',str(var.today))[2]
         buyers_prepay = get_hvosty_lists(cur,'2016-06-30',str(var.today))[3]
 
-#        import_into_excel('otchet.xls',['gg','ggg','dgdgdg'], ['gg','ggg','dgdgdg'])
 
         if request.method == 'POST':
             fin_states = TimePeriodForm(request.POST)     
@@ -138,8 +96,6 @@ def show_user_profile(request,id, **kwargs):
 def show_sverka(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
- #       upd.full_update(user.id-1,user.id)
-
 
         conn = sqlite3.connect(str(user.id)+'.sqlite')
         cur = conn.cursor()

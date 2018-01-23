@@ -135,6 +135,7 @@ def get_hvosty_lists(cursor,data_start, data_end):
     prepayment_providers=[]
     debts_buyers=[]
     prepayment_buyers=[]
+    id_list =[]
 
     
     for altair in contargents_id_list:
@@ -160,27 +161,26 @@ def get_hvosty_lists(cursor,data_start, data_end):
             message = 'сумма вашей задолженности составляет'
             summ = str(round(inner_summ-outer_summ,2))
             if summ != '0':
-                debts_providers += [{'name':providers_docs[0][0][0]['name'],  'message':message, 'summa':summ}]
+                debts_providers += [{'name':providers_docs[0][0][0]['name'], 'contragent_id':providers_docs[0][0][0]['id'], 'message':message, 'summa':summ}]
              
         if suma_tn_prov<suma_pp_prov and providers_docs[0][0] !=[]:
             message = 'сумма задолженности контрагента составляет'
             summ = str(round(outer_summ-inner_summ,2))
             if summ != '0':
-                prepayment_providers += [{'name':providers_docs[0][0][0]['name'],  'message':message, 'summa':summ}]
+                prepayment_providers += [{'name':providers_docs[0][0][0]['name'],'contragent_id':providers_docs[0][0][0]['id'],  'message':message, 'summa':summ}]
 
         if suma_tn_buy<suma_pp_buy and buyers_docs[0][0] !=[]:
             message = 'сумма задолженности контрагента составляет'
             summ = str(round(inner_summ-outer_summ,2))
             if summ != '0':
-                debts_buyers += [{'name':buyers_docs[0][0][0]['name'],  'message':message, 'summa':summ}]            
+                debts_buyers += [{'name':buyers_docs[0][0][0]['name'],'contragent_id':buyers_docs[0][0][0]['id'],  'message':message, 'summa':summ}]            
 
         if suma_tn_buy>suma_pp_buy and buyers_docs[0][0] !=[]:
             message = 'сумма вашей задолженности составляет'
             summ = str(round(outer_summ-inner_summ,2))
             if summ != '0':
-                prepayment_buyers += [{'name':buyers_docs[0][0][0]['name'],  'message':message, 'summa':summ}]            
-            
- 
+                prepayment_buyers += [{'name':buyers_docs[0][0][0]['name'],'contragent_id':buyers_docs[0][0][0]['id'], 'message':message, 'summa':summ}]            
+    
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
     pass
 

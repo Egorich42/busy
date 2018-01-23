@@ -85,10 +85,13 @@
 	  <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
              <li style="display: flex; justify-content: space-between;">
              <span style="text-align: left;" class="bold">{{provider_pp.contragent_name}}</span>
+
              <span style="text-align: right;padding-left: 15px;" class="green-text">{{provider_pp.summ}}&nbsp;.Р</span>
              </li>
 
-            <li class="text-left" style="margin: 15px 0px;">{{provider_pp.document_name}}</li>      </ul>
+            <li class="text-left" style="margin: 15px 0px;">{{provider_pp.document_name}}</li>      
+
+        </ul>
     </li>
 </ul>
 {%endfor%}
@@ -153,6 +156,7 @@
         <ul  class="operations  horizontal-content-center without-padding-left operations-border-bottom full-width">
             <li class="text-right twenty-percent-width right font-18">{{provider_doc.summ}}&nbsp;.Р</li>
             <li class="text-left eighty-percent-width left bold"> {{provider_doc.contragent_name}}</li>
+
             <li class="text-left bottom-15px">{{provider_doc.document_name}}</li>
             <li class="text-right font-12">{{provider_doc.date}}</li>
         </ul>
@@ -264,6 +268,11 @@
 <li class="operations-border-bottom full-width flex row ravnomerno bottom-15px">
 
 <span class="bold text-left">{{buyer_debt.name}}</span>
+
+
+
+<a href="/sverka/contragent_id">{{buyer_debt.contragent_id}}</a>
+
 
 <span class="text-right bottom-15px">{{buyer_debt.summa}}&nbsp;.Р   </span>
 
