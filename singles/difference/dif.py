@@ -12,7 +12,7 @@ import sql_commands as sq_c
 import variables as var
 
 
-conn = var.sqlite3.connect('hpo.sqlite')
+conn = var.sqlite3.connect('9.sqlite')
 cur = conn.cursor()
 
 
@@ -189,16 +189,44 @@ def import_into_excel(document_name, inner_list):
 	active_sheet = active_doc.ActiveSheet	
 
 	a = 3
-	for i in range(len(inner_list)):
-		active_sheet.Cells(2,i+1).value = col_names[i]
-		for code in inner_list[i]:
-			active_sheet.Cells(a,i+1).value = code
-			a = a + 1
+	active_sheet.Cells(2,1).value = col_names[0]
+	for code in inner_list[0]:
+		active_sheet.Cells(a,1).value = code
+		a = a + 1
+
+	a = 3
+	active_sheet.Cells(2,2).value = col_names[0]
+	for code in inner_list[1]:
+		active_sheet.Cells(a,2).value = code
+		a = a + 1
+
+	a = 3
+	active_sheet.Cells(2,3).value = col_names[0]
+	for code in inner_list[2]:
+		active_sheet.Cells(a,3).value = code
+		a = a + 1
+
+	a = 3
+	active_sheet.Cells(2,4).value = col_names[0]
+	for code in inner_list[3]:
+		active_sheet.Cells(a,4).value = code
+		a = a + 1
+
+
 
 	active_doc.Save()
 	active_doc.Close()
 	base.Excel.Quit()
 	pass
 
-#import_into_excel('himpro_out_base.xls',final_list(not_in_suka()[0]))	
-#import_into_excel('himpro_out_portal.xls',final_list(not_in_suka()[1]))	
+
+
+#import_into_excel('out_base.xls',final_list(not_in_suka()[0]))	
+import_into_excel('out_portal.xls',final_list(not_in_suka()[1]))	
+
+"""
+список исключений
+ООО "Бухгалтерские советы" 190530248
+Минфин РБ (тамож)
+Индивидуальный предприниматель Лысый Франц Иванович
+"""
