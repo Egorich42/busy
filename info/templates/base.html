@@ -19,6 +19,7 @@
 <meta property="og:image" content="/media/s-logo.png"/>
 <link rel="shortcut icon" href="/media/favicon.ico">
 <link rel="stylesheet" href="{% static "/css/style.css" %}">
+<link rel="stylesheet" href="{% static "/css/media-style.css" %}">
 <script src="{% static "/JS/script.js" %}"></script>
 <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
@@ -40,7 +41,7 @@
 </a>
 </li>
 
-<li><a href="#">контакты</a></li>
+<li><a href="/contacts">контакты</a></li>
 
 <li>
 {% if user.is_authenticated %}
@@ -72,18 +73,18 @@
 </section>
 
 <footer class="full-width  center grey-back flex  horizontal-content-center">
+
+
 <section class="central-block center">
 
-<!--nav class="full-width">
-<ul class="flex">
-<li>главная</li>
-<li>цены</li>
-<li>контакты</li>
-</ul>
- </nav>
 
-<img src="static/media/icons/1.png"  alt="Бухгалтерские советы" title="Бухгалтерские советы"-->
-<section>юр. адрес:  г. Минск, пер. Козлова, 7/г,  каб.501, номер в реестре - 190530248</section>
+
+<section>
+<p>юр. адрес:  г. Минск, пер. Козлова, 7/г,  каб.501</p>
+<p>номер в реестре - 190530248</p>
+<p>copyright 2017</p>
+</section>
+
 </section>
 </footer>
 <script type="text/javascript">

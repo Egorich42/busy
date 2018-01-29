@@ -5,4 +5,6 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.show_main_page, name='index'),
+    url(r'^contacts/$', views.show_contacts_page, name='contacts'),
 ]
+
