@@ -30,3 +30,9 @@ sh - дл€ shell комманд
 #http://python.su/blogs/python/5-interesnyie-moduli-kotoryie-oblegchayut-nam-zhizn/
 #https://tproger.ru/translations/10-python-libraries-you-might-not-know/
 #https://pythonworld.ru/moduli
+ƒЋя EXCEL
+https://habrahabr.ru/company/otus/blog/331998/
+„уть старее
+https://habrahabr.ru/post/232291/
+
+xlsxWriter, openpyxl
