@@ -76,18 +76,25 @@ footer{height: 638px;}
 /*---------MODULES RULES------*/
 
 /*USER-PROFILE*/
-.user-profile-head{width: 100%;}
+.user-profile-head{width: 95%;text-align: left;}
 .user-profile-head article{display: flex; flex-direction: column;}
 
-.user-profile-main{width: 100%; display: flex; margin: 100px 0px;}
+.user-profile-main{width: 95%; display: flex; margin: 100px 0px;}
 .user-profile-main-menu{width:20%; text-align: left;}
+
+.user-profile-main-menu article ul{padding: 0px 0px 0px 20px;}
+.user-profile-main-menu article ul li {padding-top: 15px;}
+
 .user-profile-main-info{width:80%; }
 .user-profile-main-info-column{width: 50%; text-align: left;}
 .user-profile-column-name{}
 .user-profile-main-info-column ul{}
 
+ .user-profile-main-info-column article {padding: 20px 0px;}
+
 .docs-ops-info{}
 .docs-ops-info article{display: flex;}
+
 
 
 .contacts-main{padding: 0% 20%;}
