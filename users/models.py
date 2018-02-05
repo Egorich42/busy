@@ -98,22 +98,25 @@ def transform_sql(select_command,docs,pays,cursor,contragent,data_start,data_end
 def get_sverka(cursor,contragent,data_start,data_end):
     buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cursor,contragent,data_start,data_end)
     buyers_docs_vozvr = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers_vozvr,cursor,contragent,data_start,data_end)
+    buyers_docs_dpd = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers_dpd,cursor,contragent,data_start,data_end)
+
 
     providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,contragent,data_start,data_end)
     providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,contragent,data_start,data_end)
     providers_docs_vozvr = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers_vozvr,cursor,contragent,data_start,data_end)
-    
+
+
+
     providers_docs_moneyback = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_moneyback, sq_c.pp_providers,cursor,contragent,data_start,data_end)
 
     contragent_name = cursor.execute(sq_c.select_contragent_name.format("'"+str(contragent)+"'")).fetchall()[0]
 
-    prov_list = providers_docs[0][0]+buyers_docs[0][0]# delete from this buyers_docs_vozvr[0][1]  
+    prov_list = providers_docs[0][0]+buyers_docs[0][1]+providers_docs_vozvr[0][1]# delete from this buyers_docs_vozvr[0][1]  
 
-    buyers_list = buyers_docs[0][1]+providers_docs[0][1]#buyers_docs_vozvr[0][1] и providers_docs_nodel[0][1]раньше был здесь
-
+    buyers_list = buyers_docs[0][0]+providers_docs[0][1]#buyers_docs_vozvr[0][1] и providers_docs_nodel[0][1]раньше был здесь
 
     
-    suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]-providers_docs_moneyback[1]
+    suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]+buyers_docs_dpd[2]+providers_docs_vozvr[2]-providers_docs_moneyback[1]
     suma_pp_prov = providers_docs[2]# хз ,что с это сранью делать buyers_docs_vozvr[1]
 
 
@@ -123,8 +126,8 @@ def get_sverka(cursor,contragent,data_start,data_end):
     inner_summ = round(suma_tn_prov+suma_pp_buy,2)
     outer_summ = round(suma_tn_buy+suma_pp_prov,2)
 
-    print(buyers_docs[1], providers_docs[1],providers_docs_nodel[1])
-    print(buyers_docs[2],buyers_docs_vozvr[2],providers_docs[2],providers_docs_nodel[2],providers_docs_vozvr[2])
+#    print(suma_pp_buy,suma_pp_buy )
+ #   print(buyers_docs[2],buyers_docs_vozvr[2],providers_docs[2],providers_docs_nodel[2],providers_docs_vozvr[2])
 
     result = inner_summ-outer_summ
 
@@ -150,6 +153,7 @@ def get_hvosty_lists(cursor,data_start, data_end):
 
         buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cursor,altair,data_start,data_end)
         buyers_docs_vozvr = transform_sql(sq_c.select_documents_to_buyers,sq_c.pp_buyers_vozvr, sq_c.pp_buyers,cursor,altair,data_start,data_end)
+        buyers_docs_dpd = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers_dpd,cursor,altair,data_start,data_end)
 
         providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,altair,data_start,data_end)
         providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,altair,data_start,data_end)
@@ -158,9 +162,8 @@ def get_hvosty_lists(cursor,data_start, data_end):
         providers_docs_moneyback = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_moneyback, sq_c.pp_providers,cursor,altair,data_start,data_end)
 
 
-        suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]-providers_docs_moneyback[1]
-        suma_pp_prov = providers_docs[2]
-
+        suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]+buyers_docs_dpd[2]+providers_docs_vozvr[2]-providers_docs_moneyback[1]
+        suma_pp_prov = providers_docs[2]# хз ,что с это сранью делать buyers_docs_vozvr[1]
 
         suma_tn_buy = buyers_docs[1]
         suma_pp_buy = buyers_docs[2] 
@@ -170,26 +173,26 @@ def get_hvosty_lists(cursor,data_start, data_end):
 
         if suma_tn_prov>suma_pp_prov and providers_docs[0][0] !=[]:
             message = 'сумма вашей задолженности составляет'
-            summ = str(round(inner_summ-outer_summ,2))
-            if summ != '0':
+            if inner_summ-outer_summ>0.1:
+                summ = str(round(inner_summ-outer_summ,2))
                 debts_providers += [{'name':providers_docs[0][0][0]['name'], 'contragent_id':providers_docs[0][0][0]['id'], 'message':message, 'summa':summ}]
              
         if suma_tn_prov<suma_pp_prov and providers_docs[0][0] !=[]:
             message = 'сумма задолженности контрагента составляет'
-            summ = str(round(outer_summ-inner_summ,2))
-            if summ != '0':
+            if outer_summ-inner_summ>0.1:
+                summ = str(round(outer_summ-inner_summ,2))
                 prepayment_providers += [{'name':providers_docs[0][0][0]['name'],'contragent_id':providers_docs[0][0][0]['id'],  'message':message, 'summa':summ}]
 
         if suma_tn_buy<suma_pp_buy and buyers_docs[0][0] !=[]:
             message = 'сумма задолженности контрагента составляет'
-            summ = str(round(inner_summ-outer_summ,2))
-            if summ != '0':
+            if inner_summ-outer_summ>0.1:
+                summ = str(round(inner_summ-outer_summ,2))
                 debts_buyers += [{'name':buyers_docs[0][0][0]['name'],'contragent_id':buyers_docs[0][0][0]['id'],  'message':message, 'summa':summ}]            
 
         if suma_tn_buy>suma_pp_buy and buyers_docs[0][0] !=[]:
             message = 'сумма вашей задолженности составляет'
-            summ = str(round(outer_summ-inner_summ,2))
-            if summ != '0':
+            if outer_summ-inner_summ > 0.1:
+                summ = str(round(outer_summ-inner_summ,2))
                 prepayment_buyers += [{'name':buyers_docs[0][0][0]['name'],'contragent_id':buyers_docs[0][0][0]['id'], 'message':message, 'summa':summ}]            
     
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
