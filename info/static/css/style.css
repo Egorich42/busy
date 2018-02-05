@@ -83,17 +83,20 @@ footer{height: 638px;}
 .user-profile-main-menu{width:20%; text-align: left;}
 
 .user-profile-main-menu article ul{padding: 0px 0px 0px 20px;}
-.user-profile-main-menu article ul li {padding-top: 15px;}
+.user-profile-main-menu p{cursor: pointer;}
+.user-profile-main-menu article ul li {padding-top: 15px; cursor: pointer;}
 
 .user-profile-main-info{width:80%; }
 .user-profile-main-info-column{width: 50%; text-align: left;}
+.user-profile-main-info-column p{font-weight: bold;}
 .user-profile-column-name{}
 .user-profile-main-info-column ul{}
 
- .user-profile-main-info-column article {padding: 20px 0px;}
+ .user-profile-main-info-column article {padding: 20px 0px 0px 20px;}
 
 .docs-ops-info{}
-.docs-ops-info article{display: flex;}
+.docs-ops-info article{padding: 0px; display: flex;justify-content: space-between;}
+.docs-ops-info article span{font-weight: bold;}
 
 
 

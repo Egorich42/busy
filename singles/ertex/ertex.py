@@ -9,7 +9,7 @@ sys.path.append(root_path)
 import base
 
 
-first_list = base.Excel.Workbooks.Open(base.BASE_DIR+'ertex_in_nov.xls')
+first_list = base.Excel.Workbooks.Open(base.BASE_DIR+'ertex\ertex_in_jan.xls')
 first_dataset = first_list.ActiveSheet
 
 
@@ -85,7 +85,7 @@ def import_into_excel(document_name, number):
 
 	sheet.set_print_scaling(85)
 	created_book = book.save(document_name)
-	active_doc = base.Excel.Workbooks.Open(base.BASE_DIR+document_name)
+	active_doc = base.Excel.Workbooks.Open(base.BASE_DIR+'ertex\\'+document_name)
 	active_sheet = active_doc.ActiveSheet
 
 
@@ -114,5 +114,5 @@ def import_into_excel(document_name, number):
 	base.Excel.Quit()
 	pass
 
-#import_into_excel('ertex_out.xls',1)
-import_into_excel('ertex_out_new.xls',0)
+#import_into_excel('ertex_out_jan.xls',1)
+import_into_excel('ertex_out_jan_new.xls',0)

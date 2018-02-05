@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*
 import sqlite3 
 
-tn_providers =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*'"
-tn_providers_no_del = "contragents_documents.doc_type != '0' AND contragents_documents.test_del == '10'"
+
+tn_providers =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*' AND contragents_documents.test_del != '10' AND contragents_documents.pay_identif != '2MS'"
+tn_providers_no_del = "contragents_documents.doc_type != '0' AND contragents_documents.test_del == '10' "
+tn_providers_moneyback =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*' AND contragents_documents.test_del != '10' AND contragents_documents.pay_identif = '2MS'"
 
 pp_providers =  "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.act_detector != '3' AND contragents_documents.pay_identif != 'S5C'"
 pp_providers_vozvr = "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.pay_identif == 'S5C'"
@@ -16,8 +18,6 @@ pp_buyers_vozvr = "contragents_documents_two.doc_type != '0' AND contragents_doc
 pp_buyers_dpd = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector =='2MM'"
 
 
-
-
 select_contragents = "SELECT * FROM contragents;"
 select_all_documents="SELECT * FROM contragents_documents;"
 select_all_documents_two="SELECT * FROM contragents_documents_two;"
@@ -26,8 +26,8 @@ select_contragents_identificator = "SELECT id FROM contragents WHERE contragents
 select_id_docs = "SELECT parent FROM contragents_documents;"
 select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
 
-insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?);"
-insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?);"
+insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?,?);"
+insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?,?);"
 insert_into_contragents ="INSERT INTO contragents VALUES (?,?,?,?,?);"
 
 
