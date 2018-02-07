@@ -64,13 +64,16 @@ footer{height: 638px;}
 .grey-back{background-color: #2F2F2F; color: #fff;}
 .grey-back-contact{align-items: center;}
 
+.forma input{
+padding: 10px 20px; 
+border: solid 1.5px #FD761F; 
+font-size: 21px; 
+border-radius: 40px; 
+text-align: left;}
 
-.forma input{padding: 10px 20px; text-align: left; border: solid 1.5px #FD761F; font-size: 21px; border-radius: 40px;}
-.forma p{margin: 20px;}
+.forma p{margin: 20px; font-size: 24px;}
 
-.button-orange-border{border: solid 2px #FD761F; border-radius: 40px; font-size: 21px;  padding: 15px 50px;}
-
-
+.forma-button{}
 
 
 /*---------MODULES RULES------*/
@@ -105,6 +108,21 @@ footer{height: 638px;}
 .contacts-info-chanels article{}
 .contacts-info-chanels article span{float: right;}
 .contacts-info-chanels article img{width: 100px;}
+.login{width: 80%;}
+.login form input{
+border: solid 1.5px #FD761F;
+border-radius: 40px;
+text-align: center;
+padding: 10px 0px;
+width: 100%;
+font-size: 40px;
+margin: 20px 0px;
+}
+.login p{
+	font-size: 26px;
+	margin: 0px;
+	padding:0px;
+}
 /*-----------MODULES RULES END -------------*/
 
 

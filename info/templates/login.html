@@ -4,19 +4,19 @@
 &nbsp;|&nbsp;Логин
 {% endblock %}
 {% block content %}
-
+<section class="login">
 {% if user.is_authenticated %}
 HELLO{{user.username}} Хотите посетить личный кабинет? <a href="/users/{{user.id}}/{{user.first_name}}">Войти</a>
 
 {% else %}
-Войти:
-<form id="login_form" method="post" action="/users/login/">
+<p>Войти в личный кабинет</p>
+<form id="login_form" method="post" action="/users/login/" >
 {% csrf_token %}
-Username: <input type="text" name="username" value="" size="50" />
-<br />
-Password: <input type="password" name="password" value="" size="50" />
-<br />
-<input type="submit" value="submit" />
+<p>Логин:</p> 
+<input type="text" name="username" value="" size="50" />
+<p>Пароль:</p> 
+<input type="password" name="password" value="" size="50" />
+<input type="submit" value="войти" class="forma-button" />
 </form>
 
 {% if form.errors %}
@@ -24,6 +24,6 @@ Password: <input type="password" name="password" value="" size="50" />
   {% endif %}
 
 {% endif %}
-
+</section>
 {% endblock %}
 

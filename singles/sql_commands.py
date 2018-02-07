@@ -3,19 +3,62 @@
 import sqlite3 
 
 
-tn_providers =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*' AND contragents_documents.test_del != '10' AND contragents_documents.pay_identif != '2MS'"
-tn_providers_no_del = "contragents_documents.doc_type != '0' AND contragents_documents.test_del == '10' "
-tn_providers_moneyback =  "contragents_documents.doc_type != '0' AND contragents_documents.deleted !='*' AND contragents_documents.test_del != '10' AND contragents_documents.pay_identif = '2MS'"
+tn_providers =  """
+contragents_documents.doc_type != '0' 
+AND contragents_documents.deleted !='*' 
+AND contragents_documents.pay_identif != '2MS'
+AND contragents_documents.col_side_id != 1
+"""
 
-pp_providers =  "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.act_detector != '3' AND contragents_documents.pay_identif != 'S5C'"
-pp_providers_vozvr = "contragents_documents.doc_type = '0' AND contragents_documents.deleted !='*' AND contragents_documents.pay_identif == 'S5C'"
+tn_providers_no_del = """
+contragents_documents.doc_type != '0' 
+AND contragents_documents.test_del == '10'
+"""
+
+tn_providers_moneyback =  """
+contragents_documents.doc_type != '0' 
+AND contragents_documents.deleted !='*' 
+AND contragents_documents.col_side_id = 1
+"""
+
+pp_providers =  """
+contragents_documents.doc_type = '0' 
+AND contragents_documents.deleted !='*' 
+AND contragents_documents.act_detector != '3' 
+AND contragents_documents.pay_identif != 'S5C'
+"""
+
+pp_providers_vozvr = """
+contragents_documents.doc_type = '0' 
+AND contragents_documents.deleted !='*'
+AND contragents_documents.pay_identif == 'S5C'
+"""
 
 
-tn_buyers = "contragents_documents_two.doc_type = '0' AND contragents_documents_two.deleted !='*'"
-pp_buyers = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector !='S5B' AND contragents_documents_two.pp_detector !='2MM'"
+tn_buyers = """
+contragents_documents_two.doc_type = '0' 
+AND contragents_documents_two.deleted !='*'
+"""
 
-pp_buyers_vozvr = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector =='S5B'"
-pp_buyers_dpd = "contragents_documents_two.doc_type != '0' AND contragents_documents_two.deleted !='*' AND contragents_documents_two.pp_detector =='2MM'"
+pp_buyers = """
+contragents_documents_two.doc_type != '0' 
+AND contragents_documents_two.deleted !='*' 
+AND contragents_documents_two.pp_detector !='S5B' 
+AND contragents_documents_two.pp_detector !='2MM'
+AND contragents_documents_two.another_identif !='2'
+"""
+
+pp_buyers_vozvr = """
+contragents_documents_two.doc_type != '0' 
+AND contragents_documents_two.deleted !='*' 
+AND contragents_documents_two.pp_detector =='S5B'
+"""
+
+pp_buyers_dpd = """
+contragents_documents_two.doc_type != '0' 
+AND contragents_documents_two.deleted !='*' 
+AND contragents_documents_two.pp_detector =='2MM'
+"""
 
 
 select_contragents = "SELECT * FROM contragents;"
