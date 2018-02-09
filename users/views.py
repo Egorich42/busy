@@ -17,10 +17,14 @@ import sqlite3
 # По нему django будет определять, выполнил ли вход пользователь.
 class LoginFormView(FormView):
     form_class = AuthenticationForm
+    model = User
+    print(model.id)
+    print(User.id)
     # Аналогично регистрации, только используем шаблон аутентификации.
     template_name = "login.html"
     # В случае успеха перенаправим на главную.
-    success_url = "/"
+    success_url = "/users/10/avangard/"+str(model.id)
+
 
 
     def form_valid(self, form):
