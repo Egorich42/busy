@@ -4,8 +4,6 @@ import os
 import sys
 from openpyxl import load_workbook,Workbook
 
-
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
 base_list = BASE_DIR+'transkom_in.xlsx'
