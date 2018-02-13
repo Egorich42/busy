@@ -1,8 +1,17 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 import os
-import sys
 from openpyxl import load_workbook,Workbook
+
+"""
+import sys
+path_to_file = os.path.dirname(os.path.abspath(__file__))+'\\'
+convert_to_list = path_to_file.split('\\')[:-2]
+root_path = '\\'.join(convert_to_list)
+sys.path.append(root_path)
+"""
+
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
@@ -44,7 +53,7 @@ def	get_cols_data():
 
 		if main_sheet.cell(row=i, column=10).value != None and main_sheet.cell(row=i, column=10).value != 0 and main_sheet.cell(row=i, column=8).value == None:
 			new_prices +=[main_sheet.cell(row=i, column=11).value]
-			new_income += [main_sheet.cell(row=i, column=10).internal_value]
+			new_income += [main_sheet.cell(row=i, column=10).value]
 			new_codes_1c += [main_sheet.cell(row=i, column=6).value]
 
 

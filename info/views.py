@@ -20,7 +20,7 @@ class MainPageView(View):
 
     def get(self, request):
         form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'posts': posts,'form': form})
+        return render(request, self.template_name, {'form': form})
 
 
     def post(self, request):
