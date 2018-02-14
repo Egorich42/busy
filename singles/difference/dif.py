@@ -30,7 +30,8 @@ def	get_eschf_data():
 	outcoming_list =[]
 
 	for i in range(4,main_inner_sheet.max_row):
-		first_list_from_excel += [{ "unp" : main_inner_sheet.cell(row=i, column=2).value, 
+		if  main_inner_sheet.cell(row=i, column=18) != "Аннулирован":
+			first_list_from_excel += [{ "unp" : main_inner_sheet.cell(row=i, column=2).value, 
 					"contragent_name" : main_inner_sheet.cell(row=i, column=4).value,
 					"nds" : main_inner_sheet.cell(row=i, column=42).value,
 					}]
@@ -89,7 +90,7 @@ def	get_excel_data():
 	
 
 
-def get_difference():
+def not_in_base():
 	result = get_eschf_data()
 
 	for i in get_excel_data():
@@ -99,19 +100,19 @@ def get_difference():
 
 	
 	for x in range(len(result)):
-		portal_list["dif"].cell(row=x+3, column=1).value = result[x]['contragent_name']
-		portal_list["dif"].cell(row=x+3, column=2).value = result[x]['nds']
+		portal_list["not_in_base"].cell(row=2, column=1).value = "НЕТ В БАЗЕ"
+		portal_list["not_in_base"].cell(row=x+3, column=1).value = result[x]['contragent_name']
+		portal_list["not_in_base"].cell(row=x+3, column=2).value = result[x]['nds']
 		pass	
 
 	portal_list.save(filename = portal_doc)	
 
-	return result
 
 
 
 
 
-def get_difference_2():
+def not_in_portal():
 	result = get_excel_data()
 
 	for i in get_eschf_data():
@@ -119,15 +120,14 @@ def get_difference_2():
 			if get_excel_data()[k]['nds'] == i['nds']:
 				result.remove(get_excel_data()[k])	
 
-
+	portal_list["not_in_base"].cell(row=2, column=5).value = "НЕТ НА ПОРТАЛЕ"
 	for x in range(len(result)):
-		portal_list["dif_2"].cell(row=x+3, column=1).value = result[x]['contragent_name']
-		portal_list["dif_2"].cell(row=x+3, column=2).value = result[x]['nds']
+		portal_list["not_in_base"].cell(row=x+3, column=5).value = result[x]['contragent_name']
+		portal_list["not_in_base"].cell(row=x+3, column=6).value = result[x]['nds']
 		pass	
 
 	portal_list.save(filename = portal_doc)					
 
-	return result
 
 
 
@@ -135,5 +135,6 @@ def get_difference_2():
 
 
 
-get_difference()
-get_difference_2()
+
+not_in_portal()
+not_in_base()
