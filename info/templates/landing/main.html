@@ -11,30 +11,38 @@
 <p>
 Наши специалисты ведут бухгалтерский учет, 
 обслуживают расчётный счёт, консультируют, помогают с прохождением проверок и выполняют ваши поручения. 
-А вы занимаетесь бизнесом и приглядываете за Кнопкой через удобное приложение.
+А вы занимаетесь бизнесом и приглядываете за состоянием дел<!--через удобное приложение-->.
 </p>
 </section>
 
 
-<section class="full-width center grey-back grey-back-contact column flex"><!--COLUMN CHANGE????  HIDE MB???-->
-<section class="central-block center"> 
+<section class="feedback-form">
+<section class="central-block"> 
+
+<article>
 У вас есть вопросы или вы хотите хотите подключиться?
 Отправьте запрос и мы обязательно свяжемся с вами!
+</article>
+
 <!--Я согласен с условиями передачи информации-->
-<form  action="." method="post" class="forma flex horizontal-content-center column-300" ><!--COLUMN-300  hor cont center-->
-{{ form.as_p }}
-{% csrf_token %}
-
-<p> 
-<input type="submit" class="button-orange-border pointer center"  value="Отправить">
-</p>
+<form  action="." method="post" class="forma" >
+	{{ form.as_p }}
+	{% csrf_token %}
+	<input type="submit" value="Отправить" style="background-color: #fff;">
 </form>
-Звоните  +375 33 351 69 75 или пишите в Telegramm
+
+<article>
+Звоните  +375 29 649 01 87 
+<p>или пишите в Telegram по номеру
++375 33 351 69 75
+</p>
 Расскажем всё о наших услугах, посчитаем стоимость, проконсультируем, подключим. 
+</article>
+
 </section>
 </section>
 
-<section  class="central-block center">
+<section  class="central-block">
 <span class="big-font"> Умный аутсорсинг</span>
 <p class ="normal-font-24">
 В "Бухгалтерских советах" на вас работает команда удалённых сотрудников.
@@ -44,7 +52,7 @@
 
 
 
-<section class="central-block center normal-font-20 how-it-work-list"> 
+<section class="central-block how-it-work-list"> 
 <span  class="big-font">Как это работает?</span>
 <ul class="flex">    
 <li>
@@ -113,69 +121,69 @@
 </section>
 
 
-<section class="full-width center flex  horizontal-content-center" style="background-color: #5D67AE;"><!--HOR CONTENT CENTER-->
-<section  class="central-block center" >
-<section class="colored-paragraph text-left center-300">
-<span class="midle-font-45">Берём бухгалтерию
-на себя</span>
-<p  class="normal-font-20  colored-paragraph-text text-left"  >
-Наши специалисты обладют более чем десятилетним опытом ведения бизнеса.
-Они заботятся о том, чтобы вы не платили лишних
-денег, а у налоговой не было лишних вопросов.
+<section  class="block-colored" style="background-color: #5D67AE;">
+  <section class="central-block-colored">
+	<article class="text-left">
+  	  <h2>Берём бухгалтерию на себя</h2>
+  	  Наши специалисты обладют более чем десятилетним опытом ведения бизнеса.
+  	  Они заботятся о том, чтобы вы не платили лишних
+  	  денег, а у налоговой не было лишних вопросов.
 
-Чтобы вы не отвлекались от важных дел, мы сами соберём первичные документы. Подскажем,
-как лучше трудоустроить сотрудника, уменьшим налоги и вовремя отчитаемся перед государством.
-
-</p>
-</section>
-</section>
-<article class="vertical-content-center  flex invisible-300">
-<img src="{%static "/icons/account.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы" class="invisible-300"><!--INVISIBLE-->
-</article>
-</section>
+  	  Чтобы вы не отвлекались от важных дел, мы сами соберём первичные документы. Подскажем,
+  	  как лучше трудоустроить сотрудника, уменьшим налоги и вовремя отчитаемся перед государством.
+	</article>
 
 
+  <article class="central-block-colored-img invisible-300">
+    <img src="{%static "/icons/account.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы" class="invisible-300">
+  </article>
 
-<section class="full-width center flex  horizontal-content-center" style="background-color: #F7A416;">
-<article class="vertical-content-center  flex invisible-300">
-<img src="{%static "/icons/greydoc.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-</article>
-<section  class="central-block center">
-<section class="colored-paragraph right center-300">
-
-<span  class="big-font right text-right-to-center">Занимаемся документацией
-</span>
-<p class="normal-font-20   colored-paragraph-text  text-left right" >
-Поручите нам работу с документами.
-Оформить отпуск, премирование, составить договор, оформить акт? Мы сделаем это за вас. 
-
-Работаем с системой электронного документооборота и помогаем избавиться от бумажной рутины.</p>
-</section>
-</section>
+  </section>
 </section>
 
 
 
-<section class="full-width center flex  horizontal-content-center" style="background-color: #01B5D8;">
+<section class="block-colored" style="background-color: #F7A416;">
+ <section class="central-block-colored">
 
-<section  class="central-block center">
-<section class="colored-paragraph text-left center-300">
-<span  class="midle-font-45">Поможем на старте</span>
-<p class="normal-font-20  colored-paragraph-text text-left">
-Собираетесь открыть свое дело?
-Проконсультируем по выбору оптимальной формы собственности и системы налогооблажения, поможем избежать возможных подводных камней.
-Решили открыть торговую точку? Поможем с поиском помещения и изучим договор аренды.
-Запускаете интернет-магазин? Поможем с выбором платформы, регистрацией и настройкой платежных систем.
-</p>
-</section>
-</section>
-<article class="vertical-content-center  flex invisible-300"><!--INVISIBLE-->
-<img src="{%static "/icons/5.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
-</article>
+  <article class="central-block-colored-img invisible-300">
+	<img src="{%static "/icons/greydoc.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+  </article>
+
+    <article class="text-right">
+	  <h2>Занимаемся документацией</h2>
+	  Поручите нам работу с документами.
+	  Оформить отпуск, премирование, составить договор, оформить акт? Мы сделаем это за вас. 
+
+	  Работаем с системой электронного документооборота и помогаем избавиться от бумажной рутины.
+	 </article>
+
+  </section>
 </section>
 
 
-<section class="central-block center">
+
+<section class="block-colored" style="background-color: #01B5D8;">
+  <section class="central-block-colored">	
+	<article class="text-left">
+	<h2>Поможем на старте</h2>
+	  Собираетесь открыть свое дело?
+	  Проконсультируем по выбору оптимальной формы собственности и системы налогооблажения, поможем избежать возможных подводных камней.
+	  Решили открыть торговую точку? Поможем с поиском помещения и изучим договор аренды.
+	  Запускаете интернет-магазин? Поможем с выбором платформы, регистрацией и настройкой платежных систем.
+	</article>
+
+  <article class="central-block-colored-img invisible-300">
+	<img src="{%static "/icons/5.png" "%}"  alt="Бухгалтерские советы" title="Бухгалтерские советы">
+  </article>
+
+  </section>
+</section>
+
+
+
+
+<section class="central-block">
 <span  class="big-font">Наши клиенты —
 компании из самых разных отраслей:</span>
 

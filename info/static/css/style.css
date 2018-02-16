@@ -13,7 +13,7 @@ a,a:visited{color: #2D2D2D;}
 /*---------------------FONTS-------------------*/
 
 /*Layout rules*/
-footer{height: 638px;}
+footer{height: 638px;background-color: #2F2F2F; color: #fff; display: flex; justify-content: center; text-align: center; width: 100%}
 .great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li,.bold {font-weight: bold;}
 .great-font{font-size: 60px; color: #2D2D2D;}
 .big-font{font-size: 48px;}
@@ -35,17 +35,15 @@ footer{height: 638px;}
 .margin-top-15 ul li,
 .margin-top-15 li{margin-top: 15px;}
 
-
-
 .key{width: 25px; margin: 0px 10px;}
-
 .pp-name-agent{width: 70%; padding-right: 10%;}
-
 .side-menu li{color:#998383;}
-
 .main{height: 100%;}
 
-.central-block{width: 980px; padding-top: 76px; padding-bottom: 76px;}
+.central-block{width: 980px; padding-top: 76px; padding-bottom: 76px; text-align: center; font-size: 20px;}
+.block-colored{width: 100%; display: flex; align-items: center; justify-content: center; padding: 50px 0px;}
+.central-block-colored{width: 980px; display: flex;}
+.central-block-colored-img{display: flex; justify-content: space-around;align-items: center;}
 
 .list-block ul{width: 240px; font-weight: bold; font-size: 21px;}
 .list-block ul li{font-size: 18px; padding-top: 9px; font-weight: normal;}
@@ -64,18 +62,35 @@ footer{height: 638px;}
 .grey-back{background-color: #2F2F2F; color: #fff;}
 .grey-back-contact{align-items: center;}
 
+.forma{display: flex}
+
 .forma input{
 padding: 10px 20px; 
 border: solid 1.5px #FD761F; 
 font-size: 21px; 
 border-radius: 40px; 
-text-align: left;}
+text-align: left;
+margin: 20px 20px;
+}
 
-.forma p{margin: 20px; font-size: 24px;}
-
-.forma-button{}
+.forma p{margin:0px;}
 
 
+.feedback-form{
+background-color: #2F2F2F;
+color: #fff;
+width: 100%;
+text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.feedback-form article{
+margin: 20px 0px;
+}
+
+.feedback-button{}
 /*---------MODULES RULES------*/
 
 /*USER-PROFILE*/
@@ -95,7 +110,7 @@ text-align: left;}
 .user-profile-column-name{}
 .user-profile-main-info-column ul{}
 
- .user-profile-main-info-column article {padding: 20px 0px 0px 20px;}
+.user-profile-main-info-column article {padding: 20px 0px 0px 20px;}
 
 .docs-ops-info{}
 .docs-ops-info article{padding: 0px; display: flex;justify-content: space-between;}
@@ -119,10 +134,13 @@ font-size: 40px;
 margin: 20px 0px;
 }
 .login p{
-	font-size: 26px;
-	margin: 0px;
-	padding:0px;
+font-size: 26px;
+margin: 0px;
+padding:0px;
 }
+
+.registered-office{text-align: left;}
+.registered-office p{ margin:15px; font-size: 24px;}
 /*-----------MODULES RULES END -------------*/
 
 
@@ -196,3 +214,6 @@ display: flex;}
 
 .show-hide-main{
 display: block;}
+
+.text-left{text-align: left;}
+.text-right{text-align: right;}

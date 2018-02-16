@@ -25,8 +25,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # По нему django будет определять, выполнил ли вход пользователь.
 class LoginFormView(FormView):
     form_class = AuthenticationForm
-
-
     # Аналогично регистрации, только используем шаблон аутентификации.
     template_name = "login.html"
     # В случае успеха перенаправим на главную.
@@ -73,13 +71,13 @@ def show_user_profile(request,id, **kwargs):
         all_providers_docs=np.array(get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request))
 
         
-        providers_debts = get_hvosty_lists(cur,'2016-06-30',str(var.today))[0]
-        providers_prepay = get_hvosty_lists(cur,'2016-06-30',str(var.today))[1]
-        buyers_debts = get_hvosty_lists(cur,'2016-06-30',str(var.today))[2]
-        buyers_prepay = get_hvosty_lists(cur,'2016-06-30',str(var.today))[3]
+        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
+
+        providers_debts = hvosty_list[0]
+        providers_prepay = hvosty_list[1]
+        buyers_debts = hvosty_list[2]
+        buyers_prepay = hvosty_list[3]
     
-
-
 
         if request.method == 'POST':
             fin_states = TimePeriodForm(request.POST)     

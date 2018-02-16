@@ -153,7 +153,7 @@ def get_hvosty_lists(cursor,data_start, data_end):
         providers_docs_moneyback = np.array(transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_moneyback, sq_c.pp_providers,cursor,altair,data_start,data_end))
 
         suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]+buyers_docs_dpd[2]+providers_docs_vozvr[2]-providers_docs_moneyback[1]
-        suma_pp_prov = providers_docs[2]+buyers_docs_vozvr[2]# хз ,что с это сранью делать buyers_docs_vozvr[1]
+        suma_pp_prov = providers_docs[2]# добавляю нужныц и работающий в сверке +buyers_docs_vozvr[2] - по нулям
  
 
         suma_tn_buy = buyers_docs[1]

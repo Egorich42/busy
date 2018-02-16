@@ -8,8 +8,22 @@
 .user-profile-main-info{width:100%; }
 .user-profile-main-info-column{width: 100%;}
 
+.forma{flex-direction: column;    
+	justify-content: space-around;
+    align-items: center;}
 
+.forma input{
+margin: 20px 0px;
+}
 
+.forma-feedback{}
+
+.forma-feedback input{
+padding: 10px 20px; 
+border: solid 1.5px #FD761F; 
+font-size: 21px; 
+border-radius: 40px; 
+text-align: left;}
 
 
 .invisible-300 img{margin: 0px 20px;}
