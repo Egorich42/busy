@@ -153,3 +153,13 @@ AND  doc_date >= {}
 AND  doc_date <= {}
 ORDER BY contragents_documents_two.doc_date;
 """
+
+
+
+select_eschf_documents= """
+SELECT * FROM outer_eschf
+LEFT JOIN contragents ON outer_eschf.parent=contragents.id 
+WHERE  doc_data >= {} 
+AND  doc_data <= {}
+ORDER BY outer_eschf.doc_data;
+"""
