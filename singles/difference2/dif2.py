@@ -81,10 +81,6 @@ conn.close()
 """
 
 
-
-
-
-
 ###-EXCEL-PART-------------------------##############
 
 
@@ -98,16 +94,36 @@ main_inner_sheet = portal_list["jan"]
 result_sheet = portal_list["result"]
 
 
-def get_eschf_from_sql(data_start,data_end):
-	select = sq_c.select_eschf_documents.format("'"+data_start+"'","'"+data_end+"'")
+def get_eschf_from_sql():
+	full_grouped_list = []
+	outcoming_list = []
+
+	select = sq_c.select_eschf_documents.format("'"+"2018-01-01"+"'","'"+"2018-01-31"+"'")
 	transform_to_list = var.create_list_of_table_values(cur.execute(select),cur.description)
 
-	return transform_to_list
+	sorted_list_from_sql = sorted(transform_to_list, key=itemgetter('contragent_name'))
+
+	for key, group in itertools.groupby(sorted_list_from_sql, key=lambda x:x['unp']):
+		grouped_list_of_listd = list(group)
+		full_grouped_list+=[grouped_list_of_listd]								
+
+
+	for i in full_grouped_list:
+		outcoming_list+=[{'contragent_name': i[0]['contragent_name'],'unp':i[0]['unp'] , 'nds':round(sum([x['nds'] for x in i]),2)}]
+
+	
+#	print(len(transform_to_list))
+#	print(len(outcoming_list))	
+	return outcoming_list
+	pass
+
 
 
 
 def	get_eschf_from_excel():
 	first_list_from_excel =[]
+	full_grouped_list = []
+	outcoming_list = []
 
 	for i in range(4,main_inner_sheet.max_row):
 		if  main_inner_sheet.cell(row=i, column=18).value != "Аннулирован" and main_inner_sheet.cell(row=i, column=9).value != None:
@@ -118,23 +134,39 @@ def	get_eschf_from_excel():
 					"full_sum" : main_inner_sheet.cell(row=i, column=43).value,
 					}]
 
-	return first_list_from_excel
+	sorted_list_from_excel = sorted(first_list_from_excel, key=itemgetter('contragent_name'))
+
+	for key, group in itertools.groupby(sorted_list_from_excel, key=lambda x:x['unp']):
+		grouped_list_of_listd = list(group)
+		full_grouped_list+=[grouped_list_of_listd]								
+
+
+	for i in full_grouped_list:
+		outcoming_list+=[{'contragent_name': i[0]['contragent_name'],'unp':i[0]['unp'] , 'nds':round(sum([x['nds'] for x in i]),2)}]
+
+	return outcoming_list
 	pass
 
 
-sql_unjoined = get_eschf_from_sql("2018-01-01","2018-01-31")
+sql_unjoined = get_eschf_from_sql()
 exc_unjoined = get_eschf_from_excel()
 
-nds_sum_sql = sum(item['nds'] for item in sql_unjoined)
-nds_sum_portal = sum(item['nds'] for item in exc_unjoined)
+M = sql_unjoined+exc_unjoined
+def suka():
+	atp = get_eschf_from_sql()
+
+	for x in get_eschf_from_sql():
+		for y in get_eschf_from_excel():
+			if x['unp'] == y['unp']:
+				atp.remove(y)
+	return atp
+print(len(suka()))
+
+print(len(sql_unjoined))
+print(len(exc_unjoined))
 
 
-def not_in_portal():
-	result = get_eschf_from_excel()
 
-	for i in get_eschf_from_excel():
-		for k in range(len(get_eschf_from_excel())):
-			if get_eschf_from_sql("2018-01-01","2018-01-31")[k]['nds'] == i['nds']:
-				result.remove(get_eschf_from_excel()[k])
+#nds_sum_sql = sum(item['nds'] for item in sql_unjoined)
+#nds_sum_portal = sum(item['nds'] for item in exc_unjoined)
 
-not_in_portal()

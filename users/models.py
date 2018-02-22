@@ -187,7 +187,6 @@ def get_hvosty_lists(cursor,data_start, data_end):
                 prepayment_buyers += [{'name':buyers_docs[0][0][0]['name'],'contragent_id':buyers_docs[0][0][0]['id'], 'message':message, 'summa':summ}]            
     
     
-
     return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
     pass
 

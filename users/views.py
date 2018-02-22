@@ -71,7 +71,8 @@ def show_user_profile(request,id, **kwargs):
         all_providers_docs=np.array(get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request))
 
         
-        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
+#        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
+        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2018-01-01')
 
         providers_debts = hvosty_list[0]
         providers_prepay = hvosty_list[1]

@@ -38,6 +38,9 @@ AND contragents_documents.pay_identif == 'S5C'
 tn_buyers = """
 contragents_documents_two.doc_type = '0' 
 AND contragents_documents_two.deleted !='*'
+AND contragents_documents_two.type_sort != 3649U
+AND contragents_documents_two.type_sort != '3649U'
+
 """
 
 pp_buyers = """
@@ -72,8 +75,8 @@ select_id_docs = "SELECT parent FROM contragents_documents;"
 select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
 
 
-insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?,?);"
-insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?,?);"
+insert_into_docs ="INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?,?,?);"
+insert_into_docs_two ="INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?,?,?);"
 insert_into_contragents ="INSERT INTO contragents VALUES (?,?,?,?,?);"
 
 insert_into_eschf_outer ="INSERT INTO eschf_out VALUES (?,?,?,?,?);"

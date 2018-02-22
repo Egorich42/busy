@@ -37,6 +37,8 @@ AND contragents_documents.pay_identif == 'S5C'
 tn_buyers = """
 contragents_documents_two.doc_type = '0' 
 AND contragents_documents_two.deleted !='*'
+AND contragents_documents_two.type_sort != '3649U'
+AND contragents_documents_two.type_sort != '364AS'
 """
 
 pp_buyers = """

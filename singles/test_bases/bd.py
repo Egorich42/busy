@@ -10,7 +10,7 @@ import sql_commands as sq_c
 from dbfread import DBF
 
 
-bazi = ('dipartD', 'avangard', 'ditest','ipmatusev','mitada', 'smdpark','himbaza','belwestagro', 'himprom_den', 'polymia_den')
+bazi = ('dipartD', 'avangard', 'ditest','ipmatusev','mitada', 'smdpark','himprom_den', 'polymia_den')
 
 
 location ='D:\DATA_SETS' 
@@ -28,45 +28,37 @@ def get_data_from_dbf(table_name):
 	pass
 
 
-def get_data(table_name, *args):
-	str_list_1 = []
-	str_list_2 = []
-	values_list = []
-	for l in table_name:	
-		values_list += [
-						[
-						l[args[4]],
-						l[args[5]],
-						l[args[10]], 
-						l[args[0]].encode('latin1').decode('cp1251'),
-						l[args[3]].encode('latin1').decode('cp1251'),  
-						l[args[1]].replace(" ", ""),
-						l[args[2]].replace(" ", ""),
-						l[args[6]].replace(" ", ""),
-						l[args[7]].replace(" ", ""),
-						str(l[args[8]]).replace(" ", ""),
-						str(l[args[9]]).replace(" ", ""),
-						]
-						]
 
+
+def get_data(table_name, *args):
+	values_list = []
+	for l in table_name:
+		values_list += [[l[args[0]].encode('latin1').decode('cp1251'),
+		l[args[1]].replace(" ", ""),
+		l[args[2]].replace(" ", "") ,
+		l[args[3]].encode('latin1').decode('cp1251'), 
+		l[args[4]],
+		l[args[5]], 
+		l[args[6]].replace(" ", ""),
+		l[args[7]].replace(" ", ""),
+		str(l[args[8]]).replace(" ", ""),
+		str(l[args[9]]).replace(" ", ""),
+		l[args[10]],
+		l[args[11]].replace(" ", ""),
+		]]
 	return values_list	
 	pass
 
 def get_data_mudaki(table_name, *args):
 	values_list = []
 	for l in table_name:
-		values_list += [
-						[
-						l[args[0]].replace(" ", ""),
-						l[args[2]].replace(" ", ""), 
-						l[args[4]].replace(" ", ""),
-						l[args[1]].encode('latin1').decode('cp1251'),
-						l[args[3]].encode('latin1').decode('cp1251'), 
-						]
-						]
+		values_list += [[l[args[0]].replace(" ", ""), 
+		l[args[1]].encode('latin1').decode('cp1251'),
+		l[args[2]].replace(" ", "") ,
+		l[args[3]].encode('latin1').decode('cp1251'), 
+		l[args[4]].replace(" ", "")]]
 	return values_list	
 	pass
-
 
 #проходится через список всех требуемых файлов-таблиц и выдергивает их. 
 #превращая в листы, в внутри - создается по три варианта-листа для каждой из баз клиентов
@@ -109,7 +101,8 @@ def documenty_list(numar, *args):
 										args[7],
 										args[8],
 										args[9],
-										args[10]
+										args[10],
+										args[11],
 									)
 							]
 		fiat += [ti for ti in documents_table]
@@ -135,8 +128,8 @@ def contragents_list(numar, *args):
 	pass
 
 
-documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623')
-documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480','SP479')
+documenty_dlya_contragentov= documenty_list(all_t625,'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623','SP620')
+documenty_ot_contragentov = documenty_list(all_t493,'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480','SP479','SP478')
 contragenty =  contragents_list(all_t167, 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
