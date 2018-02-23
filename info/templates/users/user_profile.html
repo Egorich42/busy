@@ -9,7 +9,8 @@
     <article>
         <span>{{tax_system}}&nbsp;за текущий месяц&nbsp;:</span>
         <span>{{month_fin_states}}&nbsp;руб.</span>
-
+        </article>
+        <article>
         <span>{{tax_system}}&nbsp;за текущий квартал&nbsp;:</span>
         <span>{{square_fin_states}}&nbsp;руб.</span>  
     </article>
@@ -201,22 +202,22 @@
 
 <section class="user-profile-main-info hidden-form" id="they-debts-list">
     <section class="user-profile-main-info-column right">
-        <span>АВАНСЫ ПОСТАВЩИКАМ(ДЕБ 60)</span>
+        <h3>АВАНСЫ ПОСТАВЩИКАМ(ДЕБ 60)</h3>
         {%for prov_debt in providers_debts %}
             <article>
                 <span>{{prov_debt.name}}</span>
-                <span>{{prov_debt.summa}}&nbsp;.Р</span>
+                <span  class="summa">{{prov_debt.summa}}&nbsp;.Р</span>
             </article>
         {%endfor%}
     </section>
 
 
     <section class="user-profile-main-info-column left">
-        <span>ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)</span>
+        <h3>ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)</h3>
         {%for prov_prepay in providers_prepay %}
         <article>
             <span>{{prov_prepay.name}}</span>
-            <span>{{prov_prepay.summa}}&nbsp;.Р  </span>
+            <span class="summa">{{prov_prepay.summa}}&nbsp;.Р  </span>
         </article>
 
         {%endfor%}
@@ -227,12 +228,12 @@
 
 <section class="user-profile-main-info hidden-form" id="my-debts-list">
     <section class="user-profile-main-info-column right">
-        <p>АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)</p>
+        <h3>АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)</h3>
         {%for buyer_prepay in buyers_prepay %}
 
         <article>
             <span>{{buyer_prepay.name}}</span>
-            <span>{{buyer_prepay.summa}}&nbsp;.Р </span>
+            <span class="summa">{{buyer_prepay.summa}}&nbsp;.Р </span>
         </article>
 
         {%endfor%}
@@ -240,11 +241,11 @@
 
 
     <section class="user-profile-main-info-column left">
-        <p>ДОЛГИ ПОКУПАТЕЛЕЙ (Д62) </p>
+        <h3>ДОЛГИ ПОКУПАТЕЛЕЙ (Д62) </h3>
         {%for buyer_debt in buyers_debts %}
             <article>
             <span>{{buyer_debt.name}}</span>
-            <span>{{buyer_debt.summa}}&nbsp;.Р</span>
+            <span class="summa">{{buyer_debt.summa}}&nbsp;.Р</span>
             </article>
         {%endfor%}
     </section>

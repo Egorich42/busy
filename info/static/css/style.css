@@ -41,7 +41,7 @@ footer{height: 638px;background-color: #2F2F2F; color: #fff; display: flex; just
 .main{height: 100%;}
 
 .central-block{width: 980px; padding-top: 76px; padding-bottom: 76px; text-align: center; font-size: 20px;}
-.block-colored{width: 100%; display: flex; align-items: center; justify-content: center; padding: 50px 0px;}
+.block-colored{width: 100%; display: flex; align-items: center; justify-content: center; padding: 50px 0px; color: #fff;}
 .central-block-colored{width: 980px; display: flex;}
 .central-block-colored-img{display: flex; justify-content: space-around;align-items: center;}
 
@@ -53,6 +53,7 @@ footer{height: 638px;background-color: #2F2F2F; color: #fff; display: flex; just
 
 .list-block,
 .how-it-work-list ul {flex-wrap: wrap; align-content: space-around;}
+
 
 
 .colored-paragraph{ margin: 50px; color: #000;}
@@ -140,7 +141,7 @@ padding:0px;
 }
 
 .registered-office{text-align: left;}
-.registered-office p{ margin:15px; font-size: 24px;}
+.registered-office p{ margin:15px; font-size: 14px;}
 /*-----------MODULES RULES END -------------*/
 
 
