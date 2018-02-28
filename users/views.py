@@ -62,7 +62,7 @@ def show_user_profile(request,id, **kwargs):
         taxes_system = user.client.nalog_system
 
         square_fin_states = curent_finace_states(start_square, var.today, cur, taxes_system)
-        month_fin_states = curent_finace_states(start_month, var.today, cur, taxes_system)
+        month_fin_states = curent_finace_states('2017-12-01', '2017-12-31', cur, taxes_system)
 
 
         all_pp_buyers=np.array(get_paginator(cur, 'contragents_documents_two',sq_c.pp_buyers,15,request))
