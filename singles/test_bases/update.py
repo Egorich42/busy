@@ -122,29 +122,14 @@ def pred_start_list(base_name):
 
 
 
-income_tovary  = pred_start_list('avangard')[0]
-income_nds = pred_start_list('avangard')[1]
-income = pred_start_list('avangard')[2]
-
-
-out_nds = pred_start_list('avangard')[3]
-out = pred_start_list('avangard')[4]
-
-
-
 def data_sorting(income_list, data_start, data_end):
-	data_borders_list = []
-	for i in income_list:
-		if i['doc_data'] >= data_start and  i['doc_data'] <= data_end:
-			data_borders_list +=[i]
-
+	data_borders_list = [i for i in income_list if i['doc_data'] >= data_start and  i['doc_data'] <= data_end]
 	data_sorted_list = sorted(data_borders_list, key=lambda k: k['doc_data']) 
-
 	return data_sorted_list	
 	pass		
 
 
-def create_documents_lists(data_start, data_end):
+def create_documents_lists(out_list, income_list, data_start, data_end):
 	outcome_serv_and_tn_list = []
 	outcome_pp_list = []
 	outcome_pp_vozvr = []
@@ -155,7 +140,7 @@ def create_documents_lists(data_start, data_end):
 	income_pp_vozvr = []
 	income_pp_dpd = []
 
-	for i in data_sorting(out, data_start, data_end):
+	for i in data_sorting(out_list, data_start, data_end):
 		if i['del_detector'] != '*':
 			if i['document_type'] != '0' and i['some_sort_one'] != '1' and i['pay_id']!= '2MS':
 				outcome_serv_and_tn_list +=[i]
@@ -166,8 +151,7 @@ def create_documents_lists(data_start, data_end):
 					outcome_pp_list += [i]	
 
 
-
-	for i in data_sorting(income, data_start, data_end):
+	for i in data_sorting(income_list, data_start, data_end):
 		if i['del_detector'] != '*':
 			if i['document_type'] == '0' and i['some_sort_two'] != '364AS' and i['some_sort_two'] != '3649U'  :
 				income_serv_and_tn_list +=[i]
@@ -180,10 +164,9 @@ def create_documents_lists(data_start, data_end):
 				else:
 					income_pp_list += [i]
 					
-
-
 	return (income_serv_and_tn_list, outcome_serv_and_tn_list, income_pp_list, income_pp_vozvr, income_pp_dpd, outcome_pp_list, outcome_pp_vozvr)
 	pass
+
 
 
 def create_joined_nds_list(list_without_nds, list_with_nds,  data_start, data_end):
@@ -205,53 +188,110 @@ def create_joined_nds_list(list_without_nds, list_with_nds,  data_start, data_en
 
 
 
-vhod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists('2017-12-01', '2017-12-31')[0], income_nds, '2017-12-01', '2017-12-31')]),2)
-ishod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists('2017-12-01', '2017-12-31')[1], out_nds, '2017-12-01', '2017-12-31')]),2)
-nds_tovary = round(sum([i['nds'] for i in data_sorting(pred_start_list('avangard')[0],'2017-12-01', '2017-12-31')]),2)
+def return_name(docs, pp):
+	name = 'default'	
+	if len(pp) > 0 and len(pp) >len(docs):
+		name = pp[0]['contragent_name']
+	if len(docs) > 0 and len(docs) >len(pp):
+		name = docs[0]['contragent_name']
+	if len(docs) > 0 and len(docs) == len(pp):				
+		name = docs[0]['contragent_name']
+	return name	
+	pass
 
-print(vhod_nds)
-print(ishod_nds)
-print(nds_tovary)
 
-
-
-
-def act_sverki(contragent_id, data_start, data_end):
-	serv_and_tn_period = []
-	pp_period = []
-
-	for i in create_documents_lists(data_start, data_end)[0]:
-		if i['parent_id'] == contragent_id:
-			serv_and_tn_period += [i]
-
-	for i in create_documents_lists(data_start, data_end)[2]:
-		if i['parent_id'] == contragent_id:
-			pp_period += [i]
-
-	sum_tn_and_serv = sum([x['full_sum'] for x in serv_and_tn_period])
-	sum_pp = sum([x['full_sum'] for x in pp_period])
-
-	if  sum_tn_and_serv == sum_pp:
+def fin_state_sums(sum_docs, sum_pp):
+	if  sum_docs == sum_pp:
 		difference = 0
 		message = 'все ровно'
 
-	if sum_tn_and_serv > sum_pp:
-		difference = sum_tn_and_serv-sum_pp
+	if sum_docs > sum_pp:
+		difference = sum_docs-sum_pp
 		message = 'задолженность контрагента сотавляет:'
 	else:
-		difference = sum_pp - sum_tn_and_serv
+		difference = sum_pp - sum_docs
 		message = 'ваша задолженность  сотавляет:'
-			
-	serv_and_tn_period[0][ 'contragent_name']
-	return(serv_and_tn_period,pp_period,sum_tn_and_serv,sum_pp, difference, message)
+		
+	return (difference,message)
 	pass
-#print(act_sverki('ATPIB','2017-12-01', '2017-12-31')[0])
 
+
+def act_sverki(out, income, contragent_id, data_start, data_end):
+
+	def constructor_to_sverka(number):
+		result = [i for i in create_documents_lists(out, income, data_start, data_end)[number] if i['parent_id'] == contragent_id]
+		return result
+		pass
+
+	income_serv_and_tn = constructor_to_sverka(0)
+	income_pp = constructor_to_sverka(2)
+	income_pp_vozvr = constructor_to_sverka(3)
+	income_pp_dpd =  constructor_to_sverka(4)
+
+	outcome_serv_and_tn = constructor_to_sverka(1)
+	outcome_pp = constructor_to_sverka(5)
+	outcome_pp_vozvr = constructor_to_sverka(6)
+
+	income_result_pp = income_pp+income_pp_vozvr
+	income_result_doc = income_serv_and_tn+income_pp_dpd
+
+	outcome_result_pp = outcome_pp+outcome_pp_vozvr
+	outcome_result_doc = outcome_serv_and_tn
+
+
+
+	income_result_pp_sum = sum([i['full_sum'] for i in income_result_pp])
+	income_result_doc_sum = sum([i['full_sum'] for i in income_result_doc])
+
+	outcome_result_pp_sum = sum([i['full_sum'] for i in outcome_result_pp])
+	outcome_result_doc_sum = sum([i['full_sum'] for i in outcome_result_doc])
+
+
+
+
+income = pred_start_list('avangard')[2]
+out = pred_start_list('avangard')[4]
+#result = create_documents_lists(out, income,'2017-12-01', '2017-12-31')
+#print(len(result[0]),len(result[1]),len(result[2]),len(result[3]),len(result[4]),len(result[5]),len(result[6]))
+
+
+#print(hvosty('2017-12-01', '2017-12-31'))
+
+act_sverki(out, income,'3CPIB','2016-06-01', '2017-12-31')
+#6- AVANGARD
+"""
+income_tovary  = pred_start_list('avangard')[0]
+income_nds = pred_start_list('avangard')[1]
+income = pred_start_list('avangard')[2]
+
+out_nds = pred_start_list('avangard')[3]
+out = pred_start_list('avangard')[4]
+
+vhod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists(out,income, '2017-12-01', '2017-12-31')[0], income_nds, '2017-12-01', '2017-12-31')]),2)
+ishod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists(out, income,'2017-12-01', '2017-12-31')[1], out_nds, '2017-12-01', '2017-12-31')]),2)
+nds_tovary = round(sum([i['nds'] for i in data_sorting(income_tovary,'2017-12-01', '2017-12-31')]),2)
+"""
+
+
+
+
+#print(vhod_nds)
+#print(ishod_nds)
+#print(nds_tovary)
+
+"""
 def hvosty(data_start, data_end):
 	hvosty_list = []
-	for i in [x['contragent_id'] for x in pred_start_list('avangard')[5]]:
-		if act_sverki(i, data_start, data_end)[4] > 0.5:
-			hvosty_list += [{'difference': round(act_sverki(i, data_start, data_end)[4],2)}]
-	return 	hvosty_list
 
-hvosty('2017-12-01', '2017-12-31')
+	debts_providers=[]
+	prepayment_providers=[]
+	debts_buyers=[]
+	prepayment_buyers=[]
+
+	for i in [x['contragent_id'] for x in pred_start_list('avangard')[5]]:
+		if act_sverki(out, income, i, data_start, data_end)[4] > 0.5 and len(act_sverki(out, income, i, data_start, data_end)[0]) > 0:
+			hvosty_list += [{'difference': round(act_sverki(out, income, i, data_start, data_end)[4],2), 'name':act_sverki(out, income,i, data_start, data_end)[6] }]
+
+	return 	hvosty_list
+	pass
+"""
