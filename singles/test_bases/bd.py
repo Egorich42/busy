@@ -15,8 +15,13 @@ bazi = ('dipartD', 'avangard', 'ditest','ipmatusev','mitada', 'smdpark','himprom
 
 location ='D:\DATA_SETS' 
 t625 = location+'\{}\SC625.DBF'
+t625_tables_names = ('DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623','SP620')
+
 t493 = location+'\{}\SC493.DBF'
+t493_tables_names = ('DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480','SP479','SP478')
+
 t167 = location+'\{}\SC167.DBF'
+t167_tables = ('ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 t625_tn_nds = location+'\{}\DH16152.DBF'
 t625_tn_nds_tables = ('SP16108', 'SP16116', 'SP16139', 'SP16138', 'SP16136')
@@ -29,6 +34,10 @@ t493_uslugi_nds_tables = ('SP3019','SP3017','SP3030', 'SP3029', 'SP3027')
 
 t493_tn_nds = location+'\{}\DH14970.DBF'
 t493_tn_nds_tables = ('SP14928', 'SP14933','SP14954', 'SP14953','SP14951')
+
+
+incoming_tovary_nds = location+'\{}\DH16195.DBF'
+incoming_tovary_tables = ('SP16153', 'SP16159', 'SP16184', 'SP16183', 'SP16181')
 
 
 
@@ -47,49 +56,47 @@ def get_docs_with_nds(from_dbf_table, tables_names):
 	pass
 
 
-def get_data(table_name, *args):
+def get_data(from_dbf_table,tables_names):
 	values_list = []
-	for l in table_name:
+	for i in from_dbf_table:
 		values_list += [
-						[
-						l[args[0]].encode('latin1').decode('cp1251'),
-						l[args[1]].replace(" ", ""),
-						l[args[2]].replace(" ", ""),
-						l[args[3]].encode('latin1').decode('cp1251'), 
-						l[args[4]],
-						l[args[5]], 
-						l[args[6]].replace(" ", ""),
-						l[args[7]].replace(" ", ""),
-						str(l[args[8]]).replace(" ", ""),
-						str(l[args[9]]).replace(" ", ""),
-						l[args[10]],
-						l[args[11]].replace(" ", ""),
-						]
+						(
+						dict(i)[tables_names[0]].encode('latin1').decode('cp1251'),
+						dict(i)[tables_names[1]].replace(" ", ""),
+						dict(i)[tables_names[2]].replace(" ", ""),
+						dict(i)[tables_names[3]].encode('latin1').decode('cp1251'), 
+						dict(i)[tables_names[4]],
+						dict(i)[tables_names[5]], 
+						dict(i)[tables_names[6]].replace(" ", ""),
+						dict(i)[tables_names[7]].replace(" ", ""),
+						str(dict(i)[tables_names[8]]).replace(" ", ""),
+						str(dict(i)[tables_names[9]]).replace(" ", ""),
+						dict(i)[tables_names[10]],
+						dict(i)[tables_names[11]].replace(" ", ""),
+						)
 						]
 	return values_list	
 	pass
 
 
 
-def get_data_mudaki(table_name, *args):
+def get_data_mudaki(from_dbf_table, tables_names):
 	values_list = []
-	for l in table_name:
-		values_list += [
-						[
-						l[args[0]].replace(" ", ""), 
-						l[args[1]].encode('latin1').decode('cp1251'),
-						l[args[2]].replace(" ", "") ,
-						l[args[3]].encode('latin1').decode('cp1251'), 
-						l[args[4]].replace(" ", "")
-						]
-						]
+	for i in from_dbf_table:
+		values_list += [(
+						dict(i)[tables_names[0]].replace(" ", ""),
+						dict(i)[tables_names[1]].encode('latin1').decode('cp1251'),
+						dict(i)[tables_names[2]].replace(" ", ""),
+						dict(i)[tables_names[3]].encode('latin1').decode('cp1251'), 
+						dict(i)[tables_names[4]].replace(" ", "")
+						)]						
 	return values_list	
 	pass
 
 
 def create_list_base_tables():
 	big_tables_list = []
-	for x in (t625,t493, t167,t625_uslugi_nds,t625_tn_nds, t493_uslugi_nds, t493_tn_nds):
+	for x in (t625,t493, t167,t625_uslugi_nds,t625_tn_nds, t493_uslugi_nds, t493_tn_nds,incoming_tovary_nds):
 		tables_in_bases = [get_data_from_dbf(x.format(i)) for i in bazi]
 
 		big_tables_list +=[tables_in_bases]
@@ -97,23 +104,23 @@ def create_list_base_tables():
 	pass
 
 
-def documenty_list(numar, *args):
+def documenty_list(numar, table_names):
 	fiat = []
 	for t in range(len(bazi)):
-		documents_table = [get_data(numar[t], args[0],args[1], args[2], args[3],args[4],
-									args[5], args[6],args[7],args[8],args[9],args[10],args[11])]
+		documents_table = [get_data(numar[t], table_names)]
 		fiat += [ti for ti in documents_table]
 	return fiat	
 	pass
 
 
-def contragents_list(numar, *args):
+def contragents_list(numar, table_names):
 	fiat = []
 	for t in range(len(bazi)):
-		documents_table = [get_data_mudaki(numar[t], args[0], args[1], args[2],args[3], args[4])]
+		documents_table = [get_data_mudaki(numar[t], table_names)]
 		fiat += [ti for ti in documents_table]
 	return fiat	
 	pass
+
 
 
 def create_docs_wth_nds_list(numar, table_names):
@@ -124,19 +131,28 @@ def create_docs_wth_nds_list(numar, table_names):
 	return fiat	
 	pass
 
+def create_docs_list(numar, table_names):
+	fiat = []
+	for t in range(len(bazi)):
+		documents_table = [get_docs_with_nds(numar[t], table_names)]
+		fiat += [ti for ti in documents_table]
+	return fiat	
+	pass
 
 
-documenty_dlya_contragentov= documenty_list(create_list_base_tables()[0],'DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623','SP620')
-documenty_ot_contragentov = documenty_list(create_list_base_tables()[1],'DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480','SP479','SP478')
-contragenty =  contragents_list(create_list_base_tables()[2], 'ID','DESCR', 'ISMARK','SP134', 'SP137')
 
+contragenty =  contragents_list(create_list_base_tables()[2],t167_tables)
+
+documenty_dlya_contragentov= documenty_list(create_list_base_tables()[0],t625_tables_names)
+documenty_ot_contragentov = documenty_list(create_list_base_tables()[1],t493_tables_names)
 
 uslygi_okazany =  create_docs_wth_nds_list(create_list_base_tables()[3], t625_uslugi_nds_tables )
 nakladnye =  create_docs_wth_nds_list(create_list_base_tables()[4], t625_tn_nds_tables )
 
 uslygi_polychenye =  create_docs_wth_nds_list(create_list_base_tables()[5], t493_uslugi_nds_tables)
 nakladnye_polychenye =  create_docs_wth_nds_list(create_list_base_tables()[6], t493_tn_nds_tables)
-
+ 
+tovary_polychenye = create_docs_wth_nds_list(create_list_base_tables()[7], incoming_tovary_tables) 
 
 def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
 	conn = sq_c.sqlite3.connect(root_path+'\\'+'sql_db'+'\\'+str(db_number)+'.sqlite')
@@ -164,6 +180,8 @@ def full_update(list_number, base_number):
 
 	update_from_dbf(uslygi_polychenye[list_number],sq_c.select_all_vhod_nds_usl,base_number,sq_c.insert_usl_poluch_nds)
 	update_from_dbf(nakladnye_polychenye[list_number],sq_c.select_all_vhod_nds_tn,base_number,sq_c.insert_tn_vhod_nds)
+
+	update_from_dbf(tovary_polychenye[list_number],sq_c.select_all_tovary,base_number,sq_c.insert_tovary)
 	pass
 
 

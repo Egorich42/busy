@@ -10,7 +10,7 @@ import sql_commands as sq_c
 from dbfread import DBF
 
 
-bazi = ('dipartD', 'avangard', 'ditest','ipmatusev','mitada', 'smdpark','himprom_den', 'polymia_den')
+bazi = ('dipartD', 'avangard')
 """
 SC625 - исходящие (накладные, акты, платежки)
 SC493 - входящие(приход улуг и материалов)
@@ -118,9 +118,6 @@ full_income = get_docs_without_nds_list(all_incoming_docs.format(base_name), inc
 
 full_out_nds = (get_docs_with_nds_list(outcoming_services_nds.format(base_name), outcoming_services_tables)+get_docs_with_nds_list(outcoming_tn_nds.format('avangard'), outcoming_tn_tables))
 full_out = get_docs_without_nds_list(all_outcoming_docs.format(base_name), outcoming_tables)
-
-
-
 
 
 def data_sorting(income_list, data_start, data_end):

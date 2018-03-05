@@ -64,7 +64,6 @@ def show_user_profile(request,id, **kwargs):
         square_fin_states = curent_finace_states(start_square, var.today, cur, taxes_system)
         month_fin_states = curent_finace_states('2017-12-01', '2017-12-31', cur, taxes_system)
 
-
         all_pp_buyers=np.array(get_paginator(cur, 'contragents_documents_two',sq_c.pp_buyers,15,request))
         all_buyers_docs=np.array(get_paginator(cur, 'contragents_documents_two',sq_c.tn_buyers,15,request))
         all_pp_providers=np.array(get_paginator(cur, 'contragents_documents',sq_c.pp_providers,15,request))
@@ -72,7 +71,7 @@ def show_user_profile(request,id, **kwargs):
 
         
 #        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
-        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2018-01-01')
+        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2017-12-31')
 
         providers_debts = hvosty_list[0]
         providers_prepay = hvosty_list[1]
