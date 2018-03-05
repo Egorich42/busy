@@ -108,17 +108,18 @@ def get_docs_without_nds_list(table_name, tables_names):
 	pass
 
 
-def pred_start_list(base_name):
-	contragents_list = get_contragents_list(contragents.format(base_name), contragents_tables)
-	income_tovary  = get_docs_with_nds_list(incoming_tovary_nds.format(base_name), incoming_tovary_tables)
-	full_income_nds = (get_docs_with_nds_list(incoming_services_nds.format(base_name), incoming_services_tables)+get_docs_with_nds_list(incoming_tn_nds.format('avangard'), incoming_tn_tables))
-	full_income = get_docs_without_nds_list(all_incoming_docs.format(base_name), incoming_tables)
+base_name = 'avangard'
 
-	full_out_nds = (get_docs_with_nds_list(outcoming_services_nds.format(base_name), outcoming_services_tables)+get_docs_with_nds_list(outcoming_tn_nds.format('avangard'), outcoming_tn_tables))
-	full_out = get_docs_without_nds_list(all_outcoming_docs.format(base_name), outcoming_tables)
 
-	return (income_tovary, full_income_nds, full_income, full_out_nds, full_out, contragents_list)
-	pass
+contragents_list = get_contragents_list(contragents.format(base_name), contragents_tables)
+income_tovary  = get_docs_with_nds_list(incoming_tovary_nds.format(base_name), incoming_tovary_tables)
+full_income_nds = (get_docs_with_nds_list(incoming_services_nds.format(base_name), incoming_services_tables)+get_docs_with_nds_list(incoming_tn_nds.format('avangard'), incoming_tn_tables))
+full_income = get_docs_without_nds_list(all_incoming_docs.format(base_name), incoming_tables)
+
+full_out_nds = (get_docs_with_nds_list(outcoming_services_nds.format(base_name), outcoming_services_tables)+get_docs_with_nds_list(outcoming_tn_nds.format('avangard'), outcoming_tn_tables))
+full_out = get_docs_without_nds_list(all_outcoming_docs.format(base_name), outcoming_tables)
+
+
 
 
 
@@ -188,14 +189,14 @@ def create_joined_nds_list(list_without_nds, list_with_nds,  data_start, data_en
 
 
 
-def return_name(docs, pp):
+def return_name(inner_docs, out_docs):
 	name = 'default'	
-	if len(pp) > 0 and len(pp) >len(docs):
-		name = pp[0]['contragent_name']
-	if len(docs) > 0 and len(docs) >len(pp):
-		name = docs[0]['contragent_name']
-	if len(docs) > 0 and len(docs) == len(pp):				
-		name = docs[0]['contragent_name']
+	if len(inner_docs) > 0:
+		name = inner_docs[0]['contragent_name']
+	if len(out_docs):
+		name = out_docs[0]['contragent_name']
+	else:
+		name = 'default'
 	return name	
 	pass
 
@@ -223,55 +224,103 @@ def act_sverki(out, income, contragent_id, data_start, data_end):
 		return result
 		pass
 
-	income_serv_and_tn = constructor_to_sverka(0)
-	income_pp = constructor_to_sverka(2)
-	income_pp_vozvr = constructor_to_sverka(3)
-	income_pp_dpd =  constructor_to_sverka(4)
-
-	outcome_serv_and_tn = constructor_to_sverka(1)
-	outcome_pp = constructor_to_sverka(5)
-	outcome_pp_vozvr = constructor_to_sverka(6)
-
-	income_result_pp = income_pp+income_pp_vozvr
-	income_result_doc = income_serv_and_tn+income_pp_dpd
-
-	outcome_result_pp = outcome_pp+outcome_pp_vozvr
-	outcome_result_doc = outcome_serv_and_tn
+		
+	def sum_result(inner_list):
+		result = round(sum([i['full_sum'] for i in inner_list]),2)
+		return result
+		pass
+		
+	act_inner_column =  constructor_to_sverka(2) + constructor_to_sverka(3) + constructor_to_sverka(1)
+	act_outer_column = constructor_to_sverka(5) + constructor_to_sverka(0) + constructor_to_sverka(4)
 
 
+	income_result_sum = sum_result(constructor_to_sverka(2)) - sum_result(constructor_to_sverka(3))+sum_result(constructor_to_sverka(1))
+	outcome_result_sum = sum_result(constructor_to_sverka(0) + constructor_to_sverka(4))+ sum_result(constructor_to_sverka(5)) - sum_result(constructor_to_sverka(6))
 
-	income_result_pp_sum = sum([i['full_sum'] for i in income_result_pp])
-	income_result_doc_sum = sum([i['full_sum'] for i in income_result_doc])
+	resultat_sum = fin_state_sums(income_result_sum, outcome_result_sum)[1]
 
-	outcome_result_pp_sum = sum([i['full_sum'] for i in outcome_result_pp])
-	outcome_result_doc_sum = sum([i['full_sum'] for i in outcome_result_doc])
+	message = fin_state_sums(income_result_sum, outcome_result_sum)[0]
+
+	name =return_name(act_inner_column, act_outer_column)
+
+	return (
+		act_inner_column, 
+		act_outer_column, 
+		income_result_sum, 
+		outcome_result_sum, 
+		message, 
+		resultat_sum, 
+		name)
+	pass
 
 
 
 
-income = pred_start_list('avangard')[2]
-out = pred_start_list('avangard')[4]
-#result = create_documents_lists(out, income,'2017-12-01', '2017-12-31')
-#print(len(result[0]),len(result[1]),len(result[2]),len(result[3]),len(result[4]),len(result[5]),len(result[6]))
+def sverka_to_hvosty(out, income, contragent_id, data_start, data_end):
+
+	def constructor_to_sverka(number):
+		result = [i for i in create_documents_lists(out, income, data_start, data_end)[number] if i['parent_id'] == contragent_id]
+		return result
+		pass
+
+		
+	def sum_result(inner_list):
+		result = round(sum([i['full_sum'] for i in inner_list]),2)
+		return result
+		pass
+		
+
+	income_result_pp_sum = sum_result(constructor_to_sverka(2)) - sum_result(constructor_to_sverka(3))
+	income_result_doc_sum = sum_result(constructor_to_sverka(0) + constructor_to_sverka(4))
+
+	outcome_result_pp_sum = sum_result(constructor_to_sverka(5)) - sum_result(constructor_to_sverka(6))
+	outcome_result_doc_sum = sum_result(constructor_to_sverka(1))
+
+	act_inner_column =  constructor_to_sverka(2) + constructor_to_sverka(3) + constructor_to_sverka(1)
+	act_outer_column = constructor_to_sverka(5) + constructor_to_sverka(0) + constructor_to_sverka(4)
+	name =return_name(act_inner_column, act_outer_column)
+
+	return (
+		income_result_pp_sum, 
+		income_result_doc_sum, 
+		outcome_result_pp_sum, 
+		outcome_result_doc_sum,
+		name)
+	pass
 
 
-#print(hvosty('2017-12-01', '2017-12-31'))
 
-act_sverki(out, income,'3CPIB','2016-06-01', '2017-12-31')
+def hvosty(out, income,data_start, data_end):
+	debts_providers=[]
+	prepayment_providers=[]
+	debts_buyers=[]
+	prepayment_buyers=[]
+
+	for i in [x['contragent_id'] for x in contragents_list]:
+		x = sverka_to_hvosty(out, income, i, data_start, data_end)
+		if x[0] > x[1]:
+			debts_providers += [{'difference': x[0] - x[1], 'name':x[4]}]
+		if x[0] < x[1]:
+			prepayment_providers += [{'difference': x[1] - x[0], 'name':x[4]}]
+
+		if x[2] > x[3]:
+			debts_buyers += [{'difference': x[2] - x[3], 'name':x[4]}]
+		if x[2] < x[3]:
+			prepayment_buyers += [{'difference': x[3] - x[2], 'name':x[4]}]
+
+	pass
+
+
+
+#act_sverki(out, income,'C','2016-06-30', '2017-12-31')
+print(len(hvosty(full_out, full_income,'2016-06-30', '2017-12-31')))
 #6- AVANGARD
 """
-income_tovary  = pred_start_list('avangard')[0]
-income_nds = pred_start_list('avangard')[1]
-income = pred_start_list('avangard')[2]
 
-out_nds = pred_start_list('avangard')[3]
-out = pred_start_list('avangard')[4]
 
-vhod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists(out,income, '2017-12-01', '2017-12-31')[0], income_nds, '2017-12-01', '2017-12-31')]),2)
-ishod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists(out, income,'2017-12-01', '2017-12-31')[1], out_nds, '2017-12-01', '2017-12-31')]),2)
+vhod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists(full_out,full_income, '2017-12-01', '2017-12-31')[0], income_nds, '2017-12-01', '2017-12-31')]),2)
+ishod_nds = round(sum([i['nds'] for i in create_joined_nds_list(create_documents_lists(full_out, full_income,'2017-12-01', '2017-12-31')[1], out_nds, '2017-12-01', '2017-12-31')]),2)
 nds_tovary = round(sum([i['nds'] for i in data_sorting(income_tovary,'2017-12-01', '2017-12-31')]),2)
-"""
-
 
 
 
@@ -279,19 +328,4 @@ nds_tovary = round(sum([i['nds'] for i in data_sorting(income_tovary,'2017-12-01
 #print(ishod_nds)
 #print(nds_tovary)
 
-"""
-def hvosty(data_start, data_end):
-	hvosty_list = []
-
-	debts_providers=[]
-	prepayment_providers=[]
-	debts_buyers=[]
-	prepayment_buyers=[]
-
-	for i in [x['contragent_id'] for x in pred_start_list('avangard')[5]]:
-		if act_sverki(out, income, i, data_start, data_end)[4] > 0.5 and len(act_sverki(out, income, i, data_start, data_end)[0]) > 0:
-			hvosty_list += [{'difference': round(act_sverki(out, income, i, data_start, data_end)[4],2), 'name':act_sverki(out, income,i, data_start, data_end)[6] }]
-
-	return 	hvosty_list
-	pass
 """
