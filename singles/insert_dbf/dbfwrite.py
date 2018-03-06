@@ -19,7 +19,7 @@ def	get_excel_data():
 	for i in range(6,main_inner_sheet.max_row):
 		if main_inner_sheet.cell(row=i, column=3).value != None:
 			data_from_excel += [(
-								str(main_inner_sheet.cell(row=i, column=3).value.decode('cp1251').encode('utf8')),
+								str(main_inner_sheet.cell(row=i, column=3).value),
 								str(main_inner_sheet.cell(row=i, column=4).value),
 								str(main_inner_sheet.cell(row=i, column=5).value),
 								main_inner_sheet.cell(row=i, column=6).value,
@@ -31,18 +31,20 @@ def	get_excel_data():
 								main_inner_sheet.cell(row=i, column=12).value,
 								)]
 
-
 	return data_from_excel
 	pass
 
 data = get_excel_data()
-print(data[2])
-table = dbf.Table('DH3091')
-
+table = dbf.Table('SC245')
+#print(table.codepage)
+#print(data[5])
 table.open()
-"""
-dbf.ver_33.Table('temptable.dbf')
-for datum in((u'\xcf\xe0\xf1\xf2\xe0 Cleanic Mint, \xe1\xe5\xe7 \xf4\xf2\xee\xf0\xe0, 100 \xe3','3183', '5', '780', '3900', '33069000', '0.14', '0.7'),):
+#m = str('сука!!!!'.encode('ascii', 'ignore').decode('cp1251'))
+m= str('Ретрактор  для губ и щек'.encode('cp1251'))
+print(m)
+#cp437. 866, 1251, utf8,koi8-r,iso-8859-1. cp1252
+
+for datum in( ('1VCIB','0','1532','KerrHawe Polishing Kit '),  ):
     table.append(datum)
 
-"""
+
