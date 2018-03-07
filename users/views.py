@@ -57,17 +57,15 @@ def show_user_profile(request,id, **kwargs):
         base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
-        print(base_name)
-
         taxes_system = user.client.nalog_system
 
         square_fin_states = curent_finace_states(start_square, var.today, cur, taxes_system)
         month_fin_states = curent_finace_states('2017-12-01', '2017-12-31', cur, taxes_system)
 
-        all_pp_buyers=np.array(get_paginator(cur, 'contragents_documents_two',sq_c.pp_buyers,15,request))
-        all_buyers_docs=np.array(get_paginator(cur, 'contragents_documents_two',sq_c.tn_buyers,15,request))
-        all_pp_providers=np.array(get_paginator(cur, 'contragents_documents',sq_c.pp_providers,15,request))
-        all_providers_docs=np.array(get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request))
+        all_pp_buyers = np.array(get_paginator(cur, 'contragents_documents_two',sq_c.pp_buyers,15,request))
+        all_buyers_docs = np.array(get_paginator(cur, 'contragents_documents_two',sq_c.tn_buyers,15,request))
+        all_pp_providers = np.array(get_paginator(cur, 'contragents_documents',sq_c.pp_providers,15,request))
+        all_providers_docs = np.array(get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request))
 
         
 #        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
@@ -78,6 +76,11 @@ def show_user_profile(request,id, **kwargs):
         buyers_debts = hvosty_list[2]
         buyers_prepay = hvosty_list[3]
     
+        providers_debts_result = hvosty_list[4]
+        providers_prepay_result = hvosty_list[5]
+        buyers_debts_result = hvosty_list[6]
+        buyers_prepay_result = hvosty_list[7]
+
 
         if request.method == 'POST':
             fin_states = TimePeriodForm(request.POST)     
@@ -110,7 +113,14 @@ def show_user_profile(request,id, **kwargs):
                                 'providers_debts':providers_debts,
                                 'providers_prepay':providers_prepay,
                                 'buyers_debts':buyers_debts,
-                                'buyers_prepay':buyers_prepay,})
+                                'buyers_prepay':buyers_prepay,
+
+                                'providers_debts_result':providers_debts_result,
+                                'providers_prepay_result':providers_prepay_result,
+                                'buyers_debts_result':buyers_debts_result,
+                                'buyers_prepay_result':buyers_prepay_result,
+
+                                })
     else:
          return HttpResponseRedirect("/")
 

@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*
+
 import dbf
 from openpyxl import load_workbook,Workbook
 
@@ -44,7 +43,7 @@ m= str('Ретрактор  для губ и щек'.encode('cp1251'))
 print(m)
 #cp437. 866, 1251, utf8,koi8-r,iso-8859-1. cp1252
 
-for datum in( ('1VCIB','0','1532','KerrHawe Polishing Kit '),  ):
+for datum in( ('1VCIB','0','1532','нKerrHawe Polishing Kit'),  ):
     table.append(datum)
 
 

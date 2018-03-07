@@ -106,7 +106,7 @@
 
         <section class="user-profile-main-info-column left">
             {%for buyer_pp in all_pp_buyers %}
-            <article class="bank-ops-info">
+            <article class="docs-ops-info">
                 <article>
                     <span >{{buyer_pp.contragent_name}}</span>
                     <span class="red-text ">-{{buyer_pp.summ}}&nbsp;.Р</span>                    
@@ -203,6 +203,8 @@
 <section class="user-profile-main-info hidden-form" id="they-debts-list">
     <section class="user-profile-main-info-column right">
         <h3>АВАНСЫ ПОСТАВЩИКАМ(ДЕБ 60)</h3>
+        <h3>{{providers_debts_result}}</h3>
+
         {%for prov_debt in providers_debts %}
             <article>
                 <span>{{prov_debt.name}}</span>
@@ -214,6 +216,8 @@
 
     <section class="user-profile-main-info-column left">
         <h3>ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)</h3>
+        <h3>{{providers_prepay_result}}</h3>
+
         {%for prov_prepay in providers_prepay %}
         <article>
             <span>{{prov_prepay.name}}</span>
@@ -229,6 +233,8 @@
 <section class="user-profile-main-info hidden-form" id="my-debts-list">
     <section class="user-profile-main-info-column right">
         <h3>АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)</h3>
+
+        <h3>{{buyers_prepay_result}}</h3>
         {%for buyer_prepay in buyers_prepay %}
 
         <article>
@@ -242,6 +248,8 @@
 
     <section class="user-profile-main-info-column left">
         <h3>ДОЛГИ ПОКУПАТЕЛЕЙ (Д62) </h3>
+        <h3>{{buyers_debts_result}}</h3>
+
         {%for buyer_debt in buyers_debts %}
             <article>
             <span>{{buyer_debt.name}}</span>

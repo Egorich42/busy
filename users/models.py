@@ -204,31 +204,61 @@ def get_hvosty_lists(cursor,data_start, data_end):
         outer_summ = suma_tn_buy+suma_pp_prov 
 
         if suma_tn_prov>suma_pp_prov and providers_docs[0][0] !=[]:
-            message = 'сумма вашей задолженности составляет'
             if inner_summ-outer_summ>0.1:
                 summ = str(round(inner_summ-outer_summ,2))
-                debts_providers += [{'name':providers_docs[0][0][0]['name'], 'contragent_id':providers_docs[0][0][0]['id'], 'message':message, 'summa':summ}]
+                for_summator = round(inner_summ-outer_summ,2)
+                debts_providers += [{
+                                    'name':providers_docs[0][0][0]['name'], 
+                                    'contragent_id':providers_docs[0][0][0]['id'], 
+                                    'summa':summ, 
+                                    'for_sumator':for_summator}]
              
         if suma_tn_prov<suma_pp_prov and providers_docs[0][0] !=[]:
-            message = 'сумма задолженности контрагента составляет'
             if outer_summ-inner_summ>0.1:
                 summ = str(round(outer_summ-inner_summ,2))
-                prepayment_providers += [{'name':providers_docs[0][0][0]['name'],'contragent_id':providers_docs[0][0][0]['id'],  'message':message, 'summa':summ}]
+                for_summator = round(outer_summ-inner_summ,2)
+                prepayment_providers += [{'name':providers_docs[0][0][0]['name'],
+                                        'summa':summ,
+                                        'for_sumator':for_summator}]
 
         if suma_tn_buy<suma_pp_buy and buyers_docs[0][0] !=[]:
-            message = 'сумма задолженности контрагента составляет'
             if inner_summ-outer_summ>0.1:
                 summ = str(round(inner_summ-outer_summ,2))
-                debts_buyers += [{'name':buyers_docs[0][0][0]['name'],'contragent_id':buyers_docs[0][0][0]['id'],  'message':message, 'summa':summ}]            
+                for_summator = round(outer_summ-inner_summ,2)
+                debts_buyers += [{'name':buyers_docs[0][0][0]['name'],
+                                    'summa':summ,
+                                    'for_sumator':for_summator}]            
 
         if suma_tn_buy>suma_pp_buy and buyers_docs[0][0] !=[]:
-            message = 'сумма вашей задолженности составляет'
             if outer_summ-inner_summ > 0.1:
                 summ = str(round(outer_summ-inner_summ,2))
-                prepayment_buyers += [{'name':buyers_docs[0][0][0]['name'],'contragent_id':buyers_docs[0][0][0]['id'], 'message':message, 'summa':summ}]            
+                for_summator = round(outer_summ-inner_summ,2)
+                prepayment_buyers += [{'name':buyers_docs[0][0][0]['name'],
+                                        'summa':summ,
+                                        'for_sumator':for_summator}]            
     
-    
-    return(debts_providers,prepayment_providers,debts_buyers,prepayment_buyers)
+
+    def summator():
+        summa = []
+        for x in (debts_providers,prepayment_providers,debts_buyers,prepayment_buyers):
+            summa += [round(sum([i['for_sumator'] for i in x]),2)]
+        return summa
+            
+    debts_providers_result = summator()[0]
+    prepayment_providers_result = summator()[1]
+    debts_buyers_result = summator()[2]
+    prepayment_buyers_result = summator()[3]
+
+    return(
+            debts_providers,
+            prepayment_providers,
+            debts_buyers,
+            prepayment_buyers, 
+            debts_providers_result,
+            prepayment_providers_result,
+            debts_buyers_result,
+            prepayment_buyers_result
+            )
     pass
 
 
