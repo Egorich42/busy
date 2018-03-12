@@ -1,56 +1,57 @@
 
 @media screen and (max-width: 1080px) {
+nav ul{padding: 0px;}
+nav ul li{padding-top: 36px;}
+nav ul li a{font-size: 52px;}
+
+.down-description p, 
+.central-block p,
+.central-block,
+.central-block p{ font-size: 24px;}
 
 .user-profile-head{ font-size: 35px;font-weight: bold; margin-top: 40px;}
 .user-profile-head article{ margin-top: 25px;}
 .user-profile-main-menu article ul li {padding-top: 35px;}
 
-.summa{font-weight: bold; padding-left: 15px;}
-
-.user-profile-main{flex-direction: column;    min-height: 500px;}
-.user-profile-main-menu{width:100%;    font-size: 34px;font-weight: bold;}
-.user-profile-main-info{width:100%;  }
-.user-profile-main-info-column{width: 100%;margin-top: 35px;}
+.user-profile-main{ min-height: 500px; }
+.user-profile-main-menu{width:20%; font-size: 34px;font-weight: bold;}
+.user-profile-main-info{width:100%; }
+.user-profile-main-info-column{width: 80%;margin-top: 35px; float: right;}
 .user-profile-main-info-column h3{font-size: 26px;    font-weight: bold;}
-.user-profile-main-info-column article { padding: 50px 0px 0px 20px;}
+.user-profile-main-info-column article { padding: 50px 0px 0px 0px;font-size: 20px; }
 
-.forma{flex-direction: column;    justify-content: space-around;align-items: center;}
+.forma{flex-direction: column;justify-content: space-around;align-items: center;}
 .forma input{margin: 20px 0px;}
-.forma-feedback{}
 .forma-feedback input{padding: 10px 20px; border: solid 1.5px #FD761F; font-size: 21px; border-radius: 40px; text-align: left;}
 
 
-.invisible-300 img{margin: 0px 20px;}
-.mob-show{display: block;}
-.hiden-top-menu{display: none}
-.show-top-menu{display: flex; flex-direction: column;}
-.mob-hide{display: none;}
-
-#top-menu img{width: 120px;}
-nav ul{padding: 0px;}
-nav ul li{padding-top: 36px;}
-nav ul li a{font-size: 52px;}
 
 .central-block{width: 770px; padding-top: 76px; padding-bottom: 76px;}
-.central-block,.colored-paragraph-text,.down-description p,.central-block p,.forma input,.user-profile ul li{font-size: 36px;}
-.central-block ul li p{font-size: 32px;}
+.central-block,
+.colored-paragraph-text,
+.down-description p,
+.central-block p,
+.forma input,
+.user-profile ul li{font-size: 16px;}
+
+.central-block ul li p{font-size: 17px;}
 .colored-paragraph-text{width: 90%;}
 .user-profile ul li{padding-top: 20px;}
 
 .block-colored article {padding: 0px 20px;}
-.block-colored article p{font-size: 19px;}
-.block-colored article h2{font-size: 25px;}
+.block-colored article p{font-size: 16px;}
+.block-colored article h2{font-size: 19px;}
 
 
 .main-scren-data{width: 48%;}
-.main-scren-data  p{font-size: 24px; color: red;}
+.main-scren-data  p{font-size: 20px; }
 .main-scren-data  ul li{font-size: 22px;}
 
 .list-block ul{width: 185px; font-weight: bold; font-size: 31px}
-.list-block ul li {font-size: 26px;}
+.list-block ul li {font-size: 20px;}
 
 .how-it-work-list ul li{width: 300px; margin: 30px; }
-.how-it-work-list ul li img {width: 120px;}
+.how-it-work-list ul li img {width: 80px;}
 
 .contacts-info-chanels {font-size: 28px; font-weight: bold; margin: 50px 0px;}
 .contacts-info-chanels article {padding: 15px;}
@@ -59,53 +60,86 @@ nav ul li a{font-size: 52px;}
 .registered-office p{font-size: 14px;}
 
 
+#top-menu img{width: 90px;}
+.great-font{ font-size: 28px; color: #2D2D2D;}
+#map,.map{width: 400px; height: 400px;}
+.invisible-300 img{margin: 0px 20px;}
+.mob-show{display: block;}
+.hiden-top-menu,.mob-hide{display: none}
+.show-top-menu{display: flex; flex-direction: column;}
+}
+
+
+@media screen and (max-width: 940px) {
+.user-profile-main{flex-direction: column; min-height: 500px;}
+.user-profile-main-menu {font-size: 22px;}
 }
 
 
 
-
-
-
 @media screen and (max-width: 720px) {
-.user-profile{width: 100%;}
 
-.side-paddings-20{padding: 0% 5%;}
-
-
-.side-menu ul li{list-style-type: square; margin-left: 20px;}
-
-.nav ul li {margin-top: 15px;}
-
-.main-scren-data{width: 100%; margin-bottom: 100px }
-
-.text-left-to-center,.text-right-to-center{text-align: center;}
-
-.row-to-col{flex-direction: column;}
-.column-720{display: flex; flex-direction: column;}	
-
-.central-block{width: 95%; padding-top: 76px; padding-bottom: 76px;}
-.invisible-300{visibility: collapse;}
-
+input{max-width: 100px;font-size: 15px;}
 img{max-width: 100%;}
+ul{padding: 0px;margin: 0px;}
+nav ul{flex-direction: column;}
+nav ul li{padding-top: 15px;}
+nav ul li a{font-size: 22px;}
+
+.invisible-300{visibility: collapse;}
+.column-300{flex-direction: column;}
+
+.down-description p, .central-block p,.central-block,.central-block p{ font-size: 14px;}
+.down-description p{text-align: left;}
+
+
+.user-profile,
+.user-profile-main-info-column,
+.half-of-table,
+.user-profile-main-menu,
+.how-it-work-list ul li,
+.central-block-colored,
+.text-left,
+.text-right,
+.main-scren-data,
+.list-block ul{width: 100%;}
+
+.user-profile-main-info-column {float: none;}
+.user-profile-head {font-size: 18px;}
+
+
+.contacts-info-chanels {font-size: 20px;}
+.contacts-info-chanels article img {width: 50px;}
+.contacts-main{width: 100%; padding: 0px; margin: 0px;}
+
+.how-it-work-list ul li {margin-left: 0px;margin-top: 40px;margin-bottom: 0px;}
+.how-it-work-list ul li img { width: 80px;}
+.how-it-work-list ul,.list-block{font-size: 16px;}
+
+
+.list-block ul,.central-block ul li p{font-size: 19px;}
+
+.list-block ul li,.central-block p.forma input {font-size: 16px;}
+
 .colored-paragraph-text{width: 95%; margin:0px;}
 .colored-paragraph{margin: 0px;}
 
-.how-it-work-list ul li {width: 100%;margin-left: 0px;margin-top: 40px;margin-bottom: 0px;}
+.text-right,
+.text-left,
+.text-left-to-center,
+.text-right-to-center{text-align: center;}
 
-.list-block ul{text-align: center; width: 100%; margin-top: 40px;}
-.column-300{flex-direction: column;}
-ul{padding: 0px;margin: 0px;}
 
-.text-right-300{text-align: right;}
-.text-left-300{text-align: left;}
-.center-300{text-align: center;}
-.nav ul{flex-direction: column;}
-nav ul li{padding-top: 15px;}
-nav ul li a{font-size: 26px;}
-.half-of-table{width: 100%;}
-
+.side-paddings-20{padding: 0% 5%;}
+.side-menu ul li{list-style-type: square; margin-left: 20px;}
+.main-scren-data{ margin-bottom: 100px }
+.central-block{width: 95%; }
+.list-block ul{text-align: center;  margin-top: 40px;}
+.big-font {font-size: 22px;}
 .operations-list{padding: 0%; }
-
+.middle-font-35 {font-size: 24px;}
+.main-info-column article{font-size: 14px;}
+#top-menu img {width: 60px;}
 }
 
 

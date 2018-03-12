@@ -29,11 +29,15 @@ footer{height: 638px;background-color: #2F2F2F; color: #fff; display: flex; just
 .grey-font{color: #998383;}
 
 
-
-
 .margin-top-15,
 .margin-top-15 ul li,
 .margin-top-15 li{margin-top: 15px;}
+
+
+
+/*---------MODULES RULES------*/
+.pitch{text-align: center;}
+.pitch img{max-width: 400px; margin: 50px 0px; }
 
 .key{width: 25px; margin: 0px 10px;}
 .pp-name-agent{width: 70%; padding-right: 10%;}
@@ -63,7 +67,8 @@ footer{height: 638px;background-color: #2F2F2F; color: #fff; display: flex; just
 .grey-back{background-color: #2F2F2F; color: #fff;}
 .grey-back-contact{align-items: center;}
 
-.forma{display: flex}
+.forma{display: flex;justify-content: center;}
+.forma p{margin:0px;}
 
 .forma input{
 padding: 10px 20px; 
@@ -74,7 +79,6 @@ text-align: left;
 margin: 20px 20px;
 }
 
-.forma p{margin:0px;}
 
 
 .feedback-form{
@@ -87,30 +91,23 @@ flex-direction: column;
 align-items: center;
 }
 
-.feedback-form article{
-margin: 20px 0px;
-}
-
-.feedback-button{}
-/*---------MODULES RULES------*/
+.feedback-form article{margin: 20px 0px;}
 
 /*USER-PROFILE*/
 .user-profile-head{width: 95%;text-align: left;}
-.user-profile-head article{display: flex; flex-direction: column;}
+.user-profile-head article{display: flex;}
 
 .user-profile-main{width: 95%; display: flex; margin: 100px 0px;}
 .user-profile-main-menu{width:20%; text-align: left;}
 
 .user-profile-main-menu article ul{padding: 0px 0px 0px 20px;}
-.user-profile-main-menu p{cursor: pointer;}
+.user-profile-main-menu p{cursor: pointer; font-size: 19px; }
 .user-profile-main-menu article ul li {padding-top: 15px; cursor: pointer;}
 
 .user-profile-main-info{width:80%; }
 .user-profile-main-info-column{width: 50%; text-align: left;}
 .user-profile-main-info-column p{font-weight: bold;}
-.user-profile-column-name{}
 .user-profile-main-info-column ul{}
-
 .user-profile-main-info-column article {padding: 20px 0px 0px 20px;}
 
 .docs-ops-info{}
@@ -118,12 +115,12 @@ margin: 20px 0px;
 .docs-ops-info article span{font-weight: bold;}
 
 
-
 .contacts-main{padding: 0% 20%;}
 .contacts-info-chanels{display: flex; flex-direction: column;text-align: left;}
 .contacts-info-chanels article{}
 .contacts-info-chanels article span{float: right;}
 .contacts-info-chanels article img{width: 100px;}
+
 .login{width: 80%;}
 .login form input{
 border: solid 1.5px #FD761F;
@@ -147,20 +144,13 @@ padding:0px;
 
 
 
-
-
-
-
-
-
-
 .flex{display: flex;}
 .row,.row-to-col{flex-direction: row;}
 .column,.col-to-row{flex-direction: column;}
 
 .mob-hide{display: block;}
 .mob-show{display: none;}
-
+.hiden-top-menu{display: none}
 
 .left{float: left;}
 .right{float: right;}
@@ -205,6 +195,8 @@ padding:0px;
 
 .red-text{color: red;}
 .green-text{color: green;}
+.orange-text{color: #FD761F;}
+
 
 .hidden-form{
 display: none;
@@ -218,3 +210,4 @@ display: block;}
 
 .text-left{text-align: left;}
 .text-right{text-align: right;}
+
