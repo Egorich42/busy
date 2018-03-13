@@ -109,6 +109,7 @@ align-items: center;
 .user-profile-main-info-column p{font-weight: bold;}
 .user-profile-main-info-column ul{}
 .user-profile-main-info-column article {padding: 20px 0px 0px 20px;}
+.contragent-fin-balance{display: flex;justify-content: space-between;}
 
 .docs-ops-info{}
 .docs-ops-info article{padding: 0px; display: flex;justify-content: space-between;}
@@ -150,7 +151,6 @@ padding:0px;
 
 .mob-hide{display: block;}
 .mob-show{display: none;}
-.hiden-top-menu{display: none}
 
 .left{float: left;}
 .right{float: right;}

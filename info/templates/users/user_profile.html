@@ -206,7 +206,7 @@
         <h3>{{providers_debts_result}}</h3>
 
         {%for prov_debt in providers_debts %}
-            <article>
+            <article class="contragent-fin-balance">
                 <span>{{prov_debt.name}}</span>
                 <span  class="summa">{{prov_debt.summa}}&nbsp;.Р</span>
             </article>
@@ -219,7 +219,7 @@
         <h3>{{providers_prepay_result}}</h3>
 
         {%for prov_prepay in providers_prepay %}
-        <article>
+            <article class="contragent-fin-balance">
             <span>{{prov_prepay.name}}</span>
             <span class="summa">{{prov_prepay.summa}}&nbsp;.Р  </span>
         </article>
@@ -237,7 +237,7 @@
         <h3>{{buyers_prepay_result}}</h3>
         {%for buyer_prepay in buyers_prepay %}
 
-        <article>
+            <article class="contragent-fin-balance">
             <span>{{buyer_prepay.name}}</span>
             <span class="summa">{{buyer_prepay.summa}}&nbsp;.Р </span>
         </article>
@@ -251,7 +251,7 @@
         <h3>{{buyers_debts_result}}</h3>
 
         {%for buyer_debt in buyers_debts %}
-            <article>
+            <article class="contragent-fin-balance">
             <span>{{buyer_debt.name}}</span>
             <span class="summa">{{buyer_debt.summa}}&nbsp;.Р</span>
             </article>
