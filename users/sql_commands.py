@@ -104,7 +104,7 @@ contragents_documents_two.doc_type != '0'
 AND contragents_documents_two.deleted !='*' 
 AND contragents_documents_two.pp_detector =='2MM'
 """
-docs_on_main = "SELECT * FROM {} WHERE {} ORDER BY doc_date;"
+docs_on_main = "SELECT * FROM {} WHERE {} ORDER BY doc_date DESC;"
 
 select_contragents = "SELECT * FROM contragents;"
 
