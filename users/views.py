@@ -59,8 +59,15 @@ def show_user_profile(request,id, **kwargs):
         cur = conn.cursor()
         taxes_system = user.client.nalog_system
 
-        square_fin_states = curent_finace_states(start_square, var.today, cur, taxes_system)
-        month_fin_states = curent_finace_states('2017-12-01', '2017-12-31', cur, taxes_system)
+        income_nds_month = curent_finace_states(start_month, var.today, cur, taxes_system)[2]
+        outcome_nds_month = curent_finace_states(start_month, var.today, cur, taxes_system)[3]
+        result_nds_month = curent_finace_states(start_month, var.today, cur, taxes_system)[0]
+
+
+        income_nds_square = curent_finace_states(start_square, var.today, cur, taxes_system)[2]
+        outcome_nds_square = curent_finace_states(start_square, var.today, cur, taxes_system)[3]
+        result_nds_square = curent_finace_states(start_square, var.today, cur, taxes_system)[0]
+
 
         all_pp_buyers = get_paginator(cur, 'contragents_documents_two',sq_c.pp_buyers,15,request)
         all_buyers_docs = get_paginator(cur, 'contragents_documents_two',sq_c.tn_buyers,15,request)
@@ -94,7 +101,8 @@ def show_user_profile(request,id, **kwargs):
                                     {'start_data':start_data,
                                     'ending_data':ending_data,
                                     'period_fin_states':str(period_fin_states[0]),
-                                    'tax_system':period_fin_states[1]})   
+                                    'tax_system':period_fin_states[1]
+                                    })   
 
         conn.commit()
         conn.close()  
@@ -106,10 +114,16 @@ def show_user_profile(request,id, **kwargs):
                                 'all_buyers_docs':all_buyers_docs,
                                 'all_pp_providers':all_pp_providers,
                                 'all_providers_docs':all_providers_docs,
-                                'month_fin_states':month_fin_states[0],
-                                'square_fin_states':square_fin_states[0],
-                                'fin_states':fin_states,
-                                'tax_system':month_fin_states[1],
+
+                                'income_nds_month' :income_nds_month,
+                                'outcome_nds_month': outcome_nds_month,
+                                'result_nds_month': result_nds_month,
+
+                                'income_nds_square': income_nds_square,
+                                'outcome_nds_square': outcome_nds_square,
+                                'result_nds_square': result_nds_square,
+
+                                'tax_system':taxes_system,
                                 'providers_debts':providers_debts,
                                 'providers_prepay':providers_prepay,
                                 'buyers_debts':buyers_debts,
@@ -119,7 +133,6 @@ def show_user_profile(request,id, **kwargs):
                                 'providers_prepay_result':providers_prepay_result,
                                 'buyers_debts_result':buyers_debts_result,
                                 'buyers_prepay_result':buyers_prepay_result,
-
                                 })
     else:
          return HttpResponseRedirect("/")

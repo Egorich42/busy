@@ -15,56 +15,49 @@
 <meta property="business:contact_data:website" content="http://buhsov.com/"/>
 <meta property="og:title" content="Бухгалтерские советы" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://winorbite.com/" />
+<meta property="og:url" content="http://buhsov.com/" />
 <meta property="og:image" content="/media/s-logo.png"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="/media/favicon.ico">
 <link rel="stylesheet" href="{% static "/css/style.css" %}">
 <link rel="stylesheet" href="{% static "/css/media-style.css" %}">
-<script src="{% static "/JS/script.js" %}"></script>
 <script src="https://api-maps.yandex.ru/2.1/?lang=tr_TR" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
 
-<body class="center"> 
+<body class="center" onload="window.app.start();"> 
 <header>
 
-
 <nav class="full-width">
+  <span class="mob-show" id="top-menu"><img src="{%static "/icons/mobmenu.png" %}" ></span>
+  <ul class="flex hiden-top-menu margin-top: 15px;" id="top-menu-list">
+    <li>
+      <a href="/">
+      <img src="{%static "/icons/logo-busy-150px.png" %}" alt="background" title="background" class="mob-hide">
+      <span class="mob-show">главная</span>
+      </a>
+    </li>
 
-<span class="mob-show" id="top-menu"><img src="{%static "/icons/mobmenu.png" %}" ></span>
+    <li><a href="/contacts">контакты</a></li>
 
-<ul class="flex hiden-top-menu margin-top: 15px;" id="top-menu-list">
-<li>
-<a href="/">
-<img src="{%static "/icons/logo-busy-150px.png" %}" alt="background" title="background" class="mob-hide">
-<span class="mob-show">главная</span>
-</a>
-</li>
-
-<li><a href="/contacts">контакты</a></li>
-
-<li>
-{% if user.is_authenticated %}
-<a href="/users/{{user.id}}/{{user.first_name}}">
-<span >мой кабинет</span>
-</a>
-{% else %}
-<a href="/users/login"><img src="static/media/icons/key-red.png"  class="key">Войти</a> 
-{% endif %}	
-</li>
+    <li>
+      {% if user.is_authenticated %}
+      <a href="/users/{{user.id}}/{{user.first_name}}">
+      <span >мой кабинет</span>
+      </a>
+      {% else %}
+      <a href="/users/login">Войти</a> 
+      {% endif %}	
+    </li>
     
-<li class="mob-show">
-{% if user.is_authenticated %}
-<a href="/users/logout" class="bold">выйти</a>
-{%else%}
-{% endif %} 
-</li>
-</ul>
+    <li class="mob-show">
+      {% if user.is_authenticated %}
+      <a href="/users/logout" class="bold">выйти</a>
+      {%else%}
+      {% endif %} 
+    </li>
+  </ul>
 </nav>
-
-
-
 </header>
 
 
@@ -98,31 +91,6 @@ $(document).ready(function(){
     });
 
 
-    $("#pp").click(function(){
-        toggle_elem("#pp-list")
-    });
-
-
-    $("#naklad").click(function(){
-        toggle_elem("#naklad-list");
-    });
-
-
-    $("#tn-and-acts").click(function(){
-        toggle_elem("#tn-and-acts-list");
-    });
-
-
-    $("#my-debts").click(function(){
-        toggle_elem("#my-debts-list");
-    });
-
-
-    $("#they-debts").click(function(){
-        toggle_elem("#they-debts-list");
-    });
-
-
     $("#doc-menu").click(function(){
         toggle_elem("#doc-list");
     });
@@ -142,6 +110,38 @@ $(document).ready(function(){
         $("#top-menu-list").toggleClass("show-top-menu");
     });
 });
+
+        (function (window) {
+            window.app = {
+                items: [0,1,2,3,4,5],
+                start: function () {
+                    this.addListeners();
+                    this.hidePanels();
+
+                },
+                hidePanels: function () {
+                    this.items.forEach(function (item) {
+                        var elm = document.getElementById('panel-' + item);
+                        elm.style.display = 'none';
+                    });
+                },
+                showPanel: function (id) {
+                    var elm = document.getElementById('panel-' + id);
+                    elm.style.display = '';
+                },
+                addListeners: function () {
+                    this.items.forEach(function (item) {
+                        var elm = document.getElementById('link-' + item);
+                        elm.addEventListener('click', function (event) {
+                            this.hidePanels();
+                            var id = elm.id.split('-')[1];
+                            this.showPanel(id);
+                        }.bind(this))
+                    },this);
+                }
+            };
+
+        })(window);
 
 
 </script>

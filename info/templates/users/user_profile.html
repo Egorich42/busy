@@ -5,45 +5,32 @@
 {% endblock %}
 {% block content %}
 
-<section class="user-profile-head">
-    <article>
-        <span>{{tax_system}}&nbsp;за текущий месяц&nbsp;:</span>
-        <span class="orange-text">{{month_fin_states}}&nbsp;руб.</span>
-        </article>
-        <article>
-        <span>{{tax_system}}&nbsp;за текущий квартал&nbsp;:</span>
-        <span class="orange-text">{{square_fin_states}}&nbsp;руб.</span>  
-    </article>
-
-</section>
-
-
 <section class="user-profile-main">
     <aside class="user-profile-main-menu">
-            <p id="ops">Операции</p>
+            <!---p id="ops">Операции</p>
             <article class="hidden-form" id="ops-list">
-                <ul>
+                <ul-->
                      <!--li><a href="/users/{{user.id}}/{{user.username}}/akt_sverki">акт сверки</a></li-->
-                     <li><a href="/users/{{user.id}}/{{user.username}}/hvosty">хвосты за период</a></li>
+                     <!--li><a href="/users/{{user.id}}/{{user.username}}/hvosty">хвосты за период</a></li>
                      <li id="control-elem">{{tax_system}}&nbsp; за период</li>
                 </ul>
-            </article>
+            </article-->
 
-
+            <p id="link-5">Нологе</p>
             <p id="doc-menu">Документы</p>
             <article class="hidden-form" id="doc-list">
                 <ul>
-                    <li id ="naklad">накладные и акты входящие</li>
-                    <li id ="tn-and-acts">накладные и акты исходящие</li>
+                    <li id="link-1">накладные и акты входящие</li>
+                    <li id="link-2">накладные и акты исходящие</li>
                 </ul>
             </article>
 
             <p id="hvosty">Деньги</p>
             <article class="hidden-form" id="hvosty-list">
                 <ul>
-                    <li id ="pp">платежи</li>
-                    <li id="my-debts">мои покупатели</li>
-                    <li id="they-debts">мои поставщики</li>
+                    <li id="link-0">платежи</li>
+                    <li id="link-3">мои поставщики</li>
+                    <li id="link-4">мои покупатели</li>
                 </ul>
             </article>
 
@@ -51,7 +38,7 @@
             <a href="/users/logout" class="mob-hide">выйти</a>
             {%else%}
             НИЧЕГО
-            {% endif %}	
+            {% endif %} 
     </aside>
 
 <!--PP BLOCK-->
@@ -67,8 +54,10 @@
         </p>
     </form>
 
-    <section class="user-profile-main-info hidden-form"  id="pp-list">
+    <section class="user-profile-main-info"  id="panel-0">
         <section class="user-profile-main-info-column">
+                <h3>входящие платежи</h3>
+
             {%for provider_pp in all_pp_providers %}
             <article class="docs-ops-info">
                 <article>
@@ -98,6 +87,8 @@
 
 
         <section class="user-profile-main-info-column">
+            <h3>исходящие платежи</h3>
+
             {%for buyer_pp in all_pp_buyers %}
             <article class="docs-ops-info">
                 <article>
@@ -129,8 +120,10 @@
 
 
 <!--DOCUMENTS BLOCK-->
-<section class="user-profile-main-info hidden-form" id="tn-and-acts-list">
+<section class="user-profile-main-info" id="panel-1">
     <section class="user-profile-main-info-column">
+        <h3>полученные материалы и услуги</h3>
+
         {%for provider_doc in all_providers_docs %}
         <article class="docs-ops-info">
             <article>
@@ -159,8 +152,10 @@
 
 
 
-<section class="hidden-form user-profile-main-info" id="naklad-list">
+<section class="user-profile-main-info" id="panel-2">
     <section class="user-profile-main-info-column">
+        <h3>оказанные услуги и исходящие накладные</h3>
+
         {%for buyer_doc in all_buyers_docs %}
         <article class="docs-ops-info">
             <article>
@@ -188,7 +183,7 @@
 </section>
 
 
-<section class="user-profile-main-info hidden-form" id="they-debts-list">
+<section class="user-profile-main-info" id="panel-3">
     <section class="user-profile-main-info-column">
         <h3>авансы поставщикам <!--(ДЕБ 60)--></h3>
 
@@ -226,7 +221,7 @@
 
 
 
-<section class="user-profile-main-info hidden-form" id="my-debts-list">
+<section class="user-profile-main-info" id="panel-4">
     <section class="user-profile-main-info-column">
         <h3>авансы покупателей <!--(кр 62. оплач, не отгр)--></h3>
 
@@ -264,8 +259,54 @@
 </section>
 
 
+<section class="user-profile-main-info" id="panel-5">
+    <section class="user-profile-main-info-column">
 
 
+{% if tax_system == "NDS" %}
+
+<h3>НДС&nbsp;за текущий месяц&nbsp;:</h3>
+<article class="contragent-fin-balance">
+  <span>&nbsp;входящий:&nbsp;</span> <span>{{income_nds_month}}</span>
+  </article>
+<article class="contragent-fin-balance">  
+  <span>&nbsp;исходящий:&nbsp; </span><span>{{outcome_nds_month}}</span>
+  </article>
+<article class="contragent-fin-balance">  
+  <span>&nbsp;к уплате:&nbsp; </span><span>{{result_nds_month}}</span>
+  </article>
+</ul>
+
+<h3>НДС&nbsp;за текущий квартал&nbsp;:</h3>
+<article class="contragent-fin-balance">
+
+  <span>&nbsp;входящий:&nbsp;</span><span>{{income_nds_square}}</span>
+  </article>
+  <article class="contragent-fin-balance">
+
+  <span>&nbsp;исходящий:&nbsp;</span><span>{{outcome_nds_square}}</span>
+  </article>
+  <article class="contragent-fin-balance">
+
+  <span>&nbsp;к уплате:&nbsp;</span><span>{{result_nds_square}}</span>
+  </article>
+
+{% elif tax_system == "USN" %}
+<h3>УСН&nbsp;за текущий квартал&nbsp;:</h3>
+<article class="contragent-fin-balance">
+  <span>&nbsp;к уплате:&nbsp;</span><span> {{result_nds_month}}</span>
+   </article>
+<article class="contragent-fin-balance">   
+ <span>&nbsp;к уплате:&nbsp;</span><span>{{result_nds_square}}</span>  
+  </article>  
+
+
+{% endif %} 
+
+
+
+    </section>
+</section>
 
 
 </section>

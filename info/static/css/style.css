@@ -105,9 +105,9 @@ align-items: center;
 .user-profile-main-menu article ul li {padding-top: 15px; cursor: pointer;}
 
 .user-profile-main-info{width:80%; }
-.user-profile-main-info-column{padding-right: 30%; text-align: left;}
+.user-profile-main-info-column{padding-right: 30%; text-align: left; margin-bottom: 50px;}
+.user-profile-main-info-column h3{background-color: #FD761F;color: #fff; padding: 10px;}
 .user-profile-main-info-column p{font-weight: bold;}
-.user-profile-main-info-column ul{}
 .user-profile-main-info-column article {padding-top:30px; padding-bottom:10px;border-bottom: solid 0.5px #b3a8a8;}
 .contragent-fin-balance,.itogo{display: flex;justify-content: space-between;font-weight: bold;}
 
