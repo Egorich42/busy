@@ -2,6 +2,17 @@
 # -*- coding: utf-8 -*
 import os
 import sys
+
+path_to_file = os.path.dirname(os.path.abspath(__file__))+'\\'
+convert_to_list = path_to_file.split('\\')[:-2]
+root_path = '\\'.join(convert_to_list)
+sys.path.append(root_path)
+import sql_commands as sq_c
+import variables as var
+
+
+import sqlite3
+
 from openpyxl import load_workbook,Workbook
 import itertools
 from itertools import groupby
@@ -9,118 +20,107 @@ from operator import itemgetter
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-portal_doc = BASE_DIR+'jan_out.xlsx'
+portal_doc = BASE_DIR+'hpo_in.xlsx'
 
 
 portal_list = load_workbook(portal_doc,data_only = True)
 
+
+conn = sqlite3.connect('7.sqlite')
+cur = conn.cursor()
 
 main_inner_sheet = portal_list["jan"]
 
 
 def	get_eschf_data():
 	first_list_from_excel =[]
-
-
-	for i in range(4,main_inner_sheet.max_row):
-		if  main_inner_sheet.cell(row=i, column=18) != "Аннулирован":
-			first_list_from_excel += [{ "unp" : main_inner_sheet.cell(row=i, column=9).value, 
-					"contragent_name" : main_inner_sheet.cell(row=i, column=11).value,
-					"nds" : main_inner_sheet.cell(row=i, column=42).value,
-					"full_sum" : main_inner_sheet.cell(row=i, column=43).value,
-					}]
-
-
-	sorted_list_from_excel = sorted(first_list_from_excel, key=itemgetter('unp'))
-
-
-	return sorted_list_from_excel
-	pass
-
-
-
-
-def	get_excel_data():
-	uslugi_from_excel =[]
-	tovary_from_excel = []
 	full_grouped_list = []
 	outcoming_list =[]
 
-	for i in range(7,uslugi_sheet.max_row):
-		if uslugi_sheet.cell(row=i, column=1).value != None:
-			uslugi_from_excel += [{"contragent_name" : uslugi_sheet.cell(row=i, column=1).value,
-									"nds" : uslugi_sheet.cell(row=i, column=2).value,}]
+	for i in range(4,main_inner_sheet.max_row):
+		if  main_inner_sheet.cell(row=i, column=18) != "Аннулирован" and main_inner_sheet.cell(row=i, column=2).value != None: 
+			first_list_from_excel += [{ 
+					"unp" : main_inner_sheet.cell(row=i, column=2).value, 
+					"contragent_name" : main_inner_sheet.cell(row=i, column=4).value,
+					"nds" : main_inner_sheet.cell(row=i, column=41).value,
+					"full_sum" : main_inner_sheet.cell(row=i, column=42).value,
+					}]
 
 
-	dicts_from_tovary =[]
-	for i in range(7,tovary_sheet.max_row):
-		if tovary_sheet.cell(row=i, column=1).value != None:
-			tovary_from_excel += [{"contragent_name" : tovary_sheet.cell(row=i, column=1).value,
-									"nds" : tovary_sheet.cell(row=i, column=2).value,}]
-
-			
-	sorted_list_from_excel = sorted(uslugi_from_excel+tovary_from_excel, key=itemgetter('contragent_name'))
+	sorted_list_from_excel = sorted(first_list_from_excel, key=itemgetter('contragent_name'))
 
 	for key, group in itertools.groupby(sorted_list_from_excel, key=lambda x:x['contragent_name']):
-		grouped_list_of_listd = list(group)
-		full_grouped_list+=[grouped_list_of_listd]								
+		grouped_list_of_lists = list(group)
+		full_grouped_list+=[grouped_list_of_lists]								
 
 
 	for i in full_grouped_list:
-		outcoming_list+=[{'contragent_name': i[0]['contragent_name'], 'nds':round(sum([x['nds'] for x in i]),2)}]
+		outcoming_list+=[{'name': i[0]['contragent_name'],'unp':str(i[0]['unp']), 'nds':round(sum([x['nds'] for x in i]),2)}]
 
 
 
 	return outcoming_list
 	pass
-	
 
 
-def not_in_base():
-	result = get_eschf_data()
-
-	for i in get_excel_data():
-		for k in range(len(get_eschf_data())):
-			if get_eschf_data()[k]['nds'] == i['nds']:
-				result.remove(get_eschf_data()[k])
-
-	
-	for x in range(len(result)):
-		portal_list["not_in_base"].cell(row=2, column=1).value = "НЕТ В БАЗЕ"
-		portal_list["not_in_base"].cell(row=x+3, column=1).value = result[x]['contragent_name']
-		portal_list["not_in_base"].cell(row=x+3, column=2).value = result[x]['nds']
-		pass	
-
-	portal_list.save(filename = portal_doc)	
+def transform_sql_to_list(cursor, request_command, *condition):
+    if len(condition) ==2:
+        sql_request = request_command.format(condition[0],condition[1])
+    if len(condition) ==3:
+        sql_request = request_command.format(condition[0],condition[1],condition[2])
+    if len(condition) ==4:
+        sql_request = request_command.format(condition[0],condition[1],condition[2],condition[3])
+    
+    table = var.create_list_of_table_values(cursor.execute(sql_request),cursor.description)
+    return table
+    pass
 
 
+def curent_finace_states(start, end, cursor):
+	full_grouped_list = []
+	outcoming_list = []
+
+	list_vhod_nds_usl = transform_sql_to_list(cursor, sq_c.sel_vhod_usl_with_nds, sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'" )
+	list_vhod_nds_tn = transform_sql_to_list(cursor, sq_c.sel_vhod_tn_with_nds, sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'" )
+	list_tovary_nds  = transform_sql_to_list(cursor, sq_c.sel_tovary_with_vhod_nds,   "'"+start+"'",  "'"+str(end)+"'" )
+
+	unsorted_full_list = [i for i in list_tovary_nds+list_vhod_nds_tn+list_vhod_nds_usl if i['nds'] != 0.0 and i['nds']!=None]
+
+	sorted_list_from_base = sorted(unsorted_full_list, key=itemgetter('name'))
 
 
+	for key, group in itertools.groupby(sorted_list_from_base, key=lambda x:x['name']):
+		grouped_list_of_lists = list(group)
+		full_grouped_list+=[grouped_list_of_lists]								
+							
+
+	for i in full_grouped_list:
+		outcoming_list+=[{'name': i[0]['name'],'unp':i[0]['unp'], 'nds':round(sum([x['nds'] for x in i]),2)}]
+
+	return outcoming_list
+	pass
+
+data1 = curent_finace_states("2017-11-01", "2017-11-31", cur)
+data2 = get_eschf_data()
+
+def find_difference():
+	not_in_excel = get_eschf_data()
+	not_in_base = curent_finace_states("2017-11-01", "2017-11-31", cur)
 
 
-def not_in_portal():
-	result = get_excel_data()
+	for i in curent_finace_states("2017-11-01", "2017-11-31", cur):
+		for x in get_eschf_data():
+			if i['unp'] == x['unp']:
+				not_in_excel.remove(x)
 
-	for i in get_eschf_data():
-		for k in range(len(get_excel_data())):
-			if get_excel_data()[k]['nds'] == i['nds']:
-				result.remove(get_excel_data()[k])	
+	return not_in_excel
 
-	portal_list["not_in_base"].cell(row=2, column=5).value = "НЕТ НА ПОРТАЛЕ"
-	for x in range(len(result)):
-		portal_list["not_in_base"].cell(row=x+3, column=5).value = result[x]['contragent_name']
-		portal_list["not_in_base"].cell(row=x+3, column=6).value = result[x]['nds']
-		pass	
+print(find_difference())	
 
-	portal_list.save(filename = portal_doc)					
+#https://stackoverflow.com/questions/19755376/getting-the-difference-delta-between-two-lists-of-dictionaries
+from functools import reduce
+s1 = set(reduce(lambda x, y: x + y, [x.items() for x in data1]))
+s2 = set(reduce(lambda x, y: x + y, [x.items() for x in data2]))
 
-
-
-
-
-
-
-
-
-not_in_portal()
-not_in_base()
+s2.difference(s1)
+s2.symmetric_difference(s1)

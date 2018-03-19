@@ -109,11 +109,8 @@ def get_eschf_from_sql():
 
 
 	for i in full_grouped_list:
-		outcoming_list+=[{'contragent_name': i[0]['contragent_name'],'unp':i[0]['unp'] , 'nds':round(sum([x['nds'] for x in i]),2)}]
+		outcoming_list+=[{'contragent_name': i[0]['contragent_name'],str('unp':i[0]['unp']), 'nds':round(sum([x['nds'] for x in i]),2)}]
 
-	
-#	print(len(transform_to_list))
-#	print(len(outcoming_list))	
 	return outcoming_list
 	pass
 
