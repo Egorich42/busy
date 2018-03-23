@@ -146,15 +146,15 @@ def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
 
 
 def full_update(list_number, base_number):
-	update_from_dbf(documenty_dlya_contragentov[list_number],sq_c.select_all_documents,base_number,sq_c.insert_into_docs)
-	update_from_dbf(documenty_ot_contragentov[list_number],sq_c.select_all_documents_two,base_number,sq_c.insert_into_docs_two)
+#	update_from_dbf(documenty_dlya_contragentov[list_number],sq_c.select_all_documents,base_number, sq_c.insert_into_docs)
+#	update_from_dbf(documenty_ot_contragentov[list_number],sq_c.select_all_documents_two,base_number, sq_c.insert_into_docs_two)
 	update_from_dbf(contragenty[list_number],sq_c.select_contragents,base_number,sq_c.insert_into_contragents)
 
-	update_from_dbf(uslygi_okazany[list_number],sq_c.select_all_ishod_nds_usl,base_number,sq_c.insert_usl_okaz_nds)
-	update_from_dbf(nakladnye[list_number],sq_c.select_all_ishod_nds_tn,base_number,sq_c.insert_tn_otpravl_nds)
+	update_from_dbf(uslygi_okazany[list_number],sq_c.sel_ishod_nds_usl,base_number,sq_c.insert_usl_okaz_nds)
+	update_from_dbf(nakladnye[list_number],sq_c.sel_ishod_nds_tn,base_number,sq_c.insert_tn_otpravl_nds)
 
-	update_from_dbf(uslygi_polychenye[list_number],sq_c.select_all_vhod_nds_usl,base_number,sq_c.insert_usl_poluch_nds)
-	update_from_dbf(nakladnye_polychenye[list_number],sq_c.select_all_vhod_nds_tn,base_number,sq_c.insert_tn_vhod_nds)
+	update_from_dbf(uslygi_polychenye[list_number],sq_c.sel_vhod_usl_nds,base_number,sq_c.insert_usl_poluch_nds)
+	update_from_dbf(nakladnye_polychenye[list_number],sq_c.sel_vhod_tn_nds,base_number,sq_c.insert_tn_vhod_nds)
 
 	update_from_dbf(tovary_polychenye[list_number],sq_c.select_all_tovary,base_number,sq_c.insert_tovary)
 	pass

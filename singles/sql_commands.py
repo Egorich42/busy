@@ -111,7 +111,6 @@ select_contragents = "SELECT * FROM contragents;"
 select_all_documents="SELECT * FROM contragents_documents;"
 select_all_documents_two="SELECT * FROM contragents_documents_two;"
 
-select_all_eschf_outer="SELECT * FROM eschf_outer;"
 
 sel_ishod_nds_tn="SELECT * FROM ishod_nds_tn;"
 sel_ishod_nds_usl="SELECT * FROM ishod_nds_usl;"
@@ -120,6 +119,7 @@ sel_vhod_tn_nds="SELECT * FROM vhod_nds_tn;"
 sel_vhod_usl_nds="SELECT * FROM vhod_nds_usl;"
 
 select_all_tovary="SELECT * FROM nds_tovary;"
+select_all_eschf_outer="SELECT * FROM eschf_outer;"
 
 
 select_contragents_identificator = "SELECT id FROM contragents WHERE contragents.deleted != '*';"
