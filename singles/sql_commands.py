@@ -126,13 +126,11 @@ select_contragents_identificator = "SELECT id FROM contragents WHERE contragents
 select_id_docs = "SELECT parent FROM contragents_documents;"
 select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
 
-select_contragents_identificator = "SELECT id FROM contragents WHERE contragents.deleted != '*';"
-select_id_docs = "SELECT parent FROM contragents_documents;"
-select_contragent_name ="SELECT name FROM contragents WHERE id = {};"
-
 
 insert_into_docs = "INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?,?,?);"
 insert_into_docs_two = "INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?,?,?);"
+
+
 insert_into_contragents = "INSERT INTO contragents VALUES (?,?,?,?,?);"
 insert_into_eschf_outer = "INSERT INTO eschf_out VALUES (?,?,?,?,?);"
 
@@ -161,7 +159,9 @@ contragents_documents.document_name,
 contragents_documents.doc_date,
 ishod_nds_tn.full_sum,
 ishod_nds_tn.nds,
-contragents.name
+contragents.name,
+contragents.unp
+
 FROM contragents_documents
 LEFT JOIN contragents ON contragents_documents.parent=contragents.id
 LEFT JOIN ishod_nds_tn ON contragents_documents.summ=ishod_nds_tn.full_sum
@@ -180,7 +180,9 @@ contragents_documents.document_name,
 contragents_documents.doc_date,
 ishod_nds_usl.full_sum,
 ishod_nds_usl.nds,
-contragents.name
+contragents.name,
+contragents.unp
+
 FROM contragents_documents
 LEFT JOIN contragents ON contragents_documents.parent=contragents.id
 LEFT JOIN ishod_nds_usl ON contragents_documents.summ=ishod_nds_usl.full_sum

@@ -15,21 +15,33 @@ import sql_commands as sq_c
 import variables as var
 
 
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
-sql_base_name = 'pol.sqlite'
+sql_base_name = 'avangard.sqlite'
 conn = sqlite3.connect(sql_base_name )
 cur = conn.cursor()
 
 
-excel_income = 'pol_in_oct_dec.xlsx'
+excel_income = 'avangard_income_jan_feb.xlsx'
 excel_outcome = 'result.xlsx'
 
-excel_sheet_name = "oct_dec"
-output_sheet_name = "result"
+excel_sheet_name = "avangard_income_jan_feb"
+output_sheet_name = "avangard_result"
 
-data_start = "2017-10-01"
-data_end=  "2017-12-31"
+data_start = "2018-01-01"
+data_end=  "2018-02-28"
+
+
+#ВХОДЯЩИЙ:
+unp_number = 2
+name_col = 4
+list_number = 1
+
+
+#ИСХОДЯЩИЙ
+#unp_number = 9
+#name_col = 11
+#list_number = 0
+
 
 
 portal_doc = BASE_DIR+excel_income
@@ -47,31 +59,38 @@ def sum_of_list(sum_name,income_list):
 	pass
 
 
+def create_sorted_list(income_list):
+	output_list = []
+	full_grouped_list = []
+
+	sorted_list = sorted(income_list, key=itemgetter('name'))
+
+	for key, group in itertools.groupby(sorted_list, key=lambda x:x['name']):
+		grouped_sorted_list = list(group)
+		full_grouped_list += [grouped_sorted_list]								
+
+	for i in full_grouped_list:
+		output_list+=[{'name': i[0]['name'],'unp':str(i[0]['unp']), 'nds':round(sum([x['nds'] for x in i]),2)}]
+
+	return output_list
+	pass
+
+
 def	get_eschf_data():
 	first_list_from_excel =[]
 	full_grouped_list = []
 	outcoming_list =[]
 
 	for i in range(4,main_inner_sheet.max_row):
-		if  main_inner_sheet.cell(row=i, column=18) != "Аннулирован" and main_inner_sheet.cell(row=i, column=2).value != None: 
+		if  main_inner_sheet.cell(row=i, column=18) != "Аннулирован" and main_inner_sheet.cell(row=i, column=unp_number).value != None: 
 			first_list_from_excel += [{ 
-					"unp" : main_inner_sheet.cell(row=i, column=2).value, 
-					"contragent_name" : main_inner_sheet.cell(row=i, column=4).value,
-					"nds" : main_inner_sheet.cell(row=i, column=41).value,
-					"full_sum" : main_inner_sheet.cell(row=i, column=42).value,
+					"unp" : main_inner_sheet.cell(row=i, column=unp_number).value, 
+					"name" : main_inner_sheet.cell(row=i, column=name_col).value,
+					"nds" : main_inner_sheet.cell(row=i, column=42).value,
+#					"full_sum" : main_inner_sheet.cell(row=i, column=42).value,
 					}]
 
-	sorted_list_from_excel = sorted(first_list_from_excel, key=itemgetter('unp'))
-
-	for key, group in itertools.groupby(sorted_list_from_excel, key=lambda x:x['unp']):
-		grouped_list_of_lists = list(group)
-		full_grouped_list+=[grouped_list_of_lists]								
-
-
-	for i in full_grouped_list:
-		outcoming_list+=[{'name': i[0]['contragent_name'],'unp':str(i[0]['unp']), 'nds':round(sum([x['nds'] for x in i]),2)}]
-
-	return outcoming_list
+	return create_sorted_list(first_list_from_excel)
 	pass
 
 
@@ -88,54 +107,42 @@ def transform_sql_to_list(cursor, request_command, *condition):
 
 
 def curent_finace_states(start, end, cursor):
-	full_grouped_list = []
-	outcoming_list = []
-
 	list_vhod_nds_usl = transform_sql_to_list(cursor, sq_c.sel_vhod_usl_with_nds, sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'" )
 	list_vhod_nds_tn = transform_sql_to_list(cursor, sq_c.sel_vhod_tn_with_nds, sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'" )
 	list_tovary_nds  = transform_sql_to_list(cursor, sq_c.sel_tovary_with_vhod_nds,   "'"+start+"'",  "'"+str(end)+"'" )
 
-	unsorted_full_list = [i for i in list_tovary_nds+list_vhod_nds_tn+list_vhod_nds_usl if i['nds'] != 0.0 and i['nds']!=None]
+	list_ishod_nds_usl = transform_sql_to_list(cursor, sq_c.sel_usl_with_ishod_nds, sq_c.tn_providers,  "'"+start+"'",  "'"+str(end)+"'" )
+	list_ishod_nds_tn = transform_sql_to_list(cursor, sq_c.sel_tn_with_ishod_nds, sq_c.tn_providers,  "'"+start+"'",  "'"+str(end)+"'" )
 
-	sorted_list_from_base = sorted(unsorted_full_list, key=itemgetter('name'))
+	unsorted_full_list_vhod = [i for i in list_tovary_nds+list_vhod_nds_tn+list_vhod_nds_usl if i['nds'] != 0.0 and i['nds']!=None]
+	unsorted_full_list_ishod = [i for i in list_ishod_nds_usl+list_ishod_nds_tn if i['nds'] != 0.0 and i['nds']!=None]
+	
+	list_vhod = create_sorted_list(unsorted_full_list_vhod)
+	list_ishod = create_sorted_list(unsorted_full_list_ishod)
 
-
-	for key, group in itertools.groupby(sorted_list_from_base, key=lambda x:x['name']):
-		grouped_list_of_lists = list(group)
-		full_grouped_list += [grouped_list_of_lists]								
-							
-
-	for i in full_grouped_list:
-		outcoming_list+=[{'name': i[0]['name'],'unp':i[0]['unp'], 'nds':round(sum([x['nds'] for x in i]),2)}]
-
-	return outcoming_list
+	return (list_ishod, list_vhod)
 	pass
 
 
 def find_difference():
 	not_in_excel = get_eschf_data()
-	not_in_base = curent_finace_states(data_start, data_end, cur)
+	not_in_base = curent_finace_states(data_start, data_end, cur)[list_number]
 
-	for i in curent_finace_states(data_start, data_end, cur):
+	final_not_in_portal = []
+	final_not_in_base = []
+	govno = []
+	mocha = []
+
+	for i in curent_finace_states(data_start, data_end, cur)[list_number]:
 		for x in get_eschf_data():
 			if i['unp'] == x['unp'] and i['nds'] == x['nds']:
 				not_in_excel.remove(x)
 				not_in_base.remove(i)
 
-	for y in not_in_base:
-		for n in not_in_excel:
-			if n['unp'] == y['unp']:
-				if n['nds'] > y['nds']:
-					n['nds'] = n['nds'] - y['nds']
-					not_in_base.remove(y)
-
-				if n['nds'] < y['nds']:
-					y['nds'] = y['nds'] - n['nds']
-					not_in_excel.remove(n)
-					[x for x in not_in_excel]
 
 	return(not_in_excel,not_in_base)
 	pass
+
 
 
 
@@ -146,15 +153,24 @@ def insert_into_excel():
 		pass
 
 	insert_cell(2, 1, "Контрагент")
-	insert_cell(2, 4,"Контрагент")
+	insert_cell(2, 4, "Контрагент")
 
 	insert_cell(2, 2, "НДС")
-	insert_cell(2, 5,"НДС")
+	insert_cell(2, 5, "НДС")
+
+	insert_cell(1, 1, "Весь НДС из базы")
+	insert_cell(1, 3, "Весь НДС с Портала")
+
+
+	insert_cell(1, 2, sum_of_list('nds',curent_finace_states(data_start, data_end, cur)[list_number]))
+	insert_cell(1, 4, sum_of_list('nds', get_eschf_data()))
+
 
 	insert_cell(len(find_difference()[0])+4, 1,"Всего")
-	insert_cell(len(find_difference()[1])+4, 4,"Всего")
-
 	insert_cell(len(find_difference()[0])+4, 2,sum_of_list('nds', find_difference()[0]))
+
+
+	insert_cell(len(find_difference()[1])+4, 4,"Всего")
 	insert_cell(len(find_difference()[1])+4, 5,	sum_of_list('nds', find_difference()[1]))
 
 

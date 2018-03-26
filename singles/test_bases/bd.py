@@ -50,8 +50,11 @@ def get_data_from_dbf(table_name):
 def get_docs_with_nds(from_dbf_table, tables_names):
 	values_list = []
 	for i in from_dbf_table:	
-		values_list += [(str(dict(i)[tables_names[0]]).replace(" ", ""),dict(i)[tables_names[1]],dict(i)[tables_names[2]],
-						dict(i)[tables_names[3]],dict(i)[tables_names[4]])]
+		values_list += [(str(dict(i)[tables_names[0]]).replace(" ", ""),
+						dict(i)[tables_names[1]],
+						dict(i)[tables_names[2]],
+						dict(i)[tables_names[3]],
+						dict(i)[tables_names[4]])]
 	return values_list	
 	pass
 
@@ -94,6 +97,16 @@ def get_data_mudaki(from_dbf_table, tables_names):
 	pass
 
 
+def contragents_list(numar,table_names):
+	dot = range(len(bazi))
+	fiat = []
+	for t in dot:
+		documents_table = [get_data_mudaki(numar[t], table_names)]
+		fiat += [ti for ti in documents_table]
+	return fiat	
+	pass
+
+
 def create_list_base_tables():
 	big_tables_list = []
 	for x in (t625,t493, t167,t625_uslugi_nds,t625_tn_nds, t493_uslugi_nds, t493_tn_nds,incoming_tovary_nds):
@@ -106,7 +119,7 @@ def create_list_base_tables():
 
 
 
-def create_docs_list(numar, table_names):
+def create_lists_with_nds(numar, table_names):
 	fiat = []
 	for t in range(len(bazi)):
 		documents_table = [get_docs_with_nds(numar[t], table_names)]
@@ -114,20 +127,28 @@ def create_docs_list(numar, table_names):
 	return fiat	
 	pass
 
+def create_lists_without_nds(numar, table_names):
+	fiat = []
+	for t in range(len(bazi)):
+		documents_table = [get_data(numar[t], table_names)]
+		fiat += [ti for ti in documents_table]
+	return fiat	
+	pass
 
+	
 
-contragenty =  create_docs_list(create_list_base_tables()[2],t167_tables)
+contragenty =  contragents_list(create_list_base_tables()[2],t167_tables)
 
-documenty_dlya_contragentov= create_docs_list(create_list_base_tables()[0],t625_tables_names)
-documenty_ot_contragentov = create_docs_list(create_list_base_tables()[1],t493_tables_names)
+documenty_dlya_contragentov= create_lists_without_nds(create_list_base_tables()[0],t625_tables_names)
+documenty_ot_contragentov = create_lists_without_nds(create_list_base_tables()[1],t493_tables_names)
 
-uslygi_okazany =  create_docs_list(create_list_base_tables()[3], t625_uslugi_nds_tables )
-nakladnye =  create_docs_list(create_list_base_tables()[4], t625_tn_nds_tables )
+uslygi_okazany =  create_lists_with_nds(create_list_base_tables()[3], t625_uslugi_nds_tables )
+nakladnye =  create_lists_with_nds(create_list_base_tables()[4], t625_tn_nds_tables )
 
-uslygi_polychenye =  create_docs_list(create_list_base_tables()[5], t493_uslugi_nds_tables)
-nakladnye_polychenye =  create_docs_list(create_list_base_tables()[6], t493_tn_nds_tables)
+uslygi_polychenye =  create_lists_with_nds(create_list_base_tables()[5], t493_uslugi_nds_tables)
+nakladnye_polychenye =  create_lists_with_nds(create_list_base_tables()[6], t493_tn_nds_tables)
  
-tovary_polychenye = create_docs_list(create_list_base_tables()[7], incoming_tovary_tables) 
+tovary_polychenye = create_lists_with_nds(create_list_base_tables()[7], incoming_tovary_tables) 
 
 def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
 	conn = sq_c.sqlite3.connect(root_path+'\\'+'sql_db'+'\\'+str(db_number)+'.sqlite')
@@ -146,8 +167,8 @@ def update_from_dbf(dbf_list, sq_command,db_number, insert_command):
 
 
 def full_update(list_number, base_number):
-#	update_from_dbf(documenty_dlya_contragentov[list_number],sq_c.select_all_documents,base_number, sq_c.insert_into_docs)
-#	update_from_dbf(documenty_ot_contragentov[list_number],sq_c.select_all_documents_two,base_number, sq_c.insert_into_docs_two)
+	update_from_dbf(documenty_dlya_contragentov[list_number],sq_c.select_all_documents,base_number,sq_c.insert_into_docs)
+	update_from_dbf(documenty_ot_contragentov[list_number],sq_c.select_all_documents_two,base_number,sq_c.insert_into_docs_two)
 	update_from_dbf(contragenty[list_number],sq_c.select_contragents,base_number,sq_c.insert_into_contragents)
 
 	update_from_dbf(uslygi_okazany[list_number],sq_c.sel_ishod_nds_usl,base_number,sq_c.insert_usl_okaz_nds)
