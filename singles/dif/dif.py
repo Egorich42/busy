@@ -138,12 +138,12 @@ def find_difference():
 			if i['unp'] == x['unp'] and i['nds'] == x['nds']:
 				not_in_excel.remove(x)
 				not_in_base.remove(i)
-
+						
 
 	return(not_in_excel,not_in_base)
 	pass
 
-
+find_difference()
 
 
 def insert_into_excel():
@@ -187,4 +187,4 @@ def insert_into_excel():
 	pass
 
 
-insert_into_excel()
+#insert_into_excel()
