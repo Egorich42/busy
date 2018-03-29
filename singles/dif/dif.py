@@ -81,14 +81,14 @@ def	get_eschf_data():
 	full_grouped_list = []
 	outcoming_list =[]
 
-	for i in range(4,main_inner_sheet.max_row):
-		if  main_inner_sheet.cell(row=i, column=18) != "Аннулирован" and main_inner_sheet.cell(row=i, column=unp_number).value != None: 
-			first_list_from_excel += [{ 
-					"unp" : main_inner_sheet.cell(row=i, column=unp_number).value, 
-					"name" : main_inner_sheet.cell(row=i, column=name_col).value,
-					"nds" : main_inner_sheet.cell(row=i, column=42).value,
-#					"full_sum" : main_inner_sheet.cell(row=i, column=42).value,
-					}]
+	for i in range(3,main_inner_sheet.max_row):
+		if  main_inner_sheet.cell(row=i, column=18).value != "Аннулирован": 
+			if main_inner_sheet.cell(row=i, column=unp_number).value != None: 
+				first_list_from_excel += [{ 
+						"unp" : main_inner_sheet.cell(row=i, column=unp_number).value, 
+						"name" : main_inner_sheet.cell(row=i, column=name_col).value,
+						"nds" : main_inner_sheet.cell(row=i, column=42).value,
+						}]
 
 	return create_sorted_list(first_list_from_excel)
 	pass
@@ -187,4 +187,4 @@ def insert_into_excel():
 	pass
 
 
-#insert_into_excel()
+insert_into_excel()
