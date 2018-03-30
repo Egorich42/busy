@@ -10,7 +10,7 @@ import sql_commands as sq_c
 from dbfread import DBF
 
 
-bazi = ('dipartD', 'avangard', 'ditest','ipmatusev','mitada', 'smdpark','himprom_den', 'polymia_den')
+bazi = ('dipartD', 'avangard', 'ditest','ipmatusev','mitada', 'smdpark','himprom_den', 'polymia_den', 'amedenta', 'ertex','centrupakovki')
 
 
 location ='D:\DATA_SETS' 

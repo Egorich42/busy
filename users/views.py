@@ -48,13 +48,17 @@ class LogoutView(View):
 
 
 
-
-
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
         
-        base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
+#        base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
+        login - obmen
+        pas - 220116
+        r = requests.get('http://192.168.1.5')
+
+        base_name = '\\SERVER'+'\\'+'1cdenom'+'\\'+'exe.win32-3.6'+'\\'+'bases'+'\\'+str(user.id)+'.sqlite'
+        print(base_name)
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
         taxes_system = user.client.nalog_system

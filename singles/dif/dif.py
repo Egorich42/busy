@@ -14,28 +14,38 @@ sys.path.append(root_path)
 import sql_commands as sq_c
 import variables as var
 
+ertex = 'ertex'
+avangard = 'avangard'
+hpo = 'hpo'
+ditest = 'ditest'
+amedenta = 'amedenta'
+upak = 'upak'
+
+agent_name = amedenta
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
-sql_base_name = 'avangard.sqlite'
+sql_base_name = agent_name+'.sqlite'
 conn = sqlite3.connect(sql_base_name )
 cur = conn.cursor()
 
 
-excel_income = 'avangard_income_jan_feb.xlsx'
+excel_income = agent_name+'_income_jan_feb.xlsx'
 excel_outcome = 'result.xlsx'
 
-excel_sheet_name = "avangard_income_jan_feb"
-output_sheet_name = "avangard_result"
+excel_sheet_name = agent_name+"_income_jan_feb"
+output_sheet_name = agent_name+"_result"
 
 data_start = "2018-01-01"
 data_end=  "2018-02-28"
+
+
 
 
 #ВХОДЯЩИЙ:
 unp_number = 2
 name_col = 4
 list_number = 1
-
 
 #ИСХОДЯЩИЙ
 #unp_number = 9
@@ -74,6 +84,7 @@ def create_sorted_list(income_list):
 
 	return output_list
 	pass
+
 
 
 def	get_eschf_data():
