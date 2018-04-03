@@ -12,9 +12,11 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
 import sqlite3
 
+from . import base_update as upd
+
+
 from django.contrib.auth import authenticate, login
 import os
-
 
 import numpy as np
 
@@ -52,13 +54,7 @@ def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
         
-#        base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
-        login - obmen
-        pas - 220116
-        r = requests.get('http://192.168.1.5')
-
-        base_name = '\\SERVER'+'\\'+'1cdenom'+'\\'+'exe.win32-3.6'+'\\'+'bases'+'\\'+str(user.id)+'.sqlite'
-        print(base_name)
+        base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
         taxes_system = user.client.nalog_system
@@ -79,8 +75,8 @@ def show_user_profile(request,id, **kwargs):
         all_providers_docs = get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request)
 
         
-#        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
-        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2017-12-31')
+        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
+#        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2017-12-31')
 
         providers_debts = hvosty_list[0]
         providers_prepay = hvosty_list[1]
@@ -190,6 +186,12 @@ def show_sverka(request,id, **kwargs):
     else:
          return HttpResponseRedirect("/")   
 
+
+def update_base():
+    for i in range(len(upd.bazi)):
+        full_update(i,i+1)
+        pass
+    pass
 
 
 def show_hvosty(request,id, **kwargs):
