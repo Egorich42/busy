@@ -53,6 +53,8 @@ class LogoutView(View):
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
+        print(BASE_DIR)
+
         
         base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
@@ -76,7 +78,6 @@ def show_user_profile(request,id, **kwargs):
 
         
         hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
-#        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2017-12-31')
 
         providers_debts = hvosty_list[0]
         providers_prepay = hvosty_list[1]
@@ -187,11 +188,16 @@ def show_sverka(request,id, **kwargs):
          return HttpResponseRedirect("/")   
 
 
-def update_base():
+
+
+
+def update_bases(request):
     for i in range(len(upd.bazi)):
-        full_update(i,i+1)
-        pass
-    pass
+        upd.full_update(i,i+1)
+        
+    return HttpResponseRedirect("/")
+
+
 
 
 def show_hvosty(request,id, **kwargs):

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*
 import sqlite3 
 from dbfread import DBF
+import os.path
 
 select_contragents = "SELECT * FROM contragents;"
 
@@ -32,13 +33,16 @@ insert_tn_vhod_nds= "INSERT INTO vhod_nds_tn VALUES (?,?,?,?,?);"
 
 insert_tovary = "INSERT INTO nds_tovary VALUES (?,?,?,?,?);"
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-bazi = ('dipartD')
+f = open(BASE_DIR+'/'+'bases.txt')
+bazi = [line.split(',') for line in f][0]
 
 
-location ='D:\DATA_SETS' 
-t625 = 'D:\DATA_SETS\{}\SC625.DBF'
+
+location = BASE_DIR
+t625 = location+'\{}\SC625.DBF'
 t625_tables_names = ('DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623','SP620')
 
 t493 = location+'\{}\SC493.DBF'
