@@ -1,8 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 import os
-import sys
 import sqlite3
+import openpyxl
 from openpyxl import load_workbook,Workbook
 import itertools
 from itertools import groupby
@@ -10,10 +10,7 @@ from operator import itemgetter
 from singles import sql_commands as sq_c
 from singles import variables as var
 
-path_to_file = os.path.dirname(os.path.abspath(__file__))+'\\'
-convert_to_list = path_to_file.split('\\')[:-2]
-root_path = '\\'.join(convert_to_list)
-sys.path.append(root_path)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
 ertex = 'ertex'
@@ -24,28 +21,24 @@ amedenta = 'amedenta'
 upak = 'upak'
 polymia = 'polymia'
 
+data_start = "2018-01-01"
+data_end=  "2018-31-03"
 
 agent_name = avangard
+
 
 #data_type = 'outcome'
 data_type = 'income'
 
+
 sql_base_name = BASE_DIR+'bases'+'\\'+agent_name+'.sqlite'
-conn = sqlite3.connect(sql_base_name )
-cur = conn.cursor()
+
+output_doc = BASE_DIR+'\\'+"result_{}_{}.xlsx".format(data_type,agent_name)
+openpyxl.Workbook().save(output_doc)
 
 
 to_portal_docs = BASE_DIR+'docs_from_portal'+'\\'
-
-excel_outcome = BASE_DIR+'result_{}.xlsx'.format(data_type)
 excel_income = agent_name+'_{}_jan_march.xlsx'.format(data_type)
-
-
-excel_sheet_name = agent_name+"_{}_jan_march".format(data_type)
-output_sheet_name = agent_name+"_result"
-
-data_start = "2018-01-01"
-data_end=  "2018-31-03"
 
 
 #ВХОДЯЩИЙ:
@@ -59,14 +52,12 @@ list_number = 1
 #name_col = 11
 #list_number = 0
 
-portal_doc = to_portal_docs+excel_income
-portal_list = load_workbook(portal_doc,data_only = True)
-main_inner_sheet = portal_list[excel_sheet_name]
+portal_list = load_workbook(to_portal_docs+excel_income,data_only = True)
+main_inner_sheet = portal_list.active
 
 
-output_doc = excel_outcome
 output_list = load_workbook(output_doc,data_only = True)
-main_out_sheet = output_list[output_sheet_name]
+main_out_sheet = output_list.active
 
 
 
@@ -114,9 +105,6 @@ def	get_eschf_data():
 	pass
 
 
-
-
-
 def transform_sql_to_list(cursor, request_command, *condition):
     if len(condition) ==2:
         sql_request = request_command.format(condition[0],condition[1])
@@ -147,23 +135,28 @@ def curent_finace_states(start, end, cursor):
 	pass
 
 def find_difference():
+	connect = sqlite3.connect(sql_base_name )
+	cursor = connect.cursor()
 	not_in_excel = get_eschf_data()
-	not_in_base = curent_finace_states(data_start, data_end, cur)[list_number]
+	not_in_base = curent_finace_states(data_start, data_end, cursor)[list_number]
 
 
-	for i in curent_finace_states(data_start, data_end, cur)[list_number]:
+	for i in curent_finace_states(data_start, data_end, cursor)[list_number]:
 		for x in get_eschf_data():
 			if i['unp'] == x['unp'] and i['nds'] == x['nds']:
 				not_in_excel.remove(x)
 				not_in_base.remove(i)
 						
-
+	connect.commit()
+	connect.close()
 	return(not_in_excel,not_in_base)
 	pass
 
 
 
-def insert_into_excel():
+def insert_into_excel(request):
+	connect = sqlite3.connect(sql_base_name )
+	cursor = connect.cursor()
 
 	def insert_cell(row_val, col_val, cell_value):
 		main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
@@ -182,7 +175,7 @@ def insert_into_excel():
 	insert_cell(2, 1, "Весь НДС с Портала")
 
 
-	insert_cell(2, 5, sum_of_list('nds',curent_finace_states(data_start, data_end, cur)[list_number]))
+	insert_cell(2, 5, sum_of_list('nds',curent_finace_states(data_start, data_end, cursor)[list_number]))
 	insert_cell(2, 2, sum_of_list('nds', get_eschf_data()))
 
 
@@ -204,6 +197,10 @@ def insert_into_excel():
 		insert_cell(i+5, 5, find_difference()[1][i]['nds'])
 
 	output_list.save(filename = output_doc)
+	connect.commit()
+	connect.close()
+	return(str(output_doc))
 	pass
+
 
 

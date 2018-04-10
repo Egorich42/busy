@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+форма
+<form method="post" enctype="multipart/form-data">
+{{ form.as_p }}
+{% csrf_token %}
+<input type="submit" value="Отправить" style="background-color: #fff;">
+</form>
+{% endblock %}

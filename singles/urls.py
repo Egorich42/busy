@@ -6,5 +6,5 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^dif/$', views.insert_into_excel, name='insert_into_excel'),
+    url(r'^upload/$', views.upload_file, name='upload_file'),
 ]
