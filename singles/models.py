@@ -1,7 +1,7 @@
 from django.db import models
 
 
-company = (('АВАНГАРД', 'авангард.'),)
+company = (('avangard', 'avangard'),)
 
 
 class Article(models.Model):

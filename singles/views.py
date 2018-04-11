@@ -19,10 +19,10 @@ def upload_file(request):
 		form = ArticleForm(request.POST, request.FILES)
 		if form.is_valid():
 			form.save()
+			income_doc_name = form.cleaned_data['file_obj'].name
+			base_name = form.cleaned_data['company_name']
 
-			dif.insert_into_excel(request)
-
-			excel_file_name = dif.insert_into_excel(request)
+			excel_file_name = dif.insert_into_excel(request, income_doc_name, base_name)
 			fp = open(excel_file_name, "rb");
 			response = HttpResponse(fp.read());
 			fp.close();
@@ -34,6 +34,7 @@ def upload_file(request):
 			response['Content-Disposition'] = "attachment; filename = result.xlsx";
 #			os.remove(excel_file_name)
 			return response;
+#			return HttpResponseRedirect("/")
 	else:
 		form = ArticleForm()
 

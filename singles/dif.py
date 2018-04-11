@@ -13,48 +13,26 @@ from singles import variables as var
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
-ertex = 'ertex'
-avangard = 'avangard'
-hpo = 'hpo'
-ditest = 'ditest'
-amedenta = 'amedenta'
-upak = 'upak'
-polymia = 'polymia'
 
 data_start = "2018-01-01"
 data_end=  "2018-31-03"
 
-agent_name = avangard
-
-
-#data_type = 'outcome'
-data_type = 'income'
-
-
-sql_base_name = BASE_DIR+'bases'+'\\'+agent_name+'.sqlite'
-
-output_doc = BASE_DIR+'\\'+"result_{}_{}.xlsx".format(data_type,agent_name)
-openpyxl.Workbook().save(output_doc)
-
-
-to_portal_docs = BASE_DIR+'docs_from_portal'+'\\'
-excel_income = agent_name+'_{}_jan_march.xlsx'.format(data_type)
-
-
 #ВХОДЯЩИЙ:
+data_type = 'income'
 unp_number = 2
 name_col = 4
 list_number = 1
 
 
 #ИСХОДЯЩИЙ
+#data_type = 'outcome'
 #unp_number = 9
 #name_col = 11
 #list_number = 0
 
-portal_list = load_workbook(to_portal_docs+excel_income,data_only = True)
-main_inner_sheet = portal_list.active
 
+output_doc = BASE_DIR+'\\'+"result_{}.xlsx".format(data_type)
+openpyxl.Workbook().save(output_doc)
 
 output_list = load_workbook(output_doc,data_only = True)
 main_out_sheet = output_list.active
@@ -86,7 +64,7 @@ def create_sorted_list(income_list):
 
 
 
-def	get_eschf_data():
+def	get_eschf_data(main_inner_sheet):
 	first_list_from_excel =[]
 
 	for x in range(1, 8):
@@ -134,15 +112,15 @@ def curent_finace_states(start, end, cursor):
 	return (list_ishod, list_vhod)
 	pass
 
-def find_difference():
+def find_difference(main_inner_sheet, sql_base_name):
 	connect = sqlite3.connect(sql_base_name )
 	cursor = connect.cursor()
-	not_in_excel = get_eschf_data()
+	not_in_excel = get_eschf_data(main_inner_sheet)
 	not_in_base = curent_finace_states(data_start, data_end, cursor)[list_number]
 
 
 	for i in curent_finace_states(data_start, data_end, cursor)[list_number]:
-		for x in get_eschf_data():
+		for x in get_eschf_data(main_inner_sheet):
 			if i['unp'] == x['unp'] and i['nds'] == x['nds']:
 				not_in_excel.remove(x)
 				not_in_base.remove(i)
@@ -154,8 +132,16 @@ def find_difference():
 
 
 
-def insert_into_excel(request):
-	connect = sqlite3.connect(sql_base_name )
+def insert_into_excel(request, excel_income,base_name):
+
+	to_portal_docs_path = BASE_DIR+'docs_from_portal'+'\\'
+	portal_list = load_workbook(to_portal_docs_path+excel_income,data_only = True)
+	main_inner_sheet = portal_list.active
+	sql_base_name = BASE_DIR+'bases'+'\\'+base_name+'.sqlite'
+	print(sql_base_name)
+
+
+	connect = sqlite3.connect(sql_base_name)
 	cursor = connect.cursor()
 
 	def insert_cell(row_val, col_val, cell_value):
@@ -176,25 +162,25 @@ def insert_into_excel(request):
 
 
 	insert_cell(2, 5, sum_of_list('nds',curent_finace_states(data_start, data_end, cursor)[list_number]))
-	insert_cell(2, 2, sum_of_list('nds', get_eschf_data()))
+	insert_cell(2, 2, sum_of_list('nds', get_eschf_data(main_inner_sheet)))
 
 
-	insert_cell(len(find_difference()[0])+6, 1,"Всего")
-	insert_cell(len(find_difference()[0])+6, 2,sum_of_list('nds', find_difference()[0]))
+#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[0])+6, 1,"Всего")
+#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[0])+6, 2,sum_of_list('nds', find_difference(main_inner_sheet, sql_base_name)[0]))
 
 
-	insert_cell(len(find_difference()[1])+6, 4,"Всего")
-	insert_cell(len(find_difference()[1])+6, 5,	sum_of_list('nds', find_difference()[1]))
+#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[1])+6, 4,"Всего")
+#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[1])+6, 5,	sum_of_list('nds', find_difference(main_inner_sheet, sql_base_name)[1]))
 
 
-	for i in range(len(find_difference()[0])):
-		insert_cell(i+5, 1, find_difference()[0][i]['name'])
-		insert_cell(i+5, 2, find_difference()[0][i]['nds'])
+	for i in range(len(find_difference(main_inner_sheet, sql_base_name)[0])):
+		insert_cell(i+5, 1, find_difference(main_inner_sheet, sql_base_name)[0][i]['name'])
+		insert_cell(i+5, 2, find_difference(main_inner_sheet, sql_base_name)[0][i]['nds'])
 
-	for i in range(len(find_difference()[1])):
+	for i in range(len(find_difference(main_inner_sheet, sql_base_name)[1])):
 
-		insert_cell(i+5, 4, find_difference()[1][i]['name'])
-		insert_cell(i+5, 5, find_difference()[1][i]['nds'])
+		insert_cell(i+5, 4, find_difference(main_inner_sheet, sql_base_name)[1][i]['name'])
+		insert_cell(i+5, 5, find_difference(main_inner_sheet, sql_base_name)[1][i]['nds'])
 
 	output_list.save(filename = output_doc)
 	connect.commit()
