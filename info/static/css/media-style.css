@@ -1,5 +1,12 @@
 
+
+@media screen and (max-width: 1136px) {
+.block-colored article {padding: 0px 20px;}
+}
+
 @media screen and (max-width: 1080px) {
+.contacts-info-chanels {padding: 0% 25%;}
+
 nav ul{padding: 0px;}
 nav ul li{padding-top: 36px;}
 nav ul li a{font-size: 52px;}
@@ -28,6 +35,9 @@ nav ul li a{font-size: 52px;}
 .itogo{font-size: 17px;}
 
 
+.contacts-data{display: flex; justify-content: space-between; flex-direction: column;}
+
+.block-colored article {padding: 0px 0px;}
 .central-block{width: 770px; padding-top: 35px; padding-bottom: 35px;}
 .central-block,
 .colored-paragraph-text,
@@ -40,7 +50,6 @@ nav ul li a{font-size: 52px;}
 .colored-paragraph-text{width: 90%;}
 .user-profile ul li{padding-top: 20px;}
 
-.block-colored article {padding: 0px 20px;}
 .block-colored article p{font-size: 16px; padding: 0px 15px;}
 .block-colored article h2{font-size: 19px;}
 
@@ -77,6 +86,8 @@ nav ul li a{font-size: 52px;}
 
 @media screen and (max-width: 940px) {
 .user-profile-main{flex-direction: column; min-height: 500px;}
+.contacts-info-chanels {padding: 0% 15%;}
+
 }
 
 
@@ -116,7 +127,6 @@ nav ul li a{font-size: 22px;}
 
 .contacts-info-chanels {font-size: 20px;}
 .contacts-info-chanels article img {width: 50px;}
-.contacts-main{width: 100%; padding: 0px; margin: 0px;}
 
 .how-it-work-list ul li {margin-left: 0px;margin-top: 40px;margin-bottom: 0px;}
 .how-it-work-list ul li img { width: 80px;}
@@ -153,7 +163,9 @@ nav ul li a{font-size: 22px;}
 
 
 @media screen and (max-width: 640px) {
-
+.contacts-info-chanels{padding:0px 15px;}
+.contacts-info-chanels article img{width: 60px; float: left;}
+.contacts-info-chanels article {height: 70px; font-size: 20px; text-align: right;}
 }
 
 @media screen and (max-width: 480px) {
