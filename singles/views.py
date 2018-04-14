@@ -32,9 +32,8 @@ def upload_file(request):
 			response['Content-Type'] = file_type
 			response['Content-Length'] = str(os.stat(excel_file_name).st_size);
 			response['Content-Disposition'] = "attachment; filename = result.xlsx";
-#			os.remove(excel_file_name)
+			os.remove(excel_file_name)
 			return response;
-#			return HttpResponseRedirect("/")
 	else:
 		form = ArticleForm()
 

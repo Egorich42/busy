@@ -164,15 +164,6 @@ def insert_into_excel(request, excel_income,base_name):
 	insert_cell(2, 5, sum_of_list('nds',curent_finace_states(data_start, data_end, cursor)[list_number]))
 	insert_cell(2, 2, sum_of_list('nds', get_eschf_data(main_inner_sheet)))
 
-
-#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[0])+6, 1,"Всего")
-#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[0])+6, 2,sum_of_list('nds', find_difference(main_inner_sheet, sql_base_name)[0]))
-
-
-#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[1])+6, 4,"Всего")
-#	insert_cell(len(find_difference(main_inner_sheet, sql_base_name)[1])+6, 5,	sum_of_list('nds', find_difference(main_inner_sheet, sql_base_name)[1]))
-
-
 	for i in range(len(find_difference(main_inner_sheet, sql_base_name)[0])):
 		insert_cell(i+5, 1, find_difference(main_inner_sheet, sql_base_name)[0][i]['name'])
 		insert_cell(i+5, 2, find_difference(main_inner_sheet, sql_base_name)[0][i]['nds'])
@@ -187,6 +178,46 @@ def insert_into_excel(request, excel_income,base_name):
 	connect.close()
 	return(str(output_doc))
 	pass
+
+
+
+def create_hvosty_excel(request, income_list):
+	output_doc = BASE_DIR+'\\'+"resultat.xlsx".format(data_type)
+	openpyxl.Workbook().save(output_doc)
+	output_list = load_workbook(output_doc,data_only = True)
+	main_out_sheet = output_list.active
+
+
+	def insert_cell(row_val, col_val, cell_value):
+		main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+		pass
+
+	insert_cell(1, 1, "Контрагент")
+	insert_cell(1, 1, "Сумма")
+
+
+	for i in range(len(income_list)):
+		insert_cell(i+5, 1, income_list[i]['name'] )
+		insert_cell(i+5, 2, income_list[i]['summa'] )
+
+	output_list.save(filename = output_doc)
+
+	return(str(output_doc))
+	pass
+
+
+def download_excel_doc(request, income_fle):
+    fp = open(income_fle, "rb")
+    response = HttpResponse(fp.read())
+    fp.close()
+    file_type = mimetypes.guess_type(income_fle)
+    if file_type is None:
+        file_type = 'application/octet-stream'
+    response['Content-Type'] = file_type
+    response['Content-Length'] = str(os.stat(income_fle).st_size)
+    response['Content-Disposition'] = "attachment; filename = resultat.xlsx"
+    os.remove(income_fle)
+    return response
 
 
 
