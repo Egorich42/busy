@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import FormView
 from django.views.generic.base import View
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout,authenticate
 from django.contrib.auth import authenticate, login
@@ -13,9 +13,8 @@ from django.contrib.auth import authenticate, login
 import sqlite3
 import os
 
-from singles.dif import create_hvosty_excel, download_excel_doc
-from users.models import *
-from users.forms import *
+from .models import *
+from .forms import TimePeriodForm
 from users import base_update as upd
 
 
@@ -37,6 +36,7 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect("/")
+
 
 
 
@@ -64,7 +64,8 @@ def show_user_profile(request,id, **kwargs):
         all_providers_docs = get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request)
 
         
-        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
+#        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
+        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2017-12-31')
 
         providers_debts = hvosty_list[0]
         providers_prepay = hvosty_list[1]
@@ -77,13 +78,23 @@ def show_user_profile(request,id, **kwargs):
         buyers_prepay_result = hvosty_list[7]
 
 
-        conn.commit()
-        conn.close() 
-
         if request.method == 'POST':
             fin_states = TimePeriodForm(request.POST)     
             if fin_states.is_valid():
-                download_excel_doc(request, create_hvosty_excel(request, buyers_prepay_result))
+                start_data = str(fin_states.cleaned_data['start_date'])
+                ending_data = str(fin_states.cleaned_data['end_date'])
+
+                period_fin_states =curent_finace_states(start_data, ending_data,cur,taxes_system)
+
+            return render(request, 'users/fin_states.html',
+                                    {'start_data':start_data,
+                                    'ending_data':ending_data,
+                                    'period_fin_states':str(period_fin_states[0]),
+                                    'tax_system':period_fin_states[1]
+                                    })   
+
+        conn.commit()
+        conn.close()  
 
         fin_states = TimePeriodForm()
  

@@ -1,11 +1,13 @@
 
 
 @media screen and (max-width: 1136px) {
-.block-colored article {padding: 0px 20px;}
+.block-colored article {padding: 0px 30px;}
+#map{width: 600px;}
+
 }
 
 @media screen and (max-width: 1080px) {
-.contacts-info-chanels {padding: 0% 25%;}
+.contacts-info-chanels {padding: 0% 15%; width: auto;}
 
 nav ul{padding: 0px;}
 nav ul li{padding-top: 36px;}
@@ -37,7 +39,6 @@ nav ul li a{font-size: 52px;}
 
 .contacts-data{display: flex; justify-content: space-between; flex-direction: column;}
 
-.block-colored article {padding: 0px 0px;}
 .central-block{width: 770px; padding-top: 35px; padding-bottom: 35px;}
 .central-block,
 .colored-paragraph-text,
@@ -50,7 +51,7 @@ nav ul li a{font-size: 52px;}
 .colored-paragraph-text{width: 90%;}
 .user-profile ul li{padding-top: 20px;}
 
-.block-colored article p{font-size: 16px; padding: 0px 15px;}
+.block-colored article p{font-size: 16px; }
 .block-colored article h2{font-size: 19px;}
 
 
@@ -61,7 +62,7 @@ nav ul li a{font-size: 52px;}
 .main-scren-data  p{font-size: 20px; }
 .main-scren-data  ul li{font-size: 22px;}
 
-.list-block ul{width: 185px; font-weight: bold; font-size: 31px}
+.list-block ul{width: 185px; font-weight: bold; font-size: 25px}
 .list-block ul li {font-size: 20px;}
 
 .how-it-work-list ul li{width: 300px; margin: 30px; }
@@ -76,7 +77,10 @@ nav ul li a{font-size: 52px;}
 .forma p{display: flex; flex-direction: column;}
 #top-menu img{width: 90px;}
 .great-font{ font-size: 28px; color: #2D2D2D;}
-#map,.map{width: 400px; height: 400px;}
+
+
+#map{width: 100%;}
+
 .invisible-300 img{margin: 0px 20px;}
 .mob-show{display: block;}
 .hiden-top-menu,.mob-hide{display: none}
@@ -86,7 +90,6 @@ nav ul li a{font-size: 52px;}
 
 @media screen and (max-width: 940px) {
 .user-profile-main{flex-direction: column; min-height: 500px;}
-.contacts-info-chanels {padding: 0% 15%;}
 
 }
 
@@ -156,25 +159,26 @@ nav ul li a{font-size: 22px;}
 .middle-font-35 {font-size: 24px;}
 .main-info-column article{font-size: 14px;}
 #top-menu img {width: 60px;}
-#map,.map{max-width: 720px; width: 700px;}
-.map{width: 100%;}
+#map{height:720px; }
+
 }
 
 
 
 @media screen and (max-width: 640px) {
+#map{height: 640px; }	
 .contacts-info-chanels{padding:0px 15px;}
 .contacts-info-chanels article img{width: 60px; float: left;}
 .contacts-info-chanels article {height: 70px; font-size: 20px; text-align: right;}
 }
 
 @media screen and (max-width: 480px) {
-
+#map{height:480px; }
 }
 
 @media screen and (max-width: 360px) {
 
-
+#map{height:360px; }
 }
 
 

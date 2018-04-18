@@ -13,7 +13,7 @@ a,a:visited{color: #2D2D2D;}
 /*---------------------FONTS-------------------*/
 
 /*Layout rules*/
-footer{height: 150px;background-color: #2F2F2F; color: #fff; display: flex; justify-content: center; text-align: center; width: 100%}
+footer{background-color: #2F2F2F; color: #fff; display: flex; justify-content: center; text-align: center; width: 100%}
 .great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li,.bold {font-weight: bold;}
 .great-font{font-size: 60px; color: #2D2D2D;}
 .big-font{font-size: 48px;}
@@ -33,7 +33,7 @@ footer{height: 150px;background-color: #2F2F2F; color: #fff; display: flex; just
 .margin-top-15 ul li,
 .margin-top-15 li{margin-top: 15px;}
 
-
+#map{height: 480px;width: 650px; }
 
 /*---------MODULES RULES------*/
 .pitch{text-align: center;}
@@ -79,7 +79,7 @@ text-align: left;
 margin: 20px 20px;
 }
 
-.contacts-data{justify-content: space-between; flex-direction: row; padding: 0px 15px;}
+.contacts-data{display:flex; justify-content: space-between; flex-direction: row; padding: 0px 15px;}
 
 
 .feedback-form{
@@ -116,14 +116,15 @@ align-items: center;
 .docs-ops-info article{padding: 0px; display: flex;justify-content: space-between;  border: none;}
 .docs-ops-info article span{font-weight: bold;}
 
-.contacts-main h1{text-align: center;}
+.contacts-main h1{text-align: center;    padding-bottom: 100px;}
 
-.contacts-info-chanels{padding:0px; width: 350px; padding-top: 50px;}
+
+.contacts-info-chanels{padding:0px; width: 350px;}
 .contacts-info-chanels article img{width: 60px; float: left;}
 .contacts-info-chanels article {height: 70px; font-size: 20px; text-align: right;}
-.contacts-info-chanels{padding-left: 50px;}
+.contacts-info-chanels{padding-right: 30px;}
 
-.login{width: 80%;}
+.login{width: 50%;}
 .login form input{
 border: solid 1.5px #FD761F;
 border-radius: 40px;
