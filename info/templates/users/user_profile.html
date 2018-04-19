@@ -7,15 +7,6 @@
 
 <section class="user-profile-main">
     <aside class="user-profile-main-menu">
-            <!---p id="ops">Операции</p>
-            <article class="hidden-form" id="ops-list">
-                <ul-->
-                     <!--li><a href="/users/{{user.id}}/{{user.username}}/akt_sverki">акт сверки</a></li-->
-                     <!--li><a href="/users/{{user.id}}/{{user.username}}/hvosty">хвосты за период</a></li>
-                     <li id="control-elem">{{tax_system}}&nbsp; за период</li>
-                </ul>
-            </article-->
-
             <p id="link-5">Нологе</p>
             <p id="doc-menu">Документы</p>
             <article class="hidden-form" id="doc-list">
@@ -42,17 +33,6 @@
     </aside>
 
 <!--PP BLOCK-->
-
-    <!--form class="hidden-form" id="nalog-form" action="." method="post">   
-        <p>с даты:</p>
-        {{ fin_states.start_date}}
-        <p>по дату:</p>
-        {{ fin_states.end_date}}
-        {% csrf_token %}
-        <p class="center"> 
-        <input type="submit" class="buttons-all"  value="Отправить">
-        </p>
-    </form-->
 
     <section class="user-profile-main-info"  id="panel-0">
         <section class="user-profile-main-info-column">

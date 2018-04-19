@@ -1,30 +1,27 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 from django.shortcuts import render, get_object_or_404, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from .models import curent_finace_states, get_paginator, get_hvosty_lists, start_square, start_month
+from django.http import HttpResponse
 from django.views.generic.edit import FormView
 from django.views.generic.base import View
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout,authenticate
-from django.contrib.auth import authenticate, login
-
-
+from django.contrib.auth import login, logout
+from django.http import HttpResponseRedirect
 import sqlite3
+from . import sql_commands as sq_c
+from . import variables as var
+from django.contrib.auth import authenticate, login
 import os
 
-from .models import *
-from .forms import TimePeriodForm
-from users import base_update as upd
-
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 class LoginFormView(FormView):
     form_class = AuthenticationForm
     template_name = "login.html"
     success_url = "/"
-
 
     def form_valid(self, form):
         self.user = form.get_user()
@@ -38,11 +35,10 @@ class LogoutView(View):
         return HttpResponseRedirect("/")
 
 
-
-
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
     if user == request.user:
+        
         base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
@@ -64,8 +60,7 @@ def show_user_profile(request,id, **kwargs):
         all_providers_docs = get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request)
 
         
-#        hvosty_list = get_hvosty_lists(cur,'2016-06-30',str(var.today))
-        hvosty_list = get_hvosty_lists(cur,'2016-06-30','2017-12-31')
+        hvosty_list = get_hvosty_lists(cur, '2016-06-30', str(var.today))
 
         providers_debts = hvosty_list[0]
         providers_prepay = hvosty_list[1]
@@ -76,27 +71,6 @@ def show_user_profile(request,id, **kwargs):
         providers_prepay_result = hvosty_list[5]
         buyers_debts_result = hvosty_list[6]
         buyers_prepay_result = hvosty_list[7]
-
-
-        if request.method == 'POST':
-            fin_states = TimePeriodForm(request.POST)     
-            if fin_states.is_valid():
-                start_data = str(fin_states.cleaned_data['start_date'])
-                ending_data = str(fin_states.cleaned_data['end_date'])
-
-                period_fin_states =curent_finace_states(start_data, ending_data,cur,taxes_system)
-
-            return render(request, 'users/fin_states.html',
-                                    {'start_data':start_data,
-                                    'ending_data':ending_data,
-                                    'period_fin_states':str(period_fin_states[0]),
-                                    'tax_system':period_fin_states[1]
-                                    })   
-
-        conn.commit()
-        conn.close()  
-
-        fin_states = TimePeriodForm()
  
         return render(request, 'users/user_profile.html',
                                 {'all_pp_buyers':all_pp_buyers,
@@ -123,20 +97,7 @@ def show_user_profile(request,id, **kwargs):
                                 'buyers_debts_result':buyers_debts_result,
                                 'buyers_prepay_result':buyers_prepay_result,
                                 })
-    else:
-         return HttpResponseRedirect("/")
-
-
-def update_bases(request):
-    for i in range(len(upd.bazi)):
-        upd.full_update(i,i+1)
-        
-    return HttpResponseRedirect("/")
-
-
-
-
-
+        pass
 
 
 
