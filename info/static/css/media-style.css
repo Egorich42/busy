@@ -112,6 +112,23 @@ nav ul li a{font-size: 22px;}
 
 .pitch img {max-width: 300px; }
 
+.block-colored article {padding: 0px 0px;}
+
+.user-profile-main {margin: 50px 0px;}
+
+.user-profile-main-menu{
+width: auto;
+padding: 0%;
+text-align: center;}
+
+.user-profile-main-menu p{
+border: solid 1px #FD761F;
+padding: 5px 0px;
+border-radius: 20px;
+margin: 20px 20%; 
+}
+
+
 
 .user-profile,
 .user-profile-main-info-column,

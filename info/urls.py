@@ -7,7 +7,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.MainPageView.as_view()),
     url(r'^contacts/', TemplateView.as_view(template_name="landing/contacts.html")),
-
-
 ]
 
