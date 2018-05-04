@@ -3,7 +3,9 @@
 @media screen and (max-width: 1136px) {
 .block-colored article {padding: 0px 30px;}
 #map{width: 600px;}
-
+.main-plitka{padding: 0px 15%;}
+.plitka{width: 30%; margin: 20px;  float: left;height: 100px; text-align: center; border: solid 1px #000;}
+.plitka a{font-size: 34px;}
 }
 
 @media screen and (max-width: 1080px) {
@@ -115,6 +117,17 @@ nav ul li a{font-size: 22px;}
 .block-colored article {padding: 0px 0px;}
 
 .user-profile-main {margin: 50px 0px;}
+
+.main-plitka{padding: 0px 5%; display: flex; flex-wrap: wrap;}
+.main-plitka a{width: 25%; text-align: center;}
+.plitka {
+width: 100%;
+height: 225px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
 
 .user-profile-main-menu{
 width: auto;

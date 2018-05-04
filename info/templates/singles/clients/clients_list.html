@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+|Список клиентов
+{% endblock %}
+
+
+{% block content %} 
+<section class="clients-list">
+{% for client in object_list %}
+  <article class="client-link">
+    <a href="{{client.name}}">{{client.name}}</a>
+  </article>
+{% endfor %}
+</section>
+{% endblock %}
+

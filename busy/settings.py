@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'info',
     'users',
-#    'updater',
+    'updater',
+    'client_state',
 ]
 
 MIDDLEWARE = [

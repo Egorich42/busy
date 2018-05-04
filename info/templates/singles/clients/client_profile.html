@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+|{{ post.name }}
+{% endblock %}
+{% block content %}
+<section class="main-client-profile">
+<p><span>Компания:</span><span>{{client_info.name}}</span></p>
+
+
+  <section class="choice-buttons">
+	<button id="show-tax">Налог за период</button>
+	<button id="show-hvosty">Хвосты за период</button>
+	<button id="show-portal">Сверка с порталом</button>
+  </section>   
+
+<section id="tax-period" class="close">
+  <p>Получить налог за период:</p>
+	<form method="post" enctype="multipart/form-data" class="forma">
+
+	  <p>Выбрать начало периода</p>
+
+  	  <article class="select-data">
+		{{ tax_form.start_year }}
+		{{ tax_form.start_month }}
+		{{ tax_form.start_day }}
+  	  </article>
+	  <p>Выбрать окончание периода</p>
+
+  	  <article class="select-data">
+		{{ tax_form.end_year }}
+		{{ tax_form.end_month }}
+		{{ tax_form.end_day }}
+  	  </article>
+
+		{% csrf_token %}
+		<input type="submit"  name="tax_button"  value="Отправить" style="background-color: #fff;">
+	</form>
+</section>
+
+
+<section id="hvosty" class="close">
+  <p>Получить хвосты на дату:</p>
+	<form method="post" enctype="multipart/form-data" class="forma">
+
+	<article class="select-data">
+	  {{ state_form.end_year }}
+	  {{ state_form.end_month }}
+	  {{ state_form.end_day }}
+    </article>
+
+	{% csrf_token %}
+	<input type="submit" name="state_button" value="Отправить" style="background-color: #fff;">
+	</form>
+</section>
+
+
+
+<section id="portal" class="close">
+<p>Сверка с порталом</p>
+	<form method="post" enctype="multipart/form-data" class="forma">
+
+
+<span>{{dif_form.uploaded_file}}</span>
+
+
+
+  <article class="select-data">
+	{{ dif_form.start_year }}
+	{{ dif_form.start_month }}
+	{{ dif_form.start_day }}
+  </article>
+<p>Выбрать окончание периода</p>
+  <article class="select-data">
+	{{ dif_form.end_year }}
+	{{ dif_form.end_month }}
+	{{ dif_form.end_day }}
+  </article>
+
+{% csrf_token %}
+<input type="submit" value="Отправить" name="found_dif"  style="background-color: #fff;">
+</form>
+
+</section>
+
+
+
+
+
+
+<script src="{% static "JS/client_profile.js" %}"></script>
+
+
+</section>
+{% endblock %}
+

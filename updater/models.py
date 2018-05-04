@@ -41,7 +41,7 @@ bazi = [line.split(',') for line in f][0]
 
 
 
-location = BASE_DIR+'\\'+'DBF_BASES'+'\\'
+location = BASE_DIR
 t625 = location+'\{}\SC625.DBF'
 t625_tables_names = ('DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623','SP620')
 
@@ -180,7 +180,7 @@ def create_lists_without_nds(numar, table_names):
 
 
 def update_from_dbf(dbf_list, sq_command,db_number, table, insert_command):
-    conn = sqlite3.connect(BASE_DIR+'\\'+'.sqlite')
+    conn = sqlite3.connect(BASE_DIR+'\\'+str(db_number)+'.sqlite')
     cur = conn.cursor()
 
     cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['table_name'], table['coll_names']))
@@ -213,4 +213,3 @@ def full_update(list_number, base_number):
 
     update_from_dbf(create_lists_with_nds(create_list_base_tables()[7], incoming_tovary_tables) [list_number], select_all_tovary, base_number, nds_tovary_data, insert_tovary)
     pass
-
