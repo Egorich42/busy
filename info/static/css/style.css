@@ -13,6 +13,9 @@ a,a:visited{color: #2D2D2D;}
 /*---------------------FONTS-------------------*/
 
 /*Layout rules*/
+.close{width: 0px; height: 0px; visibility: hidden; }
+
+
 .itogo{color: #FD761F;}
 footer{background-color: #2F2F2F; color: #fff; display: flex; justify-content: center; text-align: center; width: 100%}
 .great-font,.big-font,.midle-font-45,.middle-font-35,nav ul li,.bold {font-weight: bold;}
@@ -143,6 +146,13 @@ padding:0px;
 
 .registered-office{text-align: left;}
 .registered-office p{ margin:15px; font-size: 14px;}
+
+
+
+.office-form-client,.office-form-client form{display: flex; flex-direction: column;}
+.office-form-client form input{text-align: center;}
+.select-data{margin: 20px 0px;}
+.select-data p{margin: 10px 0px;}
 /*-----------MODULES RULES END -------------*/
 
 

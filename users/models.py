@@ -66,12 +66,12 @@ def curent_finace_states(start, end, cursor,nalog_system):
     full_vhod_nds = sum_result(list_vhod_nds_usl)+sum_result(list_vhod_nds_tn)+sum_result(list_tovary_nds)
     full_ishod_nds = sum_result(list_ishod_nds_usl)+sum_result(list_ishod_nds_tn)
 
-    if nalog_system == 'NDS':
+    if nalog_system == 'nds':
         now_fin_states = str(round(full_ishod_nds - full_vhod_nds,2))
-        tax_system = "NDS" 
+        tax_system = "nds" 
     else:
         now_fin_states = str(round(sum([i['summ'] for i in to_buyers])*0.05,2))
-        tax_system = "USN" 
+        tax_system = "usn" 
 
     return(now_fin_states, tax_system, full_vhod_nds,full_ishod_nds)
     pass

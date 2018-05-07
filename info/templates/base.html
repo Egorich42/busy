@@ -42,9 +42,14 @@
 
     <li>
       {% if user.is_authenticated %}
-      <a href="/users/{{user.id}}/{{user.first_name}}">
+      {% if user.username == "busy"%}
+      <a href="/office">офис</a>
+      {%else%}
+            <a href="/users/{{user.id}}/{{user.first_name}}">
       <span >мой кабинет</span>
       </a>
+      {%endif%}
+
       {% else %}
       <a href="/users/login">Войти</a> 
       {% endif %}	
@@ -53,6 +58,7 @@
     <li class="mob-show">
       {% if user.is_authenticated %}
       <a href="/users/logout" class="bold">выйти</a>
+
       {%else%}
       {% endif %} 
     </li>

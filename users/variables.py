@@ -18,7 +18,7 @@ second_kvartal_start= date(this_year,4,1)
 third_kvartal_start= date(this_year,7,1)
 four_kvartal_start = date(this_year,10,1)
 
-taxes = (('USN', 'usn.'),('NDS', 'nds.'),)
+taxes = (('usn', 'usn'),('nds', 'nds'),)
 
 def current_kvartal():
     if today<first_kvartal_end:

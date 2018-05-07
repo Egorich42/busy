@@ -14,20 +14,20 @@
 	<button id="show-portal">Сверка с порталом</button>
   </section>   
 
-<section id="tax-period" class="close">
+<section id="tax-period" class="close office-form-client">
   <p>Получить налог за период:</p>
 	<form method="post" enctype="multipart/form-data" class="forma">
 
-	  <p>Выбрать начало периода</p>
-
   	  <article class="select-data">
+  	  <p>Выбрать начало периода</p>
 		{{ tax_form.start_year }}
 		{{ tax_form.start_month }}
 		{{ tax_form.start_day }}
   	  </article>
-	  <p>Выбрать окончание периода</p>
 
   	  <article class="select-data">
+	  <p>Выбрать окончание периода</p>
+
 		{{ tax_form.end_year }}
 		{{ tax_form.end_month }}
 		{{ tax_form.end_day }}
@@ -39,7 +39,7 @@
 </section>
 
 
-<section id="hvosty" class="close">
+<section id="hvosty" class="close office-form-client">
   <p>Получить хвосты на дату:</p>
 	<form method="post" enctype="multipart/form-data" class="forma">
 
@@ -56,7 +56,7 @@
 
 
 
-<section id="portal" class="close">
+<section id="portal" class="close office-form-client">
 <p>Сверка с порталом</p>
 	<form method="post" enctype="multipart/form-data" class="forma">
 
@@ -66,12 +66,16 @@
 
 
   <article class="select-data">
+  <p>Выбрать начало периода </p>
 	{{ dif_form.start_year }}
 	{{ dif_form.start_month }}
 	{{ dif_form.start_day }}
   </article>
-<p>Выбрать окончание периода</p>
+
+
+
   <article class="select-data">
+  <p>Выбрать окончание периода</p>
 	{{ dif_form.end_year }}
 	{{ dif_form.end_month }}
 	{{ dif_form.end_day }}

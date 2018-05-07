@@ -102,10 +102,11 @@ def curent_finace_states(start, end, cursor, nalog_system):
 
     if nalog_system == 'nds':
         now_fin_states = str(round(full_ishod_nds - full_vhod_nds,2))
-        tax_system = "nds" 
+        tax_system = 'nds' 
     else:
         now_fin_states = str(round(sum([i['summ'] for i in to_buyers])*0.05,2))
-        tax_system = "usn" 
+        tax_system = 'usn' 
+
 
     return(tax_system, full_vhod_nds, full_ishod_nds, now_fin_states, list_ishod, list_vhod)
     pass
@@ -232,20 +233,29 @@ def create_hvosty_excel(request, income_list):
         pass
 
     insert_cell(1, 1, "Контрагент")
-    insert_cell(1, 1, "Сумма")
+    insert_cell(1, 2, "Сумма")
 
-
+    insert_cell(3, 1, 'Долги постащикам' )
     for i in range(len(income_list[0])):
         insert_cell(i+5, 1, income_list[0][i]['name'] )
         insert_cell(i+5, 2, income_list[0][i]['summa'])
 
 
-    insert_cell(len(income_list[0])+12, 1, 'кто-то там' )
+    insert_cell(len(income_list[0])+10, 1, 'Долги покупателей' )
     for i in range(len(income_list[1])):
+        insert_cell(i+len(income_list[0])+12, 1, income_list[1][i]['name'] )
+        insert_cell(i+len(income_list[0])+12, 2, income_list[1][i]['summa'] )    
 
-        insert_cell(len(income_list[0])+13, 1, income_list[1][i]['name'] )
-        insert_cell(len(income_list[0])+13, 2, income_list[1][i]['summa'] )    
-
+    insert_cell(len(income_list[0])+len(income_list[1])+16, 1, 'Авансы поставщикам' )
+    for i in range(len(income_list[2])):
+        insert_cell(i+len(income_list[0])+len(income_list[1])+18, 1, income_list[2][i]['name'] )
+        insert_cell(i+len(income_list[0])+len(income_list[1])+18, 2, income_list[2][i]['summa'] )  
+    
+    insert_cell(len(income_list[0])+len(income_list[1])+len(income_list[2])+22, 1, 'Авансы покупателей' )
+    for i in range(len(income_list[3])):
+        insert_cell(i+len(income_list[0])+len(income_list[1])+len(income_list[2])+24, 1, income_list[3][i]['name'] )
+        insert_cell(i+len(income_list[0])+len(income_list[1])+len(income_list[2])+24, 2, income_list[3][i]['summa'] ) 
+    
     output_list.save(filename = output_doc)
 
     return(str(output_doc))
@@ -264,17 +274,19 @@ def create_tax_excel(request, income_list):
         main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
         pass
 
-    
-    insert_cell(1, 2, income_list[0])
-    insert_cell(2, 2, income_list[1])
-    insert_cell(3, 2, income_list[2])
-    insert_cell(4, 2, income_list[3])
 
-
-    insert_cell(1, 1, income_list[0]+" "+"за выбранный период составляет")
-    insert_cell(2, 1, "Входящий" +" "+income_list[0])
-    insert_cell(3, 1, "Исходящий"+" "+income_list[0])
-    insert_cell(4, 1, income_list[0]+" "+"К уплате:")
+    if income_list[0] == "nds":
+        insert_cell(1, 1, income_list[0]+" "+"за выбранный период составляет")
+        insert_cell(2, 1, "Входящий" +" "+income_list[0])
+        insert_cell(3, 1, "Исходящий"+" "+income_list[0])
+        insert_cell(4, 1, income_list[0]+" "+"К уплате:")
+        insert_cell(1, 2, income_list[0])
+        insert_cell(2, 2, str(round(income_list[1],2))+" "+"руб.")
+        insert_cell(3, 2, str(round(income_list[2],2))+" "+"руб.")
+        insert_cell(4, 2, str(income_list[3])+" "+"руб.")
+    else: 
+        insert_cell(1, 1, income_list[0]+" "+"за выбранный период составляет")  
+        insert_cell(1, 2, income_list[3]+" "+"руб.") 
 
 
     output_list.save(filename = output_doc)

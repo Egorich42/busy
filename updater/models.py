@@ -180,7 +180,7 @@ def create_lists_without_nds(numar, table_names):
 
 
 def update_from_dbf(dbf_list, sq_command,db_number, table, insert_command):
-    conn = sqlite3.connect(BASE_DIR+'\\'+str(db_number)+'.sqlite')
+    conn = sqlite3.connect(BASE_DIR+'\\'+'sqlite_bases'+'\\'+str(db_number)+'.sqlite')
     cur = conn.cursor()
 
     cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['table_name'], table['coll_names']))

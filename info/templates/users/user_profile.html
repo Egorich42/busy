@@ -243,7 +243,7 @@
     <section class="user-profile-main-info-column">
 
 
-{% if tax_system == "NDS" %}
+{% if tax_system == "nds" %}
 
 <h3>НДС&nbsp;за текущий месяц&nbsp;:</h3>
 <article class="contragent-fin-balance">
@@ -271,7 +271,7 @@
   <span>&nbsp;к уплате:&nbsp;</span><span>{{result_nds_square}}</span>
   </article>
 
-{% elif tax_system == "USN" %}
+{% elif tax_system == "usn" %}
 <h3>УСН&nbsp;за текущий квартал&nbsp;:</h3>
 <article class="contragent-fin-balance">
   <span>&nbsp;к уплате:&nbsp;</span><span> {{result_nds_month}}</span>

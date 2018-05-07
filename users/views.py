@@ -37,9 +37,13 @@ class LogoutView(View):
 
 def show_user_profile(request,id, **kwargs):
     user = get_object_or_404(User, id=id)
+    if request.user.username == "busy":
+        clients = Client.objects.all()
+        return render(request, "singles/clients/clients_list.html", {'clients':clients})
+
     if user == request.user:
         
-        base_name = BASE_DIR+'\\'+str(user.id)+'.sqlite'
+        base_name = BASE_DIR+'\\'+'sqlite_bases'+'\\'+str(user.username)+'.sqlite'
         conn = sqlite3.connect(base_name)
         cur = conn.cursor()
         taxes_system = user.client.nalog_system

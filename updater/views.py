@@ -5,6 +5,6 @@ from .models import bazi, full_update
 
 def update_bases(request):
     for i in range(len(bazi)):
-        full_update(i,i+1)
+        full_update(i,bazi[i])
         
     return HttpResponseRedirect("/")
