@@ -10,10 +10,26 @@ nav ul li{font-size: 18px; }
 ul li, ul, li{list-style-type: none;}
 a, li:hover,a:hover{text-decoration: none;}
 a,a:visited{color: #2D2D2D;}
+:active, :hover, :focus {
+    outline: 0;
+    outline-offset: 0;
+}
+
+.forma input:focus{border: solid 2px #f91313;}
 /*---------------------FONTS-------------------*/
 
 /*Layout rules*/
 .close{width: 0px; height: 0px; visibility: hidden; }
+
+.main-plitka{padding: 0px 15%;}
+
+
+.plitka{width: 30%; margin: 20px;  float: left;height: 100px; text-align: center; border: solid 1px #000;}
+
+
+.plitka a{font-size: 34px;}
+
+
 
 
 .itogo{color: #FD761F;}
@@ -31,7 +47,7 @@ footer{background-color: #2F2F2F; color: #fff; display: flex; justify-content: c
 .font-14{font-size: 14px;}
 .font-12{font-size: 12px;}
 .grey-font{color: #998383;}
-
+.forma-button{background-color: #fff;}
 
 .margin-top-15,
 .margin-top-15 ul li,

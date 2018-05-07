@@ -6,12 +6,13 @@
 
 
 {% block content %} 
-<section class="clients-list">
+<section class="main-plitka">
 {% for client in clients %}
   <article class="client-link">
-    <a href="{{client.name}}">{{client.name}}</a>
+    <a href="{{client.name}}"> <article class="plitka">{{client.name}}</article></a>
   </article>
 {% endfor %}
 </section>
 {% endblock %}
 
+<section class="main-plitka">
