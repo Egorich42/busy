@@ -235,23 +235,23 @@ def create_hvosty_excel(request, income_list):
     insert_cell(1, 1, "Контрагент")
     insert_cell(1, 2, "Сумма")
 
-    insert_cell(3, 1, 'Долги постащикам' )
+    insert_cell(3, 1, 'ЗАДОЛЖЕННОСТЬ ПОКУПАТЕЛЕЙ (Д 62)'  )
     for i in range(len(income_list[0])):
         insert_cell(i+5, 1, income_list[0][i]['name'] )
         insert_cell(i+5, 2, income_list[0][i]['summa'])
 
 
-    insert_cell(len(income_list[0])+10, 1, 'Долги покупателей' )
+    insert_cell(len(income_list[0])+10, 1, 'АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62)'  )
     for i in range(len(income_list[1])):
         insert_cell(i+len(income_list[0])+12, 1, income_list[1][i]['name'] )
         insert_cell(i+len(income_list[0])+12, 2, income_list[1][i]['summa'] )    
 
-    insert_cell(len(income_list[0])+len(income_list[1])+16, 1, 'Авансы поставщикам' )
+    insert_cell(len(income_list[0])+len(income_list[1])+16, 1, 'АВАНСЫ ПОСТАВЩИКАМ(Д 60)' )
     for i in range(len(income_list[2])):
         insert_cell(i+len(income_list[0])+len(income_list[1])+18, 1, income_list[2][i]['name'] )
         insert_cell(i+len(income_list[0])+len(income_list[1])+18, 2, income_list[2][i]['summa'] )  
     
-    insert_cell(len(income_list[0])+len(income_list[1])+len(income_list[2])+22, 1, 'Авансы покупателей' )
+    insert_cell(len(income_list[0])+len(income_list[1])+len(income_list[2])+22, 1, 'ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)' )
     for i in range(len(income_list[3])):
         insert_cell(i+len(income_list[0])+len(income_list[1])+len(income_list[2])+24, 1, income_list[3][i]['name'] )
         insert_cell(i+len(income_list[0])+len(income_list[1])+len(income_list[2])+24, 2, income_list[3][i]['summa'] ) 

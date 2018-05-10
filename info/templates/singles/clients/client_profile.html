@@ -4,15 +4,20 @@
 |{{ post.name }}
 {% endblock %}
 {% block content %}
-<section class="main-client-profile">
+
 <p><span>Компания:</span><span>{{client_info.name}}</span></p>
 
+<section class="main-client-profile">
 
-  <section class="choice-buttons">
+
+  <aside class="choice-buttons">
 	<button id="show-tax">Налог за период</button>
 	<button id="show-hvosty">Хвосты за период</button>
 	<button id="show-portal">Сверка с порталом</button>
-  </section>   
+  </aside>   
+
+
+<section class="client-actions">
 
 <section id="tax-period" class="close office-form-client">
   <p>Получить налог за период:</p>
@@ -61,30 +66,30 @@
 	<form method="post" enctype="multipart/form-data" class="forma">
 
 
-<span>{{dif_form.uploaded_file}}</span>
+	<span>{{dif_form.uploaded_file}}</span>
 
 
 
-  <article class="select-data">
-  <p>Выбрать начало периода </p>
-	{{ dif_form.start_year }}
-	{{ dif_form.start_month }}
-	{{ dif_form.start_day }}
-  </article>
+  	<article class="select-data">
+  	<p>Выбрать начало периода </p>
+		{{ dif_form.start_year }}
+		{{ dif_form.start_month }}
+		{{ dif_form.start_day }}
+  	</article>
 
 
 
-  <article class="select-data">
-  <p>Выбрать окончание периода</p>
-	{{ dif_form.end_year }}
-	{{ dif_form.end_month }}
-	{{ dif_form.end_day }}
-  </article>
+  	<article class="select-data">
+ 	 <p>Выбрать окончание периода</p>
+		{{ dif_form.end_year }}
+		{{ dif_form.end_month }}
+		{{ dif_form.end_day }}
+ 	</article>
 
-{% csrf_token %}
-<input type="submit" value="Отправить" name="found_dif"  style="background-color: #fff;">
-</form>
-
+    {% csrf_token %}
+    <input type="submit" value="Отправить" name="found_dif"  style="background-color: #fff;">
+  	</form>
+  </section>
 </section>
 
 
@@ -92,8 +97,23 @@
 
 
 
-<script src="{% static "JS/client_profile.js" %}"></script>
+<script type="text/javascript">
+	
+function toggle(button_name, block_name){
+	var button = document.getElementById(button_name)
+	var block = document.getElementById(block_name)
 
+	button.addEventListener( "click" , function() {block.classList.toggle('close')});
+}
+
+
+window.onload = function() { 
+  toggle("show-tax", "tax-period")
+  toggle("show-hvosty", "hvosty")
+  toggle("show-portal", "portal")
+};
+
+</script>
 
 </section>
 {% endblock %}

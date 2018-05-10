@@ -165,7 +165,7 @@
 
 <section class="user-profile-main-info" id="panel-3">
     <section class="user-profile-main-info-column">
-        <h3>авансы поставщикам <!--(ДЕБ 60)--></h3>
+        <h3>Задолженность покупателей(Д 62) <!--(ДЕБ 60)--></h3>
 
         {%for prov_debt in providers_debts %}
             <article class="contragent-fin-balance">
@@ -182,7 +182,7 @@
 
 
     <section class="user-profile-main-info-column">
-        <h3>долги постащикам<!--(кр 60)--></h3>
+        <h3>Авансы покупателей(КР 62)</h3>
 
         {%for prov_prepay in providers_prepay %}
         <article class="contragent-fin-balance">
@@ -203,7 +203,7 @@
 
 <section class="user-profile-main-info" id="panel-4">
     <section class="user-profile-main-info-column">
-        <h3>авансы покупателей <!--(кр 62. оплач, не отгр)--></h3>
+        <h3>Задолженность перед поставщиками(КР 60)</h3>
 
         {%for buyer_prepay in buyers_prepay %}
 
@@ -222,7 +222,7 @@
 
 
     <section class="user-profile-main-info-column">
-        <h3>долги покупателей <!--(д62)--> </h3>
+        <h3>Авансы поставщикам(Д 60) </h3>
 
         {%for buyer_debt in buyers_debts %}
             <article class="contragent-fin-balance">

@@ -1,25 +1,14 @@
-
-
-
-
 @media screen and (max-width: 1136px) {
 .block-colored article {padding: 0px 30px;}
-#map{width: 600px;}
+
 .main-plitka{padding: 0px 5%; display: flex; flex-wrap: wrap;}
 .main-plitka a{width: 25%; text-align: center;}
-.plitka {
-width: 100%;
-height: 225px;
-display: flex;
-align-items: center;
-justify-content: center;
-    margin: 0px;
-    padding: 0px;
-}
-
+.plitka {height: 225px;}
 .plitka a{font-size: 34px;}
-.client-link{font-size: 36px; text-align: center; width: 30%;}
 
+.client-link{font-size: 36px; width: 30%;}
+
+#map{width: 600px;}
 }
 
 @media screen and (max-width: 1080px) {
@@ -49,11 +38,7 @@ nav ul li a{font-size: 52px;}
 .forma input{margin: 20px 0px;}
 .forma-feedback input{padding: 10px 20px; border: solid 1.5px #FD761F; font-size: 21px; border-radius: 40px; text-align: left;}
 
-.contragent-fin-balance{padding-bottom: 10px; }
-.itogo{font-size: 17px;}
 
-
-.contacts-data{display: flex; justify-content: space-between; flex-direction: column;}
 
 .central-block{width: 770px; padding-top: 35px; padding-bottom: 35px;}
 .central-block,
@@ -93,73 +78,49 @@ nav ul li a{font-size: 52px;}
 .forma p{display: flex; flex-direction: column;}
 #top-menu img{width: 90px;}
 .great-font{ font-size: 28px; color: #2D2D2D;}
-
-
 #map{width: 100%;}
-
 .invisible-300 img{margin: 0px 20px;}
 .mob-show{display: block;}
 .hiden-top-menu,.mob-hide{display: none}
 .show-top-menu{display: flex; flex-direction: column;}
+.contragent-fin-balance{padding-bottom: 10px; }
+.itogo{font-size: 17px;}
+.contacts-data{display: flex; justify-content: space-between; flex-direction: column;}
 }
 
 
 @media screen and (max-width: 940px) {
 .user-profile-main{flex-direction: column; min-height: 500px;}
+.main-client-profile{flex-direction: column;}
 .login{width: 70%;}
+.choice-buttons{width: 40%;}
+.client-actions{width: 100%;}
 }
 
 
 
 @media screen and (max-width: 720px) {
-.login{width: 80%;}
-.client-link {
-    font-size: 36px;
-    text-align: center;
-    width: 50%;
-}
 input{font-size: 15px;}
 img{max-width: 100%;}
 ul{padding: 0px;margin: 0px;}
 nav ul{flex-direction: column;}
 nav ul li{padding-top: 15px;}
-nav ul li a{font-size: 22px;}
-
-.invisible-300{visibility: collapse;width: 0px;height: 0px;}
-.column-300{flex-direction: column;}
+nav ul li a{font-size: 22px;}	
 
 .down-description p, .central-block p,.central-block,.central-block p{ font-size: 14px;}
 .down-description p{text-align: left;}
 
-.pitch img {max-width: 300px; }
 
 .block-colored article {padding: 0px 0px;}
 
-.user-profile-main {margin: 50px 0px;}
 
 .main-plitka{padding: 0px 5%; display: flex; flex-wrap: wrap;}
 .main-plitka a{width: 25%; text-align: center;}
-.plitka {
-width: 100%;
-height: 225px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
+.plitka {width: 100%;height: 225px;display: flex;align-items: center;justify-content: center;}
 
 
-.user-profile-main-menu{
-width: auto;
-padding: 0%;
-text-align: center;}
-
-.user-profile-main-menu p{
-border: solid 1px #FD761F;
-padding: 5px 0px;
-border-radius: 20px;
-margin: 20px 20%; 
-}
-
+.user-profile-main-menu{width: auto;padding: 0%;text-align: center;margin: 50px 0px;}
+.user-profile-main-menu p{border: solid 1px #FD761F;padding: 5px 0px;border-radius: 20px;margin: 20px 20%; }
 
 
 .user-profile,
@@ -187,18 +148,15 @@ margin: 20px 20%;
 
 .list-block ul,.central-block ul li p{font-size: 19px;}
 
-.central-block p.forma input {font-size: 16px;}
 
 .colored-paragraph-text{width: 95%; margin:0px;}
 .colored-paragraph{margin: 0px;}
 
-.text-right,
-.text-left,
-.text-left-to-center,
-.text-right-to-center{text-align: center;}
 
 
-.side-paddings-20{padding: 0% 5%;}
+.login{width: 80%;}
+.client-link {font-size: 36px;text-align: center;width: 50%;}
+.clients-list{padding: 20px; display: flex; flex-direction: column; justify-content: center;}
 .side-menu ul li{list-style-type: square; margin-left: 20px;}
 .main-scren-data{ margin-bottom: 100px }
 .central-block{width: 95%; }
@@ -209,8 +167,9 @@ margin: 20px 20%;
 .main-info-column article{font-size: 14px;}
 #top-menu img {width: 60px;}
 #map{height:720px; }
-
-.clients-list{padding: 20px; display: flex; flex-direction: column; justify-content: center;}
+.pitch img {max-width: 300px; }
+.invisible-300{visibility: collapse;width: 0px;height: 0px;}
+.column-300{flex-direction: column;}
 
 }
 
@@ -228,7 +187,6 @@ margin: 20px 20%;
 }
 
 @media screen and (max-width: 360px) {
-
 #map{height:360px; }
 }
 

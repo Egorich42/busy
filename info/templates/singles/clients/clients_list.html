@@ -13,6 +13,20 @@
   </article>
 {% endfor %}
 </section>
-{% endblock %}
 
-<section class="main-plitka">
+<script type="text/javascript">
+
+var background_colors = ['#4B2A82', '#1E796A',  '#992667', '#1DD300','#2419B2','#FF0000']
+var plitki = $('.client-link')
+var plitki_names = $('.client-link a .plitka')
+
+for (var i = 0; i <= plitki.length ; i++) {
+  plitki[i].style.background = background_colors[i];
+}
+
+
+
+
+</script>
+
+{% endblock %}
