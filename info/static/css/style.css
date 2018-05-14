@@ -110,18 +110,20 @@ footer
 .plitka,footer{justify-content: center;}
 
 
+.office-form-client form,
 .block-colored,
 .central-block-colored-img,
 .grey-back-contact,
 .feedback-form,
-.plitka,
-.main-client-profile{align-items: center;}
+.plitka{align-items: center;}
 
+
+.office-form-client form input{max-width: 400px;}
 
 /*---------MODULES RULES------*/
 
 .choice-buttons{height: 100%;}
-.main-client-profile{min-height: 700px;}
+.main-client-profile{min-height: 700px; justify-content: space-between;}
 
 .pitch img{max-width: 400px; margin: 50px 0px; }
 
@@ -195,12 +197,12 @@ margin-top: 20px;}
 .user-profile-main-menu{width:20%; text-align: left;}
 
 .user-profile-main-menu article ul{padding: 0px 0px 0px 20px;}
-.user-profile-main-menu p{cursor: pointer; font-size: 19px; }
+.user-profile-main-menu p{cursor: pointer; font-size: 19px;border: solid 1px #FD761F;padding: 5px 0px;border-radius: 20px;margin: 20px 20%; }
 .user-profile-main-menu article ul li {padding-top: 15px; cursor: pointer;}
 
 .user-profile-main-info{width:80%; }
 .user-profile-main-info-column{padding-right: 30%; text-align: left; margin-bottom: 50px;}
-.user-profile-main-info-column h3{background-color: #FD761F; padding: 10px;}
+.user-profile-main-info-column h3,.office-form-client h3{background-color: #FD761F; padding: 10px; color: #fff;}
 .user-profile-main-info-column p{font-weight: bold;}
 .user-profile-main-info-column article {padding-top:30px; padding-bottom:10px;border-bottom: solid 0.5px #b3a8a8;}
 .contragent-fin-balance,.itogo{justify-content: space-between;font-weight: bold;}

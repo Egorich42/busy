@@ -9,18 +9,16 @@
 
 <section class="main-client-profile">
 
-
   <aside class="choice-buttons">
-	<button id="show-tax">Налог за период</button>
-	<button id="show-hvosty">Хвосты за период</button>
-	<button id="show-portal">Сверка с порталом</button>
+	<button id="link-0">Налог за период</button>
+	<button id="link-1">Хвосты за период</button>
+	<button id="link-2">Сверка с порталом</button>
   </aside>   
-
 
 <section class="client-actions">
 
-<section id="tax-period" class="close office-form-client">
-  <p>Получить налог за период:</p>
+<section class="office-form-client" id="panel-0" >
+  <h3>Получить налог за период:</h3>
 	<form method="post" enctype="multipart/form-data" class="forma">
 
   	  <article class="select-data">
@@ -44,8 +42,8 @@
 </section>
 
 
-<section id="hvosty" class="close office-form-client">
-  <p>Получить хвосты на дату:</p>
+<section class="office-form-client" id="panel-1">
+  <h3>Получить хвосты на дату:</h3>
 	<form method="post" enctype="multipart/form-data" class="forma">
 
 	<article class="select-data">
@@ -61,8 +59,8 @@
 
 
 
-<section id="portal" class="close office-form-client">
-<p>Сверка с порталом</p>
+<section class="office-form-client" id="panel-2" >
+<h3>Сверка с порталом</h3>
 	<form method="post" enctype="multipart/form-data" class="forma">
 
 
@@ -98,20 +96,38 @@
 
 
 <script type="text/javascript">
-	
-function toggle(button_name, block_name){
-	var button = document.getElementById(button_name)
-	var block = document.getElementById(block_name)
 
-	button.addEventListener( "click" , function() {block.classList.toggle('close')});
-}
+(function (window) {
+    window.app = {
+        items: [0,1,2],
+        start: function () {
+            this.addListeners();
+            this.hidePanels();
 
+        },
+        hidePanels: function () {
+            this.items.forEach(function (item) {
+                var elm = document.getElementById('panel-' + item);
+                elm.style.display = 'none';
+            });
+        },
+        showPanel: function (id) {
+            var elm = document.getElementById('panel-' + id);
+            elm.style.display = '';
+        },
+        addListeners: function () {
+            this.items.forEach(function (item) {
+                var elm = document.getElementById('link-' + item);
+                elm.addEventListener('click', function (event) {
+                    this.hidePanels();
+                    var id = elm.id.split('-')[1];
+                    this.showPanel(id);
+                }.bind(this))
+            },this);
+        }
+    };
 
-window.onload = function() { 
-  toggle("show-tax", "tax-period")
-  toggle("show-hvosty", "hvosty")
-  toggle("show-portal", "portal")
-};
+})(window);
 
 </script>
 

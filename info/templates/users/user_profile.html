@@ -290,5 +290,45 @@
 
 
 </section>
+
+<script type="text/javascript">
+    
+
+(function (window) {
+    window.app = {
+        items: [0,1,2,3,4,5],
+        start: function () {
+            this.addListeners();
+            this.hidePanels();
+
+        },
+        hidePanels: function () {
+            this.items.forEach(function (item) {
+                var elm = document.getElementById('panel-' + item);
+                elm.style.display = 'none';
+            });
+        },
+        showPanel: function (id) {
+            var elm = document.getElementById('panel-' + id);
+            elm.style.display = '';
+        },
+        addListeners: function () {
+            this.items.forEach(function (item) {
+                var elm = document.getElementById('link-' + item);
+                elm.addEventListener('click', function (event) {
+                    this.hidePanels();
+                    var id = elm.id.split('-')[1];
+                    this.showPanel(id);
+                }.bind(this))
+            },this);
+        }
+    };
+
+})(window);
+
+
+
+
+</script>
 {% endblock %}
 
