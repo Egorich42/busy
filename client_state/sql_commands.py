@@ -83,14 +83,17 @@ tn_buyers = """
 contragents_documents_two.doc_type = '0' 
 AND contragents_documents_two.deleted !='*'
 AND contragents_documents_two.type_sort != '3649U'
+AND contragents_documents_two.currency_type = '1'
 """
+
+
 
 pp_buyers = """
 contragents_documents_two.doc_type != '0' 
 AND contragents_documents_two.deleted !='*' 
 AND contragents_documents_two.pp_detector !='S5B' 
 AND contragents_documents_two.pp_detector !='2MM'
-AND contragents_documents_two.another_identif !='2'
+AND contragents_documents_two.currency_type !='2'
 """
 
 pp_buyers_vozvr = """
