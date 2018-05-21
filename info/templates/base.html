@@ -84,40 +84,26 @@
 <script src="{% static "JS/client_profile.js" %}"></script>
 
 <script type="text/javascript">
-
-
 function toggle_elem(elem_name) {
     $(elem_name).toggleClass("show-hide-main");
 }
-
 $(document).ready(function(){
-
     $("#control-elem").click(function(){
         $("#nalog-form").toggleClass("show-hide-element");
     });
-
-
     $("#doc-menu").click(function(){
         toggle_elem("#doc-list");
     });
-
-
     $("#ops").click(function(){
         toggle_elem("#ops-list");
     });
-
-
     $("#hvosty").click(function(){
         toggle_elem("#hvosty-list");
     });
-
-
     $("#top-menu").click(function(){
         $("#top-menu-list").toggleClass("show-top-menu");
     });
 });
-
-
 </script>
 
 </body>

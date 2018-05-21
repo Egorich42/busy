@@ -9,11 +9,14 @@
 
 <section class="main-client-profile">
 
+
   <aside class="choice-buttons">
 	<button id="link-0">Налог за период</button>
 	<button id="link-1">Хвосты за период</button>
 	<button id="link-2">Сверка с порталом</button>
-  </aside>   
+	<button id="link-3">Статистика по валютным операциям за период</button>
+
+</aside> 
 
 <section class="client-actions">
 
@@ -87,7 +90,46 @@
     {% csrf_token %}
     <input type="submit" value="Отправить" name="found_dif"  style="background-color: #fff;">
   	</form>
+</section>
+
+
+
+
+
+
+
+
+<section id="panel-3" class="office-form-client">
+<p>Статистика</p>
+	<form method="post" enctype="multipart/form-data" class="forma">
+
+
+
+
+
+  	<article class="select-data">
+  	<p>Выбрать начало периода </p>
+		{{ currency_stat_form.start_year }}
+		{{ currency_stat_form.start_month }}
+		{{ currency_stat_form.start_day }}
+  	</article>
+
+
+
+  	<article class="select-data">
+ 	 <p>Выбрать окончание периода</p>
+		{{ currency_stat_form.end_year }}
+		{{ currency_stat_form.end_month }}
+		{{ currency_stat_form.end_day }}
+ 	</article>
+
+    {% csrf_token %}
+    <input type="submit" value="Отправить" name="curr_stat"  style="background-color: #fff;">
+  	</form>
+
+  	
   </section>
+
 </section>
 
 
@@ -96,14 +138,14 @@
 
 
 <script type="text/javascript">
+	
 
 (function (window) {
     window.app = {
-        items: [0,1,2],
+        items: [0,1,2,3],
         start: function () {
             this.addListeners();
             this.hidePanels();
-
         },
         hidePanels: function () {
             this.items.forEach(function (item) {
@@ -126,10 +168,9 @@
             },this);
         }
     };
-
 })(window);
-
 </script>
+
 
 </section>
 {% endblock %}

@@ -3,8 +3,8 @@
 import os
 from django.shortcuts import render, get_object_or_404, render_to_response
 from users.models import Client
-from .models import get_hvosty_lists,create_hvosty_excel, curent_finace_states, create_tax_excel, return_excel_list, insert_into_excel
-from .forms import StateForm, TaxForm, FoundDifferenceForm
+from .models import get_hvosty_lists,create_hvosty_excel, curent_finace_states, create_tax_excel, return_excel_list, insert_into_excel, statistika, rates, create_statistica_excel
+from .forms import StateForm, TaxForm, FoundDifferenceForm, CurrStatForm
 import sqlite3
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -80,18 +80,36 @@ def client_detail(request, name):
 
 				excel_file_name = insert_into_excel(request, income_doc_name, str(client_info.id),  data_start, data_end, client_info.nalog_system)
 
-				return return_excel_list(excel_file_name, income_doc_name, "div")
+				return return_excel_list(excel_file_name, income_doc_name, "dif")
 
+
+
+
+
+		if request.method == 'POST' and 'curr_stat' in request.POST:
+			currency_stat_form = CurrStatForm(request.POST, request.FILES)
+			if 	currency_stat_form.is_valid():
+
+				data_start =  str(currency_stat_form.cleaned_data['start_year'])+"-"+str(currency_stat_form.cleaned_data["start_month"])+"-"+str(currency_stat_form.cleaned_data["start_day"])
+				data_end = str(currency_stat_form.cleaned_data['end_year'])+"-"+str(currency_stat_form.cleaned_data["end_month"])+"-"+str(currency_stat_form.cleaned_data["end_day"])
+
+				base_name = TO_BASE_PATH+'sqlite_bases'+'\\'+str(client_info.name)+'.sqlite'
+
+				excel_file_name = create_statistica_excel(request, base_name,  data_start, data_end)
+				return return_excel_list(excel_file_name, client_info.name, "statistica")
 
 		else:
 			tax_form = TaxForm()
 			state_form = StateForm()
 			find_difference_form = FoundDifferenceForm()
+			currency_stat_form = CurrStatForm()
+
 
 		return render(request, 'singles/clients/client_profile.html', {'client_info':client_info,
 																		'state_form': state_form, 
 																		'tax_form':tax_form, 
-																		"dif_form":find_difference_form
+																		"dif_form":find_difference_form,
+																		"currency_stat_form":currency_stat_form
 																		})
 
 	else:

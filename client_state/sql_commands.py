@@ -252,3 +252,38 @@ WHERE  doc_data >= {}
 AND  doc_data <= {}
 ORDER BY outer_eschf.doc_data;
 """
+
+
+
+
+#---------------------------------------------------------------
+
+
+courses_colls = '(data, name, scale, rate)'
+insert_courses = "INSERT INTO {} VALUES (?,?,?,?);"
+
+select_usd_course = "SELECT * FROM usd WHERE data >= {} AND  data <= {};"
+select_eur_course = "SELECT * FROM eur WHERE data >= {} AND  data <= {};"
+select_grivn_course = "SELECT * FROM grivna WHERE data >= {} AND  data <= {};"
+select_rus_course = "SELECT * FROM rus WHERE data >= {} AND  data <= {};"
+
+
+select_valuty_income = """
+SELECT contragents_documents_two.contragent_name,
+contragents_documents_two.doc_date,
+contragents_documents_two.document_name,
+contragents_documents_two.another_identif,
+contragents_documents_two.summ
+
+FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id 
+WHERE contragents_documents_two.doc_type = '0'
+AND contragents_documents_two.deleted !='*'
+AND contragents_documents_two.type_sort != '3649U'
+AND contragents_documents_two.another_identif = '7'
+OR  contragents_documents_two.another_identif = '6'
+OR  contragents_documents_two.another_identif = '3' 
+AND  doc_date >= {} 
+AND  doc_date <= {}
+ORDER BY contragents_documents_two.doc_date;
+"""
