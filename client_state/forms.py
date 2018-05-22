@@ -26,6 +26,17 @@ class StateForm(forms.Form):
 	end_day = forms.ChoiceField(choices=days,widget=forms.Select)
 
 
+
+class CurrStatForm(forms.Form):	
+	start_year = forms.ChoiceField(choices=years,widget=forms.Select)
+	start_month = forms.ChoiceField(choices=months,widget=forms.Select)
+	start_day = forms.ChoiceField(choices=days,widget=forms.Select)
+
+	end_year = forms.ChoiceField(choices=years,widget=forms.Select)
+	end_month = forms.ChoiceField(choices=months,widget=forms.Select)
+	end_day = forms.ChoiceField(choices=days,widget=forms.Select)
+
+
 	
 class TaxForm(forms.Form):
 

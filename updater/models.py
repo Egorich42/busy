@@ -18,15 +18,11 @@ sel_vhod_usl_nds="SELECT * FROM vhod_nds_usl;"
 
 select_all_tovary="SELECT * FROM nds_tovary;"
 
-select_countries="SELECT * FROM countries;"
-select_currency="SELECT * FROM currency;"
+insert_into_docs = "INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);"
+insert_into_docs_two = "INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);"
 
 
-insert_into_docs = "INSERT INTO contragents_documents VALUES (?,?,?,?,?,?,?,?,?,?,?,?);"
-insert_into_docs_two = "INSERT INTO contragents_documents_two VALUES (?,?,?,?,?,?,?,?,?,?,?,?);"
-
-
-insert_into_contragents = "INSERT INTO contragents VALUES (?,?,?,?,?,?);"
+insert_into_contragents = "INSERT INTO contragents VALUES (?,?,?,?,?);"
 insert_into_eschf_outer = "INSERT INTO eschf_out VALUES (?,?,?,?,?);"
 
 insert_usl_okaz_nds = "INSERT INTO ishod_nds_usl VALUES (?,?,?,?,?);"
@@ -36,11 +32,6 @@ insert_usl_poluch_nds = "INSERT INTO vhod_nds_usl VALUES (?,?,?,?,?);"
 insert_tn_vhod_nds= "INSERT INTO vhod_nds_tn VALUES (?,?,?,?,?);"
 
 insert_tovary = "INSERT INTO nds_tovary VALUES (?,?,?,?,?);"
-
-
-insert_countries = "INSERT INTO countries VALUES (?,?,?,?,?);"
-insert_currency = "INSERT INTO currency  VALUES (?,?,?,?);"
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -52,13 +43,13 @@ bazi = [line.split(',') for line in f][0]
 
 location = BASE_DIR
 t625 = location+'\{}\SC625.DBF'
-t625_tables_names = ('DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623','SP620')
+t625_tables_names = ('DESCR','PARENTEXT','ISMARK','SP609', 'SP611','SP613', 'SP617','VERSTAMP','SP615','SP619', 'SP623','SP616', 'SP620')
 
 t493 = location+'\{}\SC493.DBF'
-t493_tables_names = ('DESCR','PARENTEXT','ISMARK', 'SP467', 'SP468','SP470','SP482','VERSTAMP','SP482','SP480','SP479','SP478')
+t493_tables_names = ('DESCR','PARENTEXT','ISMARK','SP467', 'SP468','SP470', 'SP482','VERSTAMP','SP479','SP482', 'SP478','SP480', 'SP476')
 
 t167 = location+'\{}\SC167.DBF'
-t167_tables = ('ID','DESCR', 'ISMARK','SP134', 'SP137', 'SP155')
+t167_tables = ('ID','DESCR', 'ISMARK','SP134', 'SP137')
 
 t625_tn_nds = location+'\{}\DH16152.DBF'
 t625_tn_nds_tables = ('SP16108', 'SP16116', 'SP16139', 'SP16138', 'SP16136')
@@ -77,21 +68,10 @@ incoming_tovary_nds = location+'\{}\DH16195.DBF'
 incoming_tovary_tables = ('SP16153', 'SP16159', 'SP16184', 'SP16183', 'SP16181')
 
 
-countries = location+'\{}\SC576.DBF'
-countries_tables = ('ID','CODE','DESCR','SP574','SP33760')
-
-
-currency = location+'\{}\SC114.DBF'
-currency_tables = ('ID', 'CODE','DESCR','SP105')
-
-
-contragents_colls = '(id, name, deleted, full_name, unp, country)'
-contragents_docs_colls = '(document_name, parent, deleted, contragent_name, doc_date,summ, doc_type, test_del, act_detector, pay_identif, col_side_id, type_sort)'
-contragents_docs_two_colls = '(document_name, parent, deleted, contragent_name, doc_date, summ, doc_type, test_del, pp_detector, currency_type, another_id, type_sort)'
+contragents_colls = '(id, name, deleted, full_name, unp)'
+contragents_docs_colls =     '(document_name, parent, deleted, contragent_name, doc_date, summ, doc_type, del_counter, operation_type, pay_type, back_flag,             currency_type, account_type)'
+contragents_docs_two_colls = '(document_name, parent, deleted, contragent_name, doc_date, summ, doc_type, del_counter, operation_type, pay_type, provider_account_type, currency_type, document)'
 nds_docs_colls = '(parent, data, full_sum, nds, bez_nds)'
-
-countries_colls = '(dbf_id, code, name, country_type, ts_marker)'
-currency_colls = '(dbf_id, code, name, currency_id)'
 
 
 contragents_data = {'table_name': 'contragents', 'coll_names':contragents_colls}
@@ -102,9 +82,6 @@ ishod_nds_usl_data = {'table_name':'ishod_nds_usl', 'coll_names':nds_docs_colls 
 nds_tovary_data = {'table_name':'nds_tovary', 'coll_names':nds_docs_colls }
 vhod_nds_tn_data = {'table_name':'vhod_nds_tn', 'coll_names':nds_docs_colls }
 vhod_nds_usl_data = {'table_name':'vhod_nds_usl', 'coll_names':nds_docs_colls }
-
-countries_data = {'table_name': 'countries', 'coll_names': countries_colls }
-currency_data = {'table_name': 'currency',  'coll_names': currency_colls }
 
 
 
@@ -117,52 +94,13 @@ def get_data_from_dbf(table_name):
 def get_docs_with_nds(from_dbf_table, tables_names):
     values_list = []
     for i in from_dbf_table:    
-        values_list += [(
-                        str(dict(i)[tables_names[0]]).replace(" ", ""),
+        values_list += [(str(dict(i)[tables_names[0]]).replace(" ", ""),
                         dict(i)[tables_names[1]],
                         dict(i)[tables_names[2]],
-                        dict(i)[tables_names[3]],
-                        dict(i)[tables_names[4]]
-                        )]
-    return values_list  
-    pass
-
-
-
-
-
-
-def get_countries(from_dbf_table, tables_names):
-    values_list = []
-    for i in from_dbf_table:    
-        values_list += [(dict(i)[tables_names[0]],
-                        dict(i)[tables_names[1]],
-                        str(dict(i)[tables_names[2]]).replace(" ", ""),
                         dict(i)[tables_names[3]],
                         dict(i)[tables_names[4]])]
     return values_list  
     pass
-
-
-
-
-
-
-
-
-def get_currency(from_dbf_table, tables_names):
-    values_list = []
-    for i in from_dbf_table:    
-        values_list += [(dict(i)[tables_names[0]],
-                        dict(i)[tables_names[1]],
-                        str(dict(i)[tables_names[2]]).replace(" ", ""),
-                        dict(i)[tables_names[3]])]
-    return values_list  
-    pass
-
-
-
-
 
 
 def get_data(from_dbf_table,tables_names):
@@ -182,6 +120,7 @@ def get_data(from_dbf_table,tables_names):
                         str(dict(i)[tables_names[9]]).replace(" ", ""),
                         dict(i)[tables_names[10]],
                         dict(i)[tables_names[11]].replace(" ", ""),
+                        dict(i)[tables_names[12]].replace(" ", ""),
                         )
                         ]
     return values_list  
@@ -197,8 +136,7 @@ def get_data_mudaki(from_dbf_table, tables_names):
                         dict(i)[tables_names[1]].encode('latin1').decode('cp1251'),
                         dict(i)[tables_names[2]].replace(" ", ""),
                         dict(i)[tables_names[3]].encode('latin1').decode('cp1251'), 
-                        dict(i)[tables_names[4]].replace(" ", ""),
-                        dict(i)[tables_names[5]].replace(" ", "")
+                        dict(i)[tables_names[4]].replace(" ", "")
                         )]                      
     return values_list  
     pass
@@ -216,7 +154,7 @@ def contragents_list(numar,table_names):
 
 def create_list_base_tables():
     big_tables_list = []
-    for x in (t625,t493, t167, t625_uslugi_nds, t625_tn_nds, t493_uslugi_nds, t493_tn_nds, incoming_tovary_nds, countries, currency):
+    for x in (t625,t493, t167,t625_uslugi_nds,t625_tn_nds, t493_uslugi_nds, t493_tn_nds,incoming_tovary_nds):
         tables_in_bases = [get_data_from_dbf(x.format(i)) for i in bazi]
 
         big_tables_list +=[tables_in_bases]
@@ -231,29 +169,6 @@ def create_lists_with_nds(numar, table_names):
         fiat += [ti for ti in documents_table]
     return fiat 
     pass
-
-
-
-
-def create_countries_list(numar, table_names):
-    fiat = []
-    for t in range(len(bazi)):
-        documents_table = [get_countries(numar[t], table_names)]
-        fiat += [ti for ti in documents_table]
-    return fiat 
-    pass
-
-
-def create_currency_list(numar, table_names):
-    fiat = []
-    for t in range(len(bazi)):
-        documents_table = [get_currency(numar[t], table_names)]
-        fiat += [ti for ti in documents_table]
-    return fiat 
-    pass
-
-
-
 
 def create_lists_without_nds(numar, table_names):
     fiat = []
@@ -298,8 +213,4 @@ def full_update(list_number, base_number):
     update_from_dbf(create_lists_with_nds(create_list_base_tables()[6], t493_tn_nds_tables)[list_number], sel_vhod_tn_nds, base_number, vhod_nds_tn_data, insert_tn_vhod_nds)
 
     update_from_dbf(create_lists_with_nds(create_list_base_tables()[7], incoming_tovary_tables) [list_number], select_all_tovary, base_number, nds_tovary_data, insert_tovary)
-    
-    update_from_dbf(create_currency_list(create_list_base_tables()[9], currency_tables)[list_number], select_currency, base_number, currency_data, insert_currency)
-    update_from_dbf(create_countries_list(create_list_base_tables()[8], countries_tables)[list_number], select_countries, base_number, countries_data, insert_countries)
-
     pass

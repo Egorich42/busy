@@ -1,0 +1,40 @@
+body{margin: 0}
+:active, :hover, :focus {outline: 0;outline-offset: 0;}
+
+img{max-width: 100%}
+.demo-main{margin: 0% 10%;  text-align: center;}
+
+.demo-main button{
+	margin-top: 20px;
+border: solid 2px orange;
+border-radius: 40px;
+background-color: #fff;
+padding: 20px;
+font-weight: bold;}
+
+.demo-name{color: orange; margin: 40px 0px}
+.demo-main article img{
+ border: solid 2px orange;
+ border-radius: 20px;
+ padding: 2px;}
+
+@media screen and (min-width: 360px) {
+.demo-main article img{width: 100%;}
+.demo-main button{width: 100%; font-size: 30px;}
+.demo-name{font-size: 24px;}
+
+}
+@media screen and (min-width: 720px) {}
+
+@media screen and (min-width: 940px) {
+.demo-main button{width: 70%;}
+
+.demo-main article img{width: 500px; max-height: 400px;}
+
+}
+
+@media screen and (min-width: 1080px) {}
+@media screen and (min-width: 1136px) {
+.demo-main article img,.demo-main button {width: 50%;}
+
+}

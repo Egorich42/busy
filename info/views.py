@@ -32,3 +32,5 @@ class MainPageView(View):
             return render(request, 'landing/thanks.html')
 
             
+def show_demo(request):
+    return render(request, 'landing/demo.html')          

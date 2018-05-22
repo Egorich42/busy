@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+<meta name="robots" content="index, follow" /> 
+<meta name="robots" content="noyaca"/>
+<meta name="robots" content="noodp"/>
+<meta property="og:type" content="website" />
+<meta property="og:image" content="/static/icons/snik.jpg"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="/media/favicon.ico">
+<link rel="stylesheet" href="{% static "/css/demo-style.css" %}">
+</head>
+<body>
+
+<section class="demo-main">
+<article class="demo-name">
+    <span>My demo</span>
+</article>
+<article>
+  <img src="/static/icons/snik.jpg"; id="demo-img">
+</article>
+  
+<button id="button">CLICK ME</button>
+
+</section>
+
+
+
+
+<script type="text/javascript">
+var button = document.getElementById("button");
+
+button.addEventListener("click", function(){
+        document.getElementById("demo-img").src = "/static/icons/thank.png";
+    });
+
+</script>
+
+
+</body>
+</html>
