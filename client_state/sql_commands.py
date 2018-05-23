@@ -266,18 +266,13 @@ courses_colls = '(data, name, scale, rate)'
 insert_courses = "INSERT INTO {} VALUES (?,?,?,?);"
 
 select_usd_course = "SELECT * FROM usd WHERE data >= {} AND  data <= {};"
-select_eur_course = "SELECT * FROM eur WHERE data >= {} AND  data <= {};"
+select_eur_course = "SELECT * FROM eur WHERE data;"
 select_grivn_course = "SELECT * FROM grivna WHERE data >= {} AND  data <= {};"
 select_rus_course = "SELECT * FROM rus WHERE data >= {} AND  data <= {};"
 
 
 select_valuty_income = """
-SELECT contragents_documents_two.contragent_name,
-contragents_documents_two.doc_date,
-contragents_documents_two.document_name,
-contragents_documents_two.currency_type,
-contragents_documents_two.summ
-
+SELECT *
 FROM contragents_documents_two
 LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id 
 WHERE contragents_documents_two.doc_type = '0'
@@ -289,4 +284,20 @@ OR  contragents_documents_two.currency_type = '3'
 AND  doc_date >= {} 
 AND  doc_date <= {}
 ORDER BY contragents_documents_two.doc_date;
+"""
+
+
+
+select_valuty_outcome = """
+SELECT * FROM contragents_documents
+LEFT JOIN contragents ON contragents_documents.parent=contragents.id 
+WHERE contragents_documents.doc_type != '0' 
+AND contragents_documents.deleted !='*'
+AND contragents_documents.back_flag != '1'
+AND contragents_documents.currency_type = '7'
+OR  contragents_documents.currency_type = '6'
+OR  contragents_documents.currency_type = '3' 
+AND  doc_date >= {} 
+AND  doc_date <= {}
+ORDER BY contragents_documents.doc_date;
 """

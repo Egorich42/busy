@@ -1,1 +1,1 @@
-dipartD,avangard,ditest,zeno,ertex,smdpark,mitada,amedenta,ipmatusev,centrupakovki
+dipartD,avangard,centrupakovki,ditest,ertex,ipmatusev,mitada,smdpark,zeno

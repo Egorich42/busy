@@ -524,12 +524,11 @@ def statistika(currency, data_start, data_end, base_name):
                                 'контрагент':x['contragent'],
                                 'дата': y['data'],
                                 'курс на дату документа':y['rate'], 
-                                'сумма в рублях':x['summ']*y['rate'],
+                                'сумма в рублях':x['summ'],
                                 'дата': y['data']
                                 }]
     return result
-
-    pass          
+    pass     
 
 
 
@@ -539,6 +538,71 @@ def return_final_statistica(data_start, data_end, base_name):
     for x in range(len(rates)):
         final_list += [statistika(rates[x],data_start, data_end, base_name)]
     return final_list    
+
+
+
+
+
+
+class Proba:
+    def __init__(self, select_command=sq_c.select_valuty_income, 
+        data_start="2018-05-11", 
+        data_end="2018-05-12", 
+        base_name = "zeno.sqlite"):
+
+       self.select_command = select_command
+       self.data_start = data_start
+       self.data_end = data_end
+       self.base_name = base_name
+
+    def valuty_sql_to_l(self):
+        conn = sqlite3.connect(self.base_name)
+        cur = conn.cursor()
+        sql_request = self.select_command.format(self.data_start, self.data_end)
+
+        return create_list_of_table_values(cur.execute(sql_request),cur.description)
+        pass
+
+    def currency_docs_counter_(self):
+        count =[]
+        for i in self.valuty_sql_to_l():
+            if i['doc_date'] >= self.data_start and i['doc_date'] <= self.data_end:
+                count+=[{'date':i['doc_date'], 'document': i['document_name'], 'summ': i['summ'],'contragent':i['contragent_name'], 'currency_type':i['currency_type'], }]
+        return count
+        pass
+
+
+    def create_rates_list(self):
+        conn = sqlite3.connect(TO_BASE_PATH+'sqlite_bases'+'\\'+'courses.sqlite')
+        cur = conn.cursor()
+        sql_request = sq_c.select_eur_course.format("'"+str(self.data_start)+"'", "'"+str(self.data_end)+"'")
+        return create_list_of_table_values(cur.execute(sq_c.select_eur_course),cur.description)
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
