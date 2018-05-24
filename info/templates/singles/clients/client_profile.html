@@ -123,6 +123,11 @@
 		{{ currency_stat_form.end_day }}
  	</article>
 
+    <article class="select-data">
+   <p>Выбрать окончание периода</p>
+    {{ currency_stat_form.data_type }}
+  </article>
+
     {% csrf_token %}
     <input type="submit" value="Отправить" name="curr_stat"  style="background-color: #fff;">
   	</form>

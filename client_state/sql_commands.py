@@ -266,37 +266,33 @@ courses_colls = '(data, name, scale, rate)'
 insert_courses = "INSERT INTO {} VALUES (?,?,?,?);"
 
 select_usd_course = "SELECT * FROM usd WHERE data >= {} AND  data <= {};"
-select_eur_course = "SELECT * FROM eur WHERE data;"
+select_eur_course = "SELECT * FROM eur WHERE data >= {} AND  data <= {};"
 select_grivn_course = "SELECT * FROM grivna WHERE data >= {} AND  data <= {};"
 select_rus_course = "SELECT * FROM rus WHERE data >= {} AND  data <= {};"
 
 
-select_valuty_income = """
+select_curr_income =  """
 SELECT * FROM contragents_documents_two
-LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id 
-WHERE contragents_documents_two.doc_type = '0'
-AND contragents_documents_two.deleted !='*'
-AND contragents_documents_two.provider_account_type != '3649U'
-AND contragents_documents_two.currency_type = '7'
-OR  contragents_documents_two.currency_type = '6'
-OR  contragents_documents_two.currency_type = '3' 
-AND  doc_date >= {} 
-AND  doc_date <= {}
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
+LEFT JOIN countries   ON contragents.country =countries.dbf_id
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+AND contragents_documents_two.deleted != '*'
+AND contragents_documents_two.doc_type = '0'
+AND contragents_documents_two.currency_type != '1'
 ORDER BY contragents_documents_two.doc_date;
-"""
+"""  
 
 
 
-select_valuty_outcome = """
+select_curr_outcome =  """
 SELECT * FROM contragents_documents
-LEFT JOIN contragents ON contragents_documents.parent=contragents.id 
-WHERE contragents_documents.doc_type != '0' 
-AND contragents_documents.deleted !='*'
-AND contragents_documents.back_flag != '1'
-AND contragents_documents.currency_type = '7'
-OR  contragents_documents.currency_type = '6'
-OR  contragents_documents.currency_type = '3' 
-AND  doc_date >= {} 
-AND  doc_date <= {}
+LEFT JOIN contragents ON contragents_documents.parent=contragents.id
+LEFT JOIN countries   ON contragents.country =countries.dbf_id
+WHERE contragents_documents.doc_date >= {} 
+AND contragents_documents.doc_date <= {}
+AND contragents_documents.deleted != '*'
+AND contragents_documents.doc_type != '0'
+AND contragents_documents.currency_type != '1'
 ORDER BY contragents_documents.doc_date;
-"""
+"""  

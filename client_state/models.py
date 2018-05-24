@@ -475,7 +475,6 @@ def get_today_course(addres):
 
 def create_courses_table(addres, money):
     courses_list = []
-
     for i in [requests.get(addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list("2018-01-01", str(date.today()))]:
         courses_list += [( str(i["Date"][:10]),i["Cur_Name"], i["Cur_Scale"], i["Cur_OfficialRate"] )]
     return courses_list
@@ -494,83 +493,53 @@ def update_courses_base(table, income_list):
 
 
 
-def valuty_sql_to_list(base_name, select_comand, data_start, data_end):
-    conn = sqlite3.connect(base_name)
-    cur = conn.cursor()
-    sql_request = select_comand.format(data_start, data_end)
 
-    return create_list_of_table_values(cur.execute(sql_request),cur.description)
+class CurrencyUpdater:
+
+
+    def create_courses_table(addres, money):
+    courses_list = []
+    for i in [requests.get(addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list("2018-01-01", str(date.today()))]:
+        courses_list += [( str(i["Date"][:10]),i["Cur_Name"], i["Cur_Scale"], i["Cur_OfficialRate"] )]
+    return courses_list
     pass
 
+    def update_courses_base(table, income_list):
+        conn = sqlite3.connect('courses.sqlite')
+        cur = conn.cursor()
 
-
-def currency_docs_counter(data_start, data_end, base_name):
-    count =[]
-    for i in valuty_sql_to_list(base_name, sq_c.select_valuty_income, data_start, "'"+data_end+"'"):
-        if i['doc_date'] >= data_start and i['doc_date'] <= data_end:
-            count+=[{'date':i['doc_date'], 'document': i['document_name'], 'summ': i['summ'],'contragent':i['contragent_name'], 'currency_type':i['currency_type'], }]
-    return count
-    pass
-
-
-
-def statistika(currency, data_start, data_end, base_name):
-    result = []
-    for x in currency_docs_counter(data_start, data_end, base_name):
-        for y in valuty_sql_to_list('courses.sqlite', currency['request'], "'"+data_start+"'", "'"+data_end+"'" ):
-            if y['data'] == x['date']:
-                if x['currency_type'] == currency['base_id']:
-                    result +=  [{
-                                'контрагент':x['contragent'],
-                                'дата': y['data'],
-                                'курс на дату документа':y['rate'], 
-                                'сумма в рублях':x['summ'],
-                                'дата': y['data']
-                                }]
-    return result
-    pass     
+        cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['name'], courses_colls))
+        cur.executemany(insert_courses.format(table['name']), income_list)
+        conn.commit()
+        conn.close()
+        pass
 
 
 
 
-def return_final_statistica(data_start, data_end, base_name):
-    final_list = []
-    for x in range(len(rates)):
-        final_list += [statistika(rates[x],data_start, data_end, base_name)]
-    return final_list    
 
 
-
-
-selic =  """
-SELECT * FROM contragents_documents_two
-LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id 
-WHERE contragents_documents_two.doc_date >= {} 
-AND contragents_documents_two.doc_date <= {}
-AND contragents_documents_two.deleted != '*'
-AND contragents_documents_two.doc_type = '0'
-ORDER BY contragents_documents_two.doc_date;
-"""  
-
-class Proba:
-    def __init__(self, select_command=sq_c.select_valuty_income, 
-        data_start="2018-05-11", 
-        data_end="2018-05-15", 
-        base_name = "zeno.sqlite"):
+class CurrencyStat:
+    def __init__(self, 
+                select_command=sq_c.select_curr_income, 
+                data_start="2018-05-11", 
+                data_end="2018-05-15", 
+                base_name = "zeno.sqlite",
+                request_type = "исходящий",):
 
        self.select_command = select_command
        self.data_start = data_start
        self.data_end = data_end
        self.base_name = base_name
+       self.request_type = request_type
 
-   
+    
 
-
-    def create_rates_list(self):
+    def create_rates_list(self, select_curr):
         conn = sqlite3.connect(TO_BASE_PATH+'sqlite_bases'+'\\'+'courses.sqlite')
         cur = conn.cursor()
-        sql_request = sq_c.select_eur_course.format("'"+str(self.data_start)+"'", "'"+str(self.data_end)+"'")
-        return create_list_of_table_values(cur.execute(sq_c.select_eur_course),cur.description)
+        sql_request = select_curr.format("'"+str(self.data_start)+"'", "'"+str(self.data_end)+"'")
+        return create_list_of_table_values(cur.execute(sql_request),cur.description)
         pass
 
 
@@ -578,86 +547,125 @@ class Proba:
     def transform_sql_to_list(self):
         conn = sqlite3.connect(self.base_name)
         cur = conn.cursor()
+        if self.request_type == 'входящий':
+            sel_request = sq_c.select_curr_income
+        if self.request_type == 'исходящий':
+            sel_request = sq_c.select_curr_outcome
 
-        sql_request = selic.format("'"+self.data_start+"'","'"+self.data_end+"'")
+        sql_request = sel_request.format("'"+self.data_start+"'","'"+self.data_end+"'")
     
         table = create_list_of_table_values(cur.execute(sql_request),cur.description)
         return table
         pass
 
     def result(self):
+        eur = []
+        usd = []
+        rub = []
         for x in self.transform_sql_to_list():
-            for y in self.create_rates_list():
-                if x['doc_date'] == y['data']:
-                    print(float(x['summ']) *float(y['rate']))
+            if x['currency_type'] == '3':
+                for y in self.create_rates_list(sq_c.select_eur_course):
+                    if x['doc_date'] == y['data']:
+                        eur += [{
+                                'doc': x['document_name'],  
+                                'date' : x['doc_date'], 
+                                'contragent':x['contragent_name'],
+                                'country': x['name'], 
+                                'summ':x['summ'], 
+                                'rate_on_date':y['rate'],
+                                'bel_sum':round(float(x['summ'])*float(y['rate']),3),
+                                'curr_name':'EUR',
+                                }]
+
+            if x['currency_type'] == '7':
+                for y in self.create_rates_list(sq_c.select_usd_course):
+                    if x['doc_date'] == y['data']:
+                        usd += [{
+                                'doc': x['document_name'],  
+                                'date' : x['doc_date'], 
+                                'contragent':x['contragent_name'],
+                                'country': x['name'], 
+                                'summ':x['summ'], 
+                                'rate_on_date':y['rate'],
+                                'bel_sum':round(float(x['summ'])*float(y['rate']),3),
+                                'curr_name':'USD',
+                                }]
+
+
+            if x['currency_type'] == '6':
+                for y in self.create_rates_list(sq_c.select_rus_course):
+                    if x['doc_date'] == y['data']:
+                        rub += [{
+                                'doc': x['document_name'],  
+                                'date' : x['doc_date'], 
+                                'contragent':x['contragent_name'], 
+                                'country': x['name'], 
+                                'summ':x['summ'], 
+                                'rate_on_date':y['rate'],
+                                'bel_sum':round(float(x['summ'])*float(y['rate']/float(y['scale'])),3),
+                                'curr_name':'RUB',
+                                }]
+
+        return (eur, usd, rub)
+        pass                            
 
 
 
+    def create_statistica_excel(self):
+        output_doc = BASE_DIR+"tax_result.xlsx"
+        openpyxl.Workbook().save(output_doc)
+        output_list = load_workbook(output_doc,data_only = True)
+        main_out_sheet = output_list.active  
 
 
+        income_list = self.result()
 
 
+        def insert_cell(row_val, col_val, cell_value):
+            main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+            pass  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def create_statistica_excel(request, base_name, data_start, data_end):
-    output_doc = BASE_DIR+"tax_result.xlsx"
-    openpyxl.Workbook().save(output_doc)
-    output_list = load_workbook(output_doc,data_only = True)
-    main_out_sheet = output_list.active  
-
-
-    income_list = return_final_statistica(data_start, data_end, base_name)
-
-
-    def insert_cell(row_val, col_val, cell_value):
-        main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
-        pass  
-
-    insert_cell(1, 1, "Дата")
-    insert_cell(1, 2, "Контрагент")
-    insert_cell(1, 3, "Валюта")
-    insert_cell(1, 3, "Страна")
-    insert_cell(1, 4, "Сумма в валюте")
-    insert_cell(1, 5, "Сумма в бел. рублях")
+        insert_cell(1, 1, "Дата")
+        insert_cell(1, 2, "Контрагент")
+        insert_cell(1, 3, "Страна")
+        insert_cell(1, 4, "Валюта")
+        insert_cell(1, 5, "Сумма в валюте")
+        insert_cell(1, 6, "Курс на дату")
+        insert_cell(1, 7, "Сумма в бел. рублях")
 
 
     
-    for i in range(len(income_list[0])):
-        insert_cell(i+3, 1, income_list[0][i]['дата'])
-        insert_cell(i+3, 2, income_list[0][i]['контрагент'])
-        insert_cell(i+3, 3, income_list[0][i]['курс на дату документа'])
-        insert_cell(i+3, 4, income_list[0][i]['сумма в рублях'])
+        for i in range(len(income_list[0])):
+            insert_cell(i+3, 1, income_list[0][i]['date'])
+            insert_cell(i+3, 2, income_list[0][i]['contragent'])
+            insert_cell(i+3, 3, income_list[0][i]['country'])
+            insert_cell(i+3, 4, income_list[0][i]['curr_name'])
+            insert_cell(i+3, 5, income_list[0][i]['summ'])
+            insert_cell(i+3, 6, income_list[0][i]['rate_on_date'])
+            insert_cell(i+3, 7, income_list[0][i]['bel_sum'])
 
+        for i in range(len(income_list[1])):
+            insert_cell(len(income_list[0])+i+6, 1, income_list[1][i]['date'])
+            insert_cell(len(income_list[0])+i+6, 2, income_list[1][i]['contragent'])
+            insert_cell(len(income_list[0])+i+6, 3, income_list[1][i]['country'])
+            insert_cell(len(income_list[0])+i+6, 4, income_list[1][i]['curr_name'])
+            insert_cell(len(income_list[0])+i+6, 5, income_list[1][i]['summ'])
+            insert_cell(len(income_list[0])+i+6, 6, income_list[1][i]['rate_on_date'])
+            insert_cell(len(income_list[0])+i+6, 7, income_list[1][i]['bel_sum'])
+
+
+        for i in range(len(income_list[2])):
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 1, income_list[2][i]['date'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 2, income_list[2][i]['contragent'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 3, income_list[2][i]['country'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 4, income_list[2][i]['curr_name'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 5, income_list[2][i]['summ'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 6, income_list[2][i]['rate_on_date'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 7, income_list[2][i]['bel_sum'])
 
         output_list.save(filename = output_doc)
-    return(str(output_doc))
-    pass
-
-
-
-
-
-
-
+        return(str(output_doc))
+        pass
 
 
 #---------------------------------STATISTIKA End----------------

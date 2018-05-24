@@ -3,7 +3,7 @@
 import os
 from django.shortcuts import render, get_object_or_404, render_to_response
 from users.models import Client
-from .models import get_hvosty_lists,create_hvosty_excel, curent_finace_states, create_tax_excel, return_excel_list, insert_into_excel, statistika, rates, create_statistica_excel, Proba
+from .models import get_hvosty_lists,create_hvosty_excel, curent_finace_states, create_tax_excel, return_excel_list, insert_into_excel, CurrencyStat
 from .forms import StateForm, TaxForm, FoundDifferenceForm, CurrStatForm
 import sqlite3
 from django.http import HttpResponse, HttpResponseRedirect
@@ -92,14 +92,12 @@ def client_detail(request, name):
 
 				data_start =  str(currency_stat_form.cleaned_data['start_year'])+"-"+str(currency_stat_form.cleaned_data["start_month"])+"-"+str(currency_stat_form.cleaned_data["start_day"])
 				data_end = str(currency_stat_form.cleaned_data['end_year'])+"-"+str(currency_stat_form.cleaned_data["end_month"])+"-"+str(currency_stat_form.cleaned_data["end_day"])
-
 				base_name = TO_BASE_PATH+'sqlite_bases'+'\\'+str(client_info.name)+'.sqlite'
 
-
-				print(Proba(base_name = base_name,data_start =data_start,data_end=data_end).result())
-
-
-				excel_file_name = create_statistica_excel(request, base_name,  data_start, data_end)
+				excel_file_name = CurrencyStat(base_name = base_name,
+											   data_start =data_start,
+											   data_end=data_end, 
+											   request_type=currency_stat_form.cleaned_data['data_type']).create_statistica_excel()
 				return return_excel_list(excel_file_name, client_info.name, "statistica")
 
 		else:
