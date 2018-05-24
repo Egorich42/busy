@@ -542,12 +542,20 @@ def return_final_statistica(data_start, data_end, base_name):
 
 
 
-
+selic =  """
+SELECT * FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id 
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+AND contragents_documents_two.deleted != '*'
+AND contragents_documents_two.doc_type = '0'
+ORDER BY contragents_documents_two.doc_date;
+"""  
 
 class Proba:
     def __init__(self, select_command=sq_c.select_valuty_income, 
         data_start="2018-05-11", 
-        data_end="2018-05-12", 
+        data_end="2018-05-15", 
         base_name = "zeno.sqlite"):
 
        self.select_command = select_command
@@ -555,21 +563,7 @@ class Proba:
        self.data_end = data_end
        self.base_name = base_name
 
-    def valuty_sql_to_l(self):
-        conn = sqlite3.connect(self.base_name)
-        cur = conn.cursor()
-        sql_request = self.select_command.format(self.data_start, self.data_end)
-
-        return create_list_of_table_values(cur.execute(sql_request),cur.description)
-        pass
-
-    def currency_docs_counter_(self):
-        count =[]
-        for i in self.valuty_sql_to_l():
-            if i['doc_date'] >= self.data_start and i['doc_date'] <= self.data_end:
-                count+=[{'date':i['doc_date'], 'document': i['document_name'], 'summ': i['summ'],'contragent':i['contragent_name'], 'currency_type':i['currency_type'], }]
-        return count
-        pass
+   
 
 
     def create_rates_list(self):
@@ -581,7 +575,21 @@ class Proba:
 
 
 
+    def transform_sql_to_list(self):
+        conn = sqlite3.connect(self.base_name)
+        cur = conn.cursor()
 
+        sql_request = selic.format("'"+self.data_start+"'","'"+self.data_end+"'")
+    
+        table = create_list_of_table_values(cur.execute(sql_request),cur.description)
+        return table
+        pass
+
+    def result(self):
+        for x in self.transform_sql_to_list():
+            for y in self.create_rates_list():
+                if x['doc_date'] == y['data']:
+                    print(float(x['summ']) *float(y['rate']))
 
 
 

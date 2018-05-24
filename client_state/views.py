@@ -96,7 +96,7 @@ def client_detail(request, name):
 				base_name = TO_BASE_PATH+'sqlite_bases'+'\\'+str(client_info.name)+'.sqlite'
 
 
-				print(Proba(base_name = base_name).create_rates_list())
+				print(Proba(base_name = base_name,data_start =data_start,data_end=data_end).result())
 
 
 				excel_file_name = create_statistica_excel(request, base_name,  data_start, data_end)

@@ -272,8 +272,7 @@ select_rus_course = "SELECT * FROM rus WHERE data >= {} AND  data <= {};"
 
 
 select_valuty_income = """
-SELECT *
-FROM contragents_documents_two
+SELECT * FROM contragents_documents_two
 LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id 
 WHERE contragents_documents_two.doc_type = '0'
 AND contragents_documents_two.deleted !='*'
