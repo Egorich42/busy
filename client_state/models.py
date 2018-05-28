@@ -432,15 +432,6 @@ def insert_into_excel(request, excel_income, base_name, data_start, data_end, na
 
 
 
-
-
-
-
-
-
-
-
-
 #-------STATISTICA-----------------------------
 
 
@@ -465,57 +456,12 @@ def generate_data_list(start_data, end_data):
     pass
 
 
-def get_today_course(addres):
+def get_today_course():
     courses_list = []
-    for i in [requests.get(addres.format(x['code_nbrb'])).json() for x in  rates]:
+    for i in [requests.get(nbrb_rates_today.format(x['code_nbrb'])).json() for x in  rates]:
         courses_list += [{"cur_name":i["Cur_Name"],"cur_scale":i["Cur_Scale"],"cur_rate":i["Cur_OfficialRate"] }]
     return courses_list
     pass
-
-
-def create_courses_table(addres, money):
-    courses_list = []
-    for i in [requests.get(addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list("2018-01-01", str(date.today()))]:
-        courses_list += [( str(i["Date"][:10]),i["Cur_Name"], i["Cur_Scale"], i["Cur_OfficialRate"] )]
-    return courses_list
-    pass
-
-
-def update_courses_base(table, income_list):
-    conn = sqlite3.connect('courses.sqlite')
-    cur = conn.cursor()
-
-    cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['name'], courses_colls))
-    cur.executemany(insert_courses.format(table['name']), income_list)
-    conn.commit()
-    conn.close()
-    pass
-
-
-
-
-class CurrencyUpdater:
-
-
-    def create_courses_table(addres, money):
-    courses_list = []
-    for i in [requests.get(addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list("2018-01-01", str(date.today()))]:
-        courses_list += [( str(i["Date"][:10]),i["Cur_Name"], i["Cur_Scale"], i["Cur_OfficialRate"] )]
-    return courses_list
-    pass
-
-    def update_courses_base(table, income_list):
-        conn = sqlite3.connect('courses.sqlite')
-        cur = conn.cursor()
-
-        cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['name'], courses_colls))
-        cur.executemany(insert_courses.format(table['name']), income_list)
-        conn.commit()
-        conn.close()
-        pass
-
-
-
 
 
 

@@ -34,10 +34,15 @@ def generate_data_list(start_data, end_data):
 
 
 class CurrencyUpdater:
-    def __init__(self, addres=nbrb_rates_on_date, start_data = "2018-05-01"):
+    def __init__(self, addres=nbrb_rates_on_date):
        self.addres = addres
-       self.start_data = start_data
 
+
+    def get_last_update(self):
+        conn = sqlite3.connect('courses.sqlite')
+        cur = conn.cursor()
+        return cur.execute("SELECT data FROM usd").fetchall()[-1][0]
+        pass      
 
 
     def create_courses_table(self, start_data, money):
@@ -51,11 +56,9 @@ class CurrencyUpdater:
     def create_courses_lists(self, start_data):
        all_cours_tables = []
        for cours in rates:
-           all_cours_tables += [self.create_courses_table(start_data, cours['code_nbrb'])]
+           all_cours_tables += [self.create_courses_table(self.get_last_update(), cours['code_nbrb'])]
        return all_cours_tables
        pass
-
-
 
 
     def updater(self, table, counter):
@@ -79,6 +82,3 @@ def full_update():
 
 full_update()
 
-
-#for x in range(len(rates)):
-   #update_courses_base(rates[x],create_courses_lists(nbrb_rates_on_date)[x])

@@ -3,7 +3,7 @@
 import os
 from django.shortcuts import render, get_object_or_404, render_to_response
 from users.models import Client
-from .models import get_hvosty_lists,create_hvosty_excel, curent_finace_states, create_tax_excel, return_excel_list, insert_into_excel, CurrencyStat
+from .models import get_hvosty_lists,create_hvosty_excel, curent_finace_states, create_tax_excel, return_excel_list, insert_into_excel, get_today_course, CurrencyStat
 from .forms import StateForm, TaxForm, FoundDifferenceForm, CurrStatForm
 import sqlite3
 from django.http import HttpResponse, HttpResponseRedirect
@@ -98,6 +98,7 @@ def client_detail(request, name):
 											   data_start =data_start,
 											   data_end=data_end, 
 											   request_type=currency_stat_form.cleaned_data['data_type']).create_statistica_excel()
+
 				return return_excel_list(excel_file_name, client_info.name, "statistica")
 
 		else:
@@ -111,7 +112,8 @@ def client_detail(request, name):
 																		'state_form': state_form, 
 																		'tax_form':tax_form, 
 																		"dif_form":find_difference_form,
-																		"currency_stat_form":currency_stat_form
+																		"currency_stat_form":currency_stat_form,
+																		'today_rate':get_today_course(),
 																		})
 
 	else:
