@@ -11,15 +11,15 @@ import datetime
 from datetime import date
 import os
 import sqlite3
-import mimetypes
 
 import itertools
 import requests
 import openpyxl
 from openpyxl import load_workbook,Workbook
 
+from TESTO import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list, nbrb_rates_today, nbrb_rates_on_date, rates, years, months, days
+
 from . import sql_commands as sq_c
-from . import variables as var
 
 
 
@@ -30,10 +30,6 @@ TO_DOCS_PATH = str('\\'.join(BASE_DIR.split('\\')[:-2]))+'\\'+'media'+'\\'+'docs
 def sum_result(income_list):
     return round(sum([i['nds'] for i in income_list if i['full_sum'] != None]),2)
 
-
-def sum_of_list(sum_name,income_list):
-    return sum([x[sum_name] for x in income_list])
-    pass
 
 
 def create_sorted_list(income_list):
@@ -54,16 +50,6 @@ def create_sorted_list(income_list):
     return output_list
     pass
 
-
-def create_list_of_table_values(request_text, massive_from_table):
-    request_name = request_text.fetchall()
-    list_to_sort = [list(elem) for elem in request_name]
-    cols = [column[0] for column in massive_from_table]
-    result = []
-    for row in list_to_sort:
-        result += [{col.lower():value for col,value in zip(cols,row)}]
-    return result
-    pass 
  
 
 def transform_sql_to_list(cursor, request_command, *condition):
@@ -139,7 +125,6 @@ def get_hvosty_lists(cursor,data_start, data_end):
     prepayment_buyers=[]
     id_list =[]
 
-
    
     for altair in contargents_id_list:
 
@@ -157,7 +142,6 @@ def get_hvosty_lists(cursor,data_start, data_end):
         suma_pp_prov = providers_docs[2]# добавляю нужныц и работающий в сверке +buyers_docs_vozvr[2] - по нулям
                                         #У возвратной неравильные команды, именно в списке функций
     
-
         suma_tn_buy = buyers_docs[1]
         suma_pp_buy = buyers_docs[2] 
 
@@ -298,25 +282,7 @@ def create_tax_excel(request, income_list):
     return(str(output_doc))
     pass    
 
-
-
-
-def return_excel_list(income_file, client_name, doc_type):
-    fp = open(income_file, "rb")
-    response = HttpResponse(fp.read())
-    fp.close()
-    file_type = mimetypes.guess_type(income_file)
-    if file_type is None:
-        file_type = 'application/octet-stream'
-    response['Content-Type'] = file_type
-    response['Content-Length'] = str(os.stat(income_file).st_size)
-    response['Content-Disposition'] = "attachment; filename = {}-{}.xlsx".format(client_name,doc_type)
-    os.remove(income_file)
-    return response
-
-
-
-
+#------------------------SVERKA SS PORTALOM--------------------
 
 
 
@@ -433,27 +399,6 @@ def insert_into_excel(request, excel_income, base_name, data_start, data_end, na
 
 
 #-------STATISTICA-----------------------------
-
-
-nbrb_rates_today = "http://www.nbrb.by/API/ExRates/Rates/{}"
-nbrb_rates_on_date = "http://www.nbrb.by/API/ExRates/Rates/{}?onDate={}"
-
-
-rates = [
-{'name':'grivna',"code_nbrb": 290, 'request':sq_c.select_grivn_course, 'base_id': '4'}, 
-{'name': "usd","code_nbrb": 145, 'request':sq_c.select_usd_course, 'base_id': '7'}, 
-{'name': "eur","code_nbrb": 292, 'request':sq_c.select_eur_course, 'base_id': '3'},
-{'name': "rus","code_nbrb": 298, 'request':sq_c.select_rus_course, 'base_id': '6'}
-]
-
-
-
-
-def generate_data_list(start_data, end_data):
-    start = datetime.datetime.strptime(start_data, "%Y-%m-%d")
-    end = datetime.datetime.strptime(end_data, "%Y-%m-%d")
-    return [start + datetime.timedelta(days=x) for x in range(0, (end-start).days)]
-    pass
 
 
 def get_today_course():
@@ -615,31 +560,6 @@ class CurrencyStat:
 
 
 #---------------------------------STATISTIKA End----------------
-
-
-
-
-
-
-
-
-
-
-
-years = [("2018", "2018"),("2017", "2017"),("2016", "2016"), ("2015", "2015"),]
-
-
-months = [ ("01", "январь", ),("02", "февраль", ),("03",  "март"),( "04","апрель"),("05", "май" ), ("06","июнь"),
-            ("07", "июль"),("08", "август"),("09", "сентябрь"), ("10", "октябрь"),("11", "ноябрь"),
-            ("12", "декабрь")]
-
-
-
-days = [("01","01"), ("02","02"), ("03","03"), ("04","04"), ("05","05"), ("06","06"), ("07","07"), 
-        ("08","08"), ("09","09"), ("10","10"), ("11","11"), ("12","12"), ("13","13"),  
-        ("14","14"), ("15","15"), ("16","16"), ("17","17"), ("18","18"), ("19","19"),
-        ("20","20"), ("21","21"), ("22","22"), ("23","23"), ("24","24"), ("25","25"), 
-        ("26","26"),  ("27","27"),("28","28"), ("29","29"),  ("30","30"),  ("31", "31"), ]
 
 
 
