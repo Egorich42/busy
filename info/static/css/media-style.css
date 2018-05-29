@@ -95,6 +95,10 @@ nav ul li a{font-size: 52px;}
 .login{width: 70%;}
 .choice-buttons{width: 40%;}
 .client-actions{width: 100%;}
+.main-plitka { flex-wrap: wrap; width: auto; margin: 0px 20px;}
+
+.client-link {width: 45%;}
+.plitka { height: 350px;}
 }
 
 
@@ -152,10 +156,9 @@ nav ul li a{font-size: 22px;}
 .colored-paragraph-text{width: 95%; margin:0px;}
 .colored-paragraph{margin: 0px;}
 
-
+.plitka { height: 300px;}
 
 .login{width: 80%;}
-.client-link {font-size: 36px;text-align: center;width: 50%;}
 .clients-list{padding: 20px; display: flex; flex-direction: column; justify-content: center;}
 .side-menu ul li{list-style-type: square; margin-left: 20px;}
 .main-scren-data{ margin-bottom: 100px }
@@ -183,6 +186,7 @@ nav ul li a{font-size: 22px;}
 }
 
 @media screen and (max-width: 480px) {
+.client-link {width: 100%;}	
 #map{height:480px; }
 }
 

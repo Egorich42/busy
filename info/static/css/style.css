@@ -232,6 +232,9 @@ margin: 20px 0px;
 .registered-office{text-align: left;}
 .registered-office p{ margin:15px; font-size: 14px;}
 
+.client-link {border-radius: 30px; border: solid 2px #FD761F;}
+
+.plitka{    color: #000;}
 
 .select-data{margin: 20px 0px;}
 .select-data p{margin: 10px 0px;}
