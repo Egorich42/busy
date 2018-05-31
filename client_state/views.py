@@ -3,7 +3,7 @@
 import os
 from django.shortcuts import render, get_object_or_404, render_to_response
 from users.models import Client
-from .models import get_hvosty_lists,create_hvosty_excel, curent_finace_states, create_tax_excel, return_excel_list, insert_into_excel, get_today_course, CurrencyStat
+from .models import get_hvosty_lists,create_hvosty_excel,  return_excel_list, insert_into_excel, get_today_course, CurrencyStat, CompanyBalance
 from .forms import StateForm, TaxForm, FoundDifferenceForm, CurrStatForm
 import sqlite3
 from django.http import HttpResponse, HttpResponseRedirect
@@ -51,7 +51,6 @@ def client_detail(request, name):
 			tax_form = TaxForm(request.POST, request.FILES)
 	
 			if tax_form.is_valid():
-				company_name = client_info.id
 				tax_system = client_info.nalog_system
 
 				data_start =  str(tax_form.cleaned_data['start_year'])+"-"+str(tax_form.cleaned_data["start_month"])+"-"+str(tax_form.cleaned_data["start_day"])
@@ -61,10 +60,14 @@ def client_detail(request, name):
 
 
 				conn = sqlite3.connect(base_name)
-				cur = conn.cursor()
+				cur = conn.cursor()				
 
-				excel_file_name = create_tax_excel(request, curent_finace_states(data_start, data_end, cur, tax_system))
-				print(tax_system)
+				if tax_system == 'usn' or tax_system == 'USN':
+					excel_file_name = CompanyBalance(base_name, "'"+data_start+"'", "'"+data_end+"'").create_tax_excel(CompanyBalance(base_name, "'"+data_start+"'", "'"+data_end+"'").count_usn(),tax_system)
+				else:
+					excel_file_name = CompanyBalance(base_name, "'"+data_start+"'", "'"+data_end+"'").create_tax_excel(CompanyBalance(base_name, "'"+data_start+"'", "'"+data_end+"'").count_nds(),tax_system)
+
+
 				return return_excel_list(excel_file_name, client_info.name, "nalog")
 				pass
 

@@ -4,6 +4,9 @@ from datetime import date
 import sqlite3
 import os.path
 
+from TESTO import create_list_of_table_values 
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 nbrb_rates_today = "http://www.nbrb.by/API/ExRates/Rates/{}"
@@ -20,7 +23,7 @@ rates = [
 courses_colls = '(data, name, scale, rate)'
 insert_courses = "INSERT INTO {} VALUES (?,?,?,?);"
 select_course_period = "SELECT * FROM {} WHERE data >= {} AND  data <= {};"
-select_course_data = "SELECT data FROM {};"
+select_course_data = "SELECT data FROM {} ORDER BY data;"
 
 
 
@@ -31,6 +34,13 @@ def generate_data_list(start_data, end_data):
 
     return [start + datetime.timedelta(days=x) for x in range(0, (end-start).days)]
 
+
+def get_today_course():
+    courses_list = []
+    for i in [requests.get(nbrb_rates_today.format(x['code_nbrb'])).json() for x in  rates]:
+        courses_list += [{"cur_name":i["Cur_Name"],"cur_scale":i["Cur_Scale"],"cur_rate":i["Cur_OfficialRate"] }]
+    return courses_list
+    pass
 
 
 class CurrencyUpdater:
@@ -47,7 +57,6 @@ class CurrencyUpdater:
 
     def create_courses_table(self, start_data, money):
        courses_list = []
-
        for i in [requests.get(self.addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list(start_data, str(date.today()))]:
            courses_list += [( str(i["Date"][:10]),i["Cur_Name"], i["Cur_Scale"], i["Cur_OfficialRate"] )]
        return courses_list
@@ -74,11 +83,48 @@ class CurrencyUpdater:
 
 
 
-
+"""
 def full_update():
     for x in range(len(rates)):
         CurrencyUpdater().updater(rates[x], x)
 
 
 full_update()
+"""
 
+#print(get_today_course())
+
+"""
+def today_updater():
+  all_cours_tables = []
+  last_datas = []
+  conn = sqlite3.connect('courses.sqlite')
+  cur = conn.cursor()
+  for i in rates:
+      all_cours_tables += [create_list_of_table_values(cur.execute(select_course_data.format(i['name'])),cur.description)]
+  conn.commit()
+  conn.close()
+  for x in range(len(all_cours_tables)):
+      if str(date.today()) > all_cours_tables[x][-1]['data']:
+          print(str(date.today()))
+          cur.executemany(insert_courses.format(table['name']), self.create_courses_lists(sql_data[-1][0])[counter])
+print(today_updater())
+
+
+"""
+def today_updater():
+    all_cours_tables = []
+    last_datas = []
+    conn = sqlite3.connect('courses.sqlite')
+    cur = conn.cursor()
+    datas_table = create_list_of_table_values(cur.execute(select_course_data.format('usd')),cur.description)
+    print( str(date.today()), datas_table[-1]['data'])
+#    if str(date.today()) > datas_table[-1]['data']:
+    
+    cur.executemany(insert_courses.format('usd'),  [(str(date.today()), get_today_course()[0]['cur_name'],get_today_course()[0]['cur_scale'],get_today_course()[0]['cur_rate'])])
+    conn.commit()
+    conn.close()
+
+
+
+today_updater()

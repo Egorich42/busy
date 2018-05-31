@@ -17,7 +17,11 @@ import requests
 import openpyxl
 from openpyxl import load_workbook,Workbook
 
-from TESTO import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list, nbrb_rates_today, nbrb_rates_on_date, rates, years, months, days
+
+from TESTO import nbrb_rates_today, nbrb_rates_on_date, rates, years, months, days
+from TESTO import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list
+from TESTO import outcome_serv_nds, outcome_tn_nds, income_serv_nds, income_tn_nds, income_tovary,outcome_full_nonds
+
 
 from . import sql_commands as sq_c
 
@@ -26,10 +30,6 @@ from . import sql_commands as sq_c
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 TO_BASE_PATH = str('\\'.join(BASE_DIR.split('\\')[:-2]))+'\\'
 TO_DOCS_PATH = str('\\'.join(BASE_DIR.split('\\')[:-2]))+'\\'+'media'+'\\'+'docs'+'\\'
-
-def sum_result(income_list):
-    return round(sum([i['nds'] for i in income_list if i['full_sum'] != None]),2)
-
 
 
 def create_sorted_list(income_list):
@@ -45,61 +45,85 @@ def create_sorted_list(income_list):
     for i in full_grouped_list:
         output_list+=[{'name': i[0]['name'],
                        'unp':str(i[0]['unp']), 
-                       'nds':round(sum([x['nds'] for x in i]),2)}]
+                       'nds':round(sum([float(x['nds']) for x in i]),2)}]
 
     return output_list
     pass
 
  
-
-def transform_sql_to_list(cursor, request_command, *condition):
-    if len(condition) ==2:
-        sql_request = request_command.format(condition[0],condition[1])
-    if len(condition) ==3:
-        sql_request = request_command.format(condition[0],condition[1],condition[2])
-    if len(condition) ==4:
-        sql_request = request_command.format(condition[0],condition[1],condition[2],condition[3])
-    
-    table = create_list_of_table_values(cursor.execute(sql_request),cursor.description)
-    return table
-    pass
+#---------------------------------CURENT FIN STATE---------------------------------#
 
 
 
-def curent_finace_states(start, end, cursor, nalog_system):
-    from_providers = transform_sql_to_list(cursor, sq_c.select_docs_from_providers, sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'" )
-    to_buyers = transform_sql_to_list(cursor, sq_c.select_docs_to_buyers, sq_c.tn_providers,  "'"+start+"'",  "'"+str(end)+"'" )
-
-    list_ishod_nds_usl = transform_sql_to_list(cursor, sq_c.sel_usl_with_ishod_nds, sq_c.tn_providers,  "'"+start+"'",  "'"+str(end)+"'" )
-    list_ishod_nds_tn = transform_sql_to_list(cursor, sq_c.sel_tn_with_ishod_nds, sq_c.tn_providers,  "'"+start+"'",  "'"+str(end)+"'" )
-
-    list_vhod_nds_usl = transform_sql_to_list(cursor, sq_c.sel_vhod_usl_with_nds, sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'" )
-    list_vhod_nds_tn = transform_sql_to_list(cursor, sq_c.sel_vhod_tn_with_nds, sq_c.tn_buyers,  "'"+start+"'",  "'"+str(end)+"'" )
-
-    list_tovary_nds  = transform_sql_to_list(cursor, sq_c.sel_tovary_with_vhod_nds,   "'"+start+"'",  "'"+str(end)+"'" )
+class CompanyBalance:
+    def __init__(self, base_name = None, data_start = None, data_end = None):
+        self.base_name = base_name
+        self.data_start = data_start
+        self.data_end = data_end
 
 
-    full_vhod_nds = sum_result(list_vhod_nds_usl)+sum_result(list_vhod_nds_tn)+sum_result(list_tovary_nds)
-    full_ishod_nds = sum_result(list_ishod_nds_usl)+sum_result(list_ishod_nds_tn)
+    def tax_sum(self, select_command, cursor, tax_type):
+        return sum([float(x[tax_type]) for x in create_list_of_table_values(cursor.execute(select_command.format(self.data_start, self.data_end)),cursor.description) if x[tax_type] != None])
 
 
-    unsorted_full_list_vhod = [i for i in list_tovary_nds+list_vhod_nds_tn+list_vhod_nds_usl if i['nds'] != 0.0 and i['nds']!=None]
-    unsorted_full_list_ishod = [i for i in list_ishod_nds_tn+list_ishod_nds_usl if i['nds'] != 0.0 and i['nds']!=None]
-    
-    list_vhod = create_sorted_list(unsorted_full_list_vhod)
-    list_ishod = create_sorted_list(unsorted_full_list_ishod)
+    def count_nds(self):
+        conn = sqlite3.connect(self.base_name)
+        cur = conn.cursor()
+        outcome_nds_sum = self.tax_sum(outcome_serv_nds, cur, 'nds')+self.tax_sum(outcome_tn_nds, cur, 'nds')
+        income_nds_sum = self.tax_sum(income_serv_nds, cur, 'nds')+self.tax_sum(income_tn_nds, cur, 'nds')+self.tax_sum(income_tovary, cur, 'nds')
+ 
+        conn.commit()
+        conn.close()        
+
+        return (outcome_nds_sum, income_nds_sum, outcome_nds_sum - income_nds_sum)
+        pass
 
 
-    if nalog_system == 'nds':
-        now_fin_states = str(round(full_ishod_nds - full_vhod_nds,2))
-        tax_system = 'nds' 
-    else:
-        now_fin_states = str(round(sum([i['summ'] for i in to_buyers])*0.05,2))
-        tax_system = 'usn' 
+    def count_usn(self):
+        conn = sqlite3.connect(self.base_name)
+        cur = conn.cursor()
+        usn_sum = round(self.tax_sum(outcome_full_nonds, cur, 'summ')*0.05, 2)
+ 
+        conn.commit()
+        conn.close()
+
+        return usn_sum
+        pass
 
 
-    return(tax_system, full_vhod_nds, full_ishod_nds, now_fin_states, list_ishod, list_vhod)
-    pass
+    def create_tax_excel(request, income_list, tax_type):
+        output_doc = BASE_DIR+'\\'+"tax_result.xlsx"
+        openpyxl.Workbook().save(output_doc)
+        output_list = load_workbook(output_doc,data_only = True)
+        main_out_sheet = output_list.active    
+
+        def insert_cell(row_val, col_val, cell_value):
+            main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+            pass
+
+
+        if tax_type == "nds":
+            insert_cell(1, 1, "НДС за выбранный период составляет")
+            insert_cell(2, 1, "Входящий НДС")
+            insert_cell(3, 1, "Исходящий НДС")
+            insert_cell(4, 1, "НДС к уплате:")
+            insert_cell(2, 2, str(round(income_list[0],2))+" "+"руб.")
+            insert_cell(3, 2, str(round(income_list[1],2))+" "+"руб.")
+            insert_cell(4, 2, str(round(income_list[2],2))+" "+"руб.")
+
+        
+        else: 
+            insert_cell(1, 1, "УСН за выбранный период составляет")  
+            insert_cell(1, 2, str(round(income_list,2))+" "+"руб.") 
+
+
+        output_list.save(filename = output_doc)
+
+        return(str(output_doc))
+        pass
+
+
+#---------------------------------HVOSTY---------------------------------#
 
 
 
@@ -252,35 +276,6 @@ def create_hvosty_excel(request, income_list):
 
 
 
-def create_tax_excel(request, income_list):
-    output_doc = BASE_DIR+'\\'+"tax_result.xlsx"
-    openpyxl.Workbook().save(output_doc)
-    output_list = load_workbook(output_doc,data_only = True)
-    main_out_sheet = output_list.active    
-
-    def insert_cell(row_val, col_val, cell_value):
-        main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
-        pass
-
-
-    if income_list[0] == "nds":
-        insert_cell(1, 1, income_list[0]+" "+"за выбранный период составляет")
-        insert_cell(2, 1, "Входящий" +" "+income_list[0])
-        insert_cell(3, 1, "Исходящий"+" "+income_list[0])
-        insert_cell(4, 1, income_list[0]+" "+"К уплате:")
-        insert_cell(1, 2, income_list[0])
-        insert_cell(2, 2, str(round(income_list[1],2))+" "+"руб.")
-        insert_cell(3, 2, str(round(income_list[2],2))+" "+"руб.")
-        insert_cell(4, 2, str(income_list[3])+" "+"руб.")
-    else: 
-        insert_cell(1, 1, income_list[0]+" "+"за выбранный период составляет")  
-        insert_cell(1, 2, income_list[3]+" "+"руб.") 
-
-
-    output_list.save(filename = output_doc)
-
-    return(str(output_doc))
-    pass    
 
 #------------------------SVERKA SS PORTALOM--------------------
 
