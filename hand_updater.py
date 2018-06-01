@@ -48,24 +48,17 @@ class CurrencyUpdater:
        self.addres = addres
 
 
-    def get_last_update(self):
-        conn = sqlite3.connect('courses.sqlite')
-        cur = conn.cursor()
-        return cur.execute("SELECT data FROM usd").fetchall()[-1][0]
-        pass      
-
-
-    def create_courses_table(self, start_data, money):
+    def create_courses_table(self, money):
        courses_list = []
-       for i in [requests.get(self.addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list("'"+'2018-04-01'+"'", str(date.today()))]:
+       for i in [requests.get(self.addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list( '2017-11-30', '2018-6-01')]:
            courses_list += [( str(i["Date"][:10]),i["Cur_Name"], i["Cur_Scale"], i["Cur_OfficialRate"] )]
        return courses_list
 
 
-    def create_courses_lists(self, start_data):
+    def create_courses_lists(self):
        all_cours_tables = []
        for cours in rates:
-           all_cours_tables += [self.create_courses_table(self.get_last_update(), cours['code_nbrb'])]
+           all_cours_tables += [self.create_courses_table(cours['code_nbrb'])]
        return all_cours_tables
        pass
 
@@ -75,42 +68,22 @@ class CurrencyUpdater:
         cur = conn.cursor()
         cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['name'], courses_colls))
         sql_data = cur.execute(select_course_data.format(table['name'])).fetchall()
-        if sql_data[-1][0] < str(date.today()):
-            cur.executemany(insert_courses.format(table['name']), self.create_courses_lists(sql_data[-1][0])[counter])
-            conn.commit()
-            conn.close()
-            pass
-            
-
-    def today_updater(self):
-        all_cours_tables = []
-        last_datas = []
-        conn = sqlite3.connect('courses.sqlite')
-        cur = conn.cursor()
-        datas_table = create_list_of_table_values(cur.execute(select_course_data.format('usd')),cur.description)
-        for i in range(len(rates)):
-            datas_table = create_list_of_table_values(cur.execute(select_course_data.format(rates[i]['name'])),cur.description)
-            if str(date.today()) != datas_table[-1]['data']:
-                cur.executemany(insert_courses.format(rates[i]['name']),  [(str(date.today()), get_today_course()[i]['cur_name'],get_today_course()[i]['cur_scale'],get_today_course()[i]['cur_rate'])])    
+        cur.executemany(insert_courses.format(table['name']), self.create_courses_lists()[counter])
         conn.commit()
         conn.close()
         pass
-
-
-
-
+            
 
 
 def full_update():
     for x in range(len(rates)):
-        CurrencyUpdater().updater(rates[x], x)
+        CurrencyUpdater().courses_updater(rates[x], x)
 
 
 full_update()
-"""
 
 
 
+#print(CurrencyUpdater().create_courses_lists())
 
-
-CurrencyUpdater().today_updater()
+#CurrencyUpdater().today_updater()

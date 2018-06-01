@@ -419,7 +419,35 @@ class CurrencyStat:
        self.base_name = base_name
        self.request_type = request_type
 
-    
+
+
+    def today_updater(self):
+        all_cours_tables = []
+        last_datas = []
+        conn = sqlite3.connect('courses.sqlite')
+        cur = conn.cursor()
+        datas_table = create_list_of_table_values(cur.execute(select_course_data.format('usd')),cur.description)
+        for i in range(len(rates)):
+            datas_table = create_list_of_table_values(cur.execute(select_course_data.format(rates[i]['name'])),cur.description)
+            if str(date.today()) != datas_table[-1]['data']:
+                cur.executemany(insert_courses.format(rates[i]['name']),  [(str(date.today()), get_today_course()[i]['cur_name'],get_today_course()[i]['cur_scale'],get_today_course()[i]['cur_rate'])])    
+        conn.commit()
+        conn.close()
+        return 
+        pass
+
+
+    def courses_updater(self, table, counter):
+        conn = sqlite3.connect('courses.sqlite')
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['name'], courses_colls))
+        sql_data = cur.execute(select_course_data.format(table['name'])).fetchall()
+        if sql_data[-1][0] < str(date.today()):
+            cur.executemany(insert_courses.format(table['name']), self.create_courses_lists(sql_data[-1][0])[counter])
+            conn.commit()
+            conn.close()
+            pass
+
 
     def create_rates_list(self, select_curr):
         conn = sqlite3.connect(TO_BASE_PATH+'sqlite_bases'+'\\'+'courses.sqlite')
@@ -448,49 +476,59 @@ class CurrencyStat:
         eur = []
         usd = []
         rub = []
+
         for x in self.transform_sql_to_list():
             if x['currency_type'] == '3':
                 for y in self.create_rates_list(sq_c.select_eur_course):
-                    if x['doc_date'] == y['data']:
-                        eur += [{
-                                'doc': x['document_name'],  
-                                'date' : x['doc_date'], 
-                                'contragent':x['contragent_name'],
-                                'country': x['name'], 
-                                'summ':x['summ'], 
-                                'rate_on_date':y['rate'],
-                                'bel_sum':round(float(x['summ'])*float(y['rate']),3),
-                                'curr_name':'EUR',
-                                }]
+                    for i in self.create_rates_list(sq_c.select_usd_course):
+                        if x['doc_date'] == y['data'] and x['doc_date']== i['data']:
+                            eur += [{
+                                    'doc': x['document_name'],  
+                                    'date' : x['doc_date'], 
+                                    'contragent':x['contragent_name'],
+                                    'country': x['name'], 
+                                    'summ':x['summ'], 
+                                    'rate_on_date':y['rate'],
+                                    'usd_rate_on_date':i['rate'],
+                                    'bel_sum':round(float(x['summ'])*float(y['rate']),3),
+                                    'usd_sum':round(float(x['summ'])*float(y['rate'])/float(i['rate']),3),
+                                    'curr_name':'EUR',
+                                    }]
 
             if x['currency_type'] == '7':
                 for y in self.create_rates_list(sq_c.select_usd_course):
-                    if x['doc_date'] == y['data']:
-                        usd += [{
-                                'doc': x['document_name'],  
-                                'date' : x['doc_date'], 
-                                'contragent':x['contragent_name'],
-                                'country': x['name'], 
-                                'summ':x['summ'], 
-                                'rate_on_date':y['rate'],
-                                'bel_sum':round(float(x['summ'])*float(y['rate']),3),
-                                'curr_name':'USD',
-                                }]
+                    for i in self.create_rates_list(sq_c.select_usd_course):
+                        if x['doc_date'] == y['data'] and x['doc_date']== i['data']:
+                            usd += [{
+                                    'doc': x['document_name'],  
+                                    'date' : x['doc_date'], 
+                                    'contragent':x['contragent_name'],
+                                    'country': x['name'], 
+                                    'summ':x['summ'], 
+                                    'rate_on_date':y['rate'],
+                                    'usd_rate_on_date':i['rate'],
+                                    'bel_sum':round(float(x['summ'])*float(y['rate']),3),
+                                    'usd_sum':round(float(x['summ'])*float(y['rate'])/float(i['rate']),3),
+                                    'curr_name':'USD',
+                                    }]
 
 
             if x['currency_type'] == '6':
                 for y in self.create_rates_list(sq_c.select_rus_course):
-                    if x['doc_date'] == y['data']:
-                        rub += [{
-                                'doc': x['document_name'],  
-                                'date' : x['doc_date'], 
-                                'contragent':x['contragent_name'], 
-                                'country': x['name'], 
-                                'summ':x['summ'], 
-                                'rate_on_date':y['rate'],
-                                'bel_sum':round(float(x['summ'])*float(y['rate']/float(y['scale'])),3),
-                                'curr_name':'RUB',
-                                }]
+                    for i in self.create_rates_list(sq_c.select_usd_course):
+                        if x['doc_date'] == y['data'] and x['doc_date']== i['data']:
+                            rub += [{
+                                    'doc': x['document_name'],  
+                                    'date' : x['doc_date'], 
+                                    'contragent':x['contragent_name'], 
+                                    'country': x['name'], 
+                                    'summ':x['summ'], 
+                                    'rate_on_date':y['rate'],
+                                    'usd_rate_on_date':i['rate'],
+                                    'bel_sum':round(float(x['summ'])*float(y['rate']/float(y['scale'])),3),
+                                    'usd_sum':round(float(x['summ'])*float(y['rate']/float(y['scale'])),3)/float(i['rate']),
+                                    'curr_name':'RUB',
+                                    }]
 
         return (eur, usd, rub)
         pass                            
@@ -516,8 +554,11 @@ class CurrencyStat:
         insert_cell(1, 3, "Страна")
         insert_cell(1, 4, "Валюта")
         insert_cell(1, 5, "Сумма в валюте")
-        insert_cell(1, 6, "Курс на дату")
-        insert_cell(1, 7, "Сумма в бел. рублях")
+        insert_cell(1, 6, "Сумма в бел. рублях")
+        insert_cell(1, 7, "Сумма в долларах")
+
+        insert_cell(1, 8, "Курс валюты на дату")
+        insert_cell(1, 9, "Курс доллара на дату")
 
 
     
@@ -527,8 +568,10 @@ class CurrencyStat:
             insert_cell(i+3, 3, income_list[0][i]['country'])
             insert_cell(i+3, 4, income_list[0][i]['curr_name'])
             insert_cell(i+3, 5, income_list[0][i]['summ'])
-            insert_cell(i+3, 6, income_list[0][i]['rate_on_date'])
-            insert_cell(i+3, 7, income_list[0][i]['bel_sum'])
+            insert_cell(i+3, 6, income_list[0][i]['bel_sum'])
+            insert_cell(i+3, 7, income_list[0][i]['usd_sum'])
+            insert_cell(i+3, 8, income_list[0][i]['rate_on_date'])
+            insert_cell(i+3, 9, income_list[0][i]['usd_rate_on_date'])
 
         for i in range(len(income_list[1])):
             insert_cell(len(income_list[0])+i+6, 1, income_list[1][i]['date'])
@@ -536,8 +579,10 @@ class CurrencyStat:
             insert_cell(len(income_list[0])+i+6, 3, income_list[1][i]['country'])
             insert_cell(len(income_list[0])+i+6, 4, income_list[1][i]['curr_name'])
             insert_cell(len(income_list[0])+i+6, 5, income_list[1][i]['summ'])
-            insert_cell(len(income_list[0])+i+6, 6, income_list[1][i]['rate_on_date'])
-            insert_cell(len(income_list[0])+i+6, 7, income_list[1][i]['bel_sum'])
+            insert_cell(len(income_list[0])+i+6, 6, income_list[1][i]['bel_sum'])
+            insert_cell(len(income_list[0])+i+6, 7, income_list[1][i]['usd_sum'])
+            insert_cell(len(income_list[0])+i+6, 8, income_list[1][i]['rate_on_date'])
+            insert_cell(len(income_list[0])+i+6, 9, income_list[1][i]['usd_rate_on_date'])
 
 
         for i in range(len(income_list[2])):
@@ -546,13 +591,19 @@ class CurrencyStat:
             insert_cell(len(income_list[0])+len(income_list[1])+i+9, 3, income_list[2][i]['country'])
             insert_cell(len(income_list[0])+len(income_list[1])+i+9, 4, income_list[2][i]['curr_name'])
             insert_cell(len(income_list[0])+len(income_list[1])+i+9, 5, income_list[2][i]['summ'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 6, income_list[2][i]['rate_on_date'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 7, income_list[2][i]['bel_sum'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 6, income_list[2][i]['bel_sum'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 7, income_list[2][i]['usd_sum'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 8, income_list[2][i]['rate_on_date'])
+            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 9, income_list[2][i]['usd_rate_on_date'])
 
         output_list.save(filename = output_doc)
         return(str(output_doc))
         pass
 
+
+def full_update():
+    for x in range(len(rates)):
+        CurrencyUpdater().updater(rates[x], x)
 
 #---------------------------------STATISTIKA End----------------
 

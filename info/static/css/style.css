@@ -188,6 +188,10 @@ background-color: #fff;
 margin-top: 20px;}
 
 
+.courses-list{display: flex; flex-direction: row;}
+.courses-list article span{font-size: 13px;}
+.courses-list article{padding: 0px 20px;}
+
 /*USER-PROFILE*/
 .user-profile-head{width: 95%;text-align: left;}
 

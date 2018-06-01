@@ -6,14 +6,17 @@
 {% block content %}
 
 <p><span>Компания:</span><span>{{client_info.name}}</span></p>
-{%for curr in today_rate%}
-<article>
-<span>{{curr.cur_rate}} руб.</span>
-<span>за {{curr.cur_scale}}</span>
-<span>{{curr.cur_name}}</span>
-
-</article>
+<section class="courses-list">
+  {%for curr in today_rate%}
+  <article>
+    <span>{{curr.cur_rate}} руб.</span>
+    <span>за {{curr.cur_scale}}</span>
+    <span>{{curr.cur_name}}</span>
+  </article>
 {%endfor%}
+
+</section>
+
 
 <section class="main-client-profile">
 
