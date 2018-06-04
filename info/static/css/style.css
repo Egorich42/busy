@@ -176,7 +176,7 @@ padding-bottom: 50px;
 
 
 .client-actions{width: 70%;}
-.main-client-profile{width: 90%;}
+.main-client-profile{width: 90%; display: flex; align-items: start;}
 
 
 .choice-buttons{ width: 20%;}

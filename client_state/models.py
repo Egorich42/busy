@@ -405,6 +405,24 @@ def get_today_course():
 
 
 
+
+def grouping_by_key(income_list, key_name):
+    output_list = []
+    full_grouped_list = []
+
+    sorted_list = sorted(income_list, key=itemgetter(key_name))
+
+    for key, group in itertools.groupby(sorted_list, key=lambda x:x[key_name]):
+        grouped_sorted_list = list(group)
+        full_grouped_list += [grouped_sorted_list]                              
+
+    return full_grouped_list
+    pass
+
+
+
+
+
 class CurrencyStat:
     def __init__(self, 
                 select_command=sq_c.select_curr_income, 
@@ -481,7 +499,7 @@ class CurrencyStat:
             if x['currency_type'] == '3':
                 for y in self.create_rates_list(sq_c.select_eur_course):
                     for i in self.create_rates_list(sq_c.select_usd_course):
-                        if x['doc_date'] == y['data'] and x['doc_date']== i['data']:
+                        if x['doc_date'] == y['data'] and x['doc_date']== i['data'] and x['name'] != None and type(x['name']) != None:
                             eur += [{
                                     'doc': x['document_name'],  
                                     'date' : x['doc_date'], 
@@ -498,7 +516,7 @@ class CurrencyStat:
             if x['currency_type'] == '7':
                 for y in self.create_rates_list(sq_c.select_usd_course):
                     for i in self.create_rates_list(sq_c.select_usd_course):
-                        if x['doc_date'] == y['data'] and x['doc_date']== i['data']:
+                        if x['doc_date'] == y['data'] and x['doc_date']== i['data'] and x['name'] != None and type(x['name']) != None:
                             usd += [{
                                     'doc': x['document_name'],  
                                     'date' : x['doc_date'], 
@@ -516,7 +534,7 @@ class CurrencyStat:
             if x['currency_type'] == '6':
                 for y in self.create_rates_list(sq_c.select_rus_course):
                     for i in self.create_rates_list(sq_c.select_usd_course):
-                        if x['doc_date'] == y['data'] and x['doc_date']== i['data']:
+                        if x['doc_date'] == y['data'] and x['doc_date']== i['data'] and x['name'] != None  and type(x['name']) != None:
                             rub += [{
                                     'doc': x['document_name'],  
                                     'date' : x['doc_date'], 
@@ -530,9 +548,50 @@ class CurrencyStat:
                                     'curr_name':'RUB',
                                     }]
 
-        return (eur, usd, rub)
-        pass                            
 
+
+        return (eur, usd, rub)
+        pass
+
+
+    def stat_for_country(self):
+        list_of_lists = []
+        final = []
+        
+        for x in grouping_by_key(self.result()[0]+self.result()[1]+self.result()[2], 'country'):
+            final+=[{
+                    'country':x[0]['country'],
+                    'summ':round(sum([float(n['summ']) for n in  x]),2),
+                    'bel_sum':round(sum([float(n['bel_sum']) for n in  x]),2),
+                    'usd_sum':round(sum([float(n['usd_sum']) for n in  x]),2),
+                    'curr_name':x[0]['curr_name'],
+                    }]
+
+        
+        return final    
+
+
+
+    def final_grouping(self):
+        list_of_lists = []
+        final = []
+        for count in self.result():
+            for i in grouping_by_key(count, 'country'):
+                for x in grouping_by_key(i, 'date'):
+                    final+=[{
+                    'date':x[0]['date'],
+                    'contragent':x[0]['contragent'],
+                    'country':x[0]['country'],
+                    'summ':round(sum([float(n['summ']) for n in  x]),2),
+                    'rate_on_date':x[0]['rate_on_date'],
+                    'usd_rate_on_date':x[0]['usd_rate_on_date'],
+                    'bel_sum':round(sum([float(n['bel_sum']) for n in  x]),2),
+                    'usd_sum':round(sum([float(n['usd_sum']) for n in  x]),2),
+                    'curr_name':x[0]['curr_name'],
+                    }]
+            list_of_lists+=[final]        
+
+        return list_of_lists
 
 
     def create_statistica_excel(self):

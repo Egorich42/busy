@@ -6,7 +6,7 @@
 {% block content %}
 
 <p><span>Компания:</span><span>{{client_info.name}}</span></p>
-<section class="courses-list">
+<!--section class="courses-list">
   {%for curr in today_rate%}
   <article>
     <span>{{curr.cur_rate}} руб.</span>
@@ -15,7 +15,7 @@
   </article>
 {%endfor%}
 
-</section>
+</section-->
 
 
 <section class="main-client-profile">
@@ -51,7 +51,7 @@
   	  </article>
 
 		{% csrf_token %}
-		<input type="submit"  name="tax_button"  value="Отправить" style="background-color: #fff;">
+		<input type="submit" class="input-button-client"  name="tax_button"  value="Отправить" style="background-color: #fff;">
 	</form>
 </section>
 
@@ -67,7 +67,7 @@
     </article>
 
 	{% csrf_token %}
-	<input type="submit" name="state_button" value="Отправить" style="background-color: #fff;">
+	<input type="submit" class="input-button-client"  name="state_button" value="Отправить" style="background-color: #fff;">
 	</form>
 </section>
 
@@ -99,7 +99,7 @@
  	</article>
 
     {% csrf_token %}
-    <input type="submit" value="Отправить" name="found_dif"  style="background-color: #fff;">
+    <input type="submit" class="input-button-client"  value="Отправить" name="found_dif"  style="background-color: #fff;">
   	</form>
 </section>
 
@@ -140,7 +140,7 @@
   </article>
 
     {% csrf_token %}
-    <input type="submit" value="Отправить" name="curr_stat"  style="background-color: #fff;">
+    <input type="submit" value="Отправить"  class="input-button-client"  name="curr_stat"  style="background-color: #fff;">
   	</form>
 
   	
