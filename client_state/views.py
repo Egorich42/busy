@@ -3,7 +3,7 @@
 import os
 from django.shortcuts import render, get_object_or_404, render_to_response
 from users.models import Client
-from .models import get_hvosty_lists,create_hvosty_excel,  return_excel_list, insert_into_excel, get_today_course, CurrencyStat, CompanyBalance
+from .models import get_hvosty_lists,create_hvosty_excel,  return_excel_list, insert_into_excel, CoursesUpdater, CurrencyStat, CompanyBalance
 from .forms import StateForm, TaxForm, FoundDifferenceForm, CurrStatForm
 import sqlite3
 from django.http import HttpResponse, HttpResponseRedirect
@@ -97,27 +97,6 @@ def client_detail(request, name):
 				data_end = str(currency_stat_form.cleaned_data['end_year'])+"-"+str(currency_stat_form.cleaned_data["end_month"])+"-"+str(currency_stat_form.cleaned_data["end_day"])
 				base_name = TO_BASE_PATH+'sqlite_bases'+'\\'+str(client_info.name)+'.sqlite'
 
-
-				"""
-
-				gg = excel_file_name = CurrencyStat(base_name = base_name,
-											   data_start =data_start,
-											   data_end=data_end, 
-											   request_type=currency_stat_form.cleaned_data['data_type'])
-
-
-				print(gg.stat_for_country())
-
-				"""
-
-
-
-
-
-
-
-
-
 				excel_file_name = CurrencyStat(base_name = base_name,
 											   data_start =data_start,
 											   data_end=data_end, 
@@ -137,7 +116,7 @@ def client_detail(request, name):
 																		'tax_form':tax_form, 
 																		"dif_form":find_difference_form,
 																		"currency_stat_form":currency_stat_form,
-																		#'today_rate':get_today_course(),
+																		'today_rate': CoursesUpdater().today_updater(),
 																		})
 
 	else:

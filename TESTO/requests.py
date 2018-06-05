@@ -103,6 +103,11 @@ select_eur_course = "SELECT * FROM eur WHERE data >= {} AND  data <= {};"
 select_grivn_course = "SELECT * FROM grivna WHERE data >= {} AND  data <= {};"
 select_rus_course = "SELECT * FROM rus WHERE data >= {} AND  data <= {};"
 
+select_course_period = "SELECT * FROM {} WHERE data >= {} AND  data <= {};"
+select_course_on_date = "SELECT * FROM {} WHERE data = {};"
+select_course_data = "SELECT data FROM {} ORDER BY data;"
+
+
 
 select_curr_income =  """
 SELECT * FROM contragents_documents_two

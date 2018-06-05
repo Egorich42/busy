@@ -20,7 +20,7 @@ from openpyxl import load_workbook,Workbook
 
 from TESTO import nbrb_rates_today, nbrb_rates_on_date, rates, years, months, days
 from TESTO import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list
-from TESTO import outcome_serv_nds, outcome_tn_nds, income_serv_nds, income_tn_nds, income_tovary,outcome_full_nonds
+from TESTO import outcome_serv_nds, outcome_tn_nds, income_serv_nds, income_tn_nds, select_course_on_date, income_tovary,outcome_full_nonds,select_course_data, insert_courses
 
 
 from . import sql_commands as sq_c
@@ -50,10 +50,21 @@ def create_sorted_list(income_list):
     return output_list
     pass
 
+def grouping_by_key(income_list, key_name):
+    output_list = []
+    full_grouped_list = []
+
+    sorted_list = sorted(income_list, key=itemgetter(key_name))
+
+    for key, group in itertools.groupby(sorted_list, key=lambda x:x[key_name]):
+        grouped_sorted_list = list(group)
+        full_grouped_list += [grouped_sorted_list]                              
+
+    return full_grouped_list
+    pass
+
  
 #---------------------------------CURENT FIN STATE---------------------------------#
-
-
 
 class CompanyBalance:
     def __init__(self, base_name = None, data_start = None, data_end = None):
@@ -404,25 +415,6 @@ def get_today_course():
     pass
 
 
-
-
-def grouping_by_key(income_list, key_name):
-    output_list = []
-    full_grouped_list = []
-
-    sorted_list = sorted(income_list, key=itemgetter(key_name))
-
-    for key, group in itertools.groupby(sorted_list, key=lambda x:x[key_name]):
-        grouped_sorted_list = list(group)
-        full_grouped_list += [grouped_sorted_list]                              
-
-    return full_grouped_list
-    pass
-
-
-
-
-
 class CurrencyStat:
     def __init__(self, 
                 select_command=sq_c.select_curr_income, 
@@ -437,43 +429,12 @@ class CurrencyStat:
        self.base_name = base_name
        self.request_type = request_type
 
-
-
-    def today_updater(self):
-        all_cours_tables = []
-        last_datas = []
-        conn = sqlite3.connect('courses.sqlite')
-        cur = conn.cursor()
-        datas_table = create_list_of_table_values(cur.execute(select_course_data.format('usd')),cur.description)
-        for i in range(len(rates)):
-            datas_table = create_list_of_table_values(cur.execute(select_course_data.format(rates[i]['name'])),cur.description)
-            if str(date.today()) != datas_table[-1]['data']:
-                cur.executemany(insert_courses.format(rates[i]['name']),  [(str(date.today()), get_today_course()[i]['cur_name'],get_today_course()[i]['cur_scale'],get_today_course()[i]['cur_rate'])])    
-        conn.commit()
-        conn.close()
-        return 
-        pass
-
-
-    def courses_updater(self, table, counter):
-        conn = sqlite3.connect('courses.sqlite')
-        cur = conn.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS {} {}".format(table['name'], courses_colls))
-        sql_data = cur.execute(select_course_data.format(table['name'])).fetchall()
-        if sql_data[-1][0] < str(date.today()):
-            cur.executemany(insert_courses.format(table['name']), self.create_courses_lists(sql_data[-1][0])[counter])
-            conn.commit()
-            conn.close()
-            pass
-
-
     def create_rates_list(self, select_curr):
         conn = sqlite3.connect(TO_BASE_PATH+'sqlite_bases'+'\\'+'courses.sqlite')
         cur = conn.cursor()
         sql_request = select_curr.format("'"+str(self.data_start)+"'", "'"+str(self.data_end)+"'")
         return create_list_of_table_values(cur.execute(sql_request),cur.description)
         pass
-
 
 
     def transform_sql_to_list(self):
@@ -486,8 +447,7 @@ class CurrencyStat:
 
         sql_request = sel_request.format("'"+self.data_start+"'","'"+self.data_end+"'")
     
-        table = create_list_of_table_values(cur.execute(sql_request),cur.description)
-        return table
+        return create_list_of_table_values(cur.execute(sql_request),cur.description)
         pass
 
     def result(self):
@@ -547,28 +507,22 @@ class CurrencyStat:
                                     'usd_sum':round(float(x['summ'])*float(y['rate']/float(y['scale'])),3)/float(i['rate']),
                                     'curr_name':'RUB',
                                     }]
-
-
-
         return (eur, usd, rub)
         pass
 
 
     def stat_for_country(self):
-        list_of_lists = []
-        final = []
+        state_for_cuntry = []
         
         for x in grouping_by_key(self.result()[0]+self.result()[1]+self.result()[2], 'country'):
-            final+=[{
+            state_for_cuntry+=[{
                     'country':x[0]['country'],
                     'summ':round(sum([float(n['summ']) for n in  x]),2),
                     'bel_sum':round(sum([float(n['bel_sum']) for n in  x]),2),
                     'usd_sum':round(sum([float(n['usd_sum']) for n in  x]),2),
-                    'curr_name':x[0]['curr_name'],
                     }]
-
-        
-        return final    
+        return state_for_cuntry
+        pass
 
 
 
@@ -589,24 +543,32 @@ class CurrencyStat:
                     'usd_sum':round(sum([float(n['usd_sum']) for n in  x]),2),
                     'curr_name':x[0]['curr_name'],
                     }]
-            list_of_lists+=[final]        
+            list_of_lists+=[final]
 
         return list_of_lists
+        pass
 
 
     def create_statistica_excel(self):
-        output_doc = BASE_DIR+"tax_result.xlsx"
+        output_doc = BASE_DIR+"result.xlsx"
         openpyxl.Workbook().save(output_doc)
         output_list = load_workbook(output_doc,data_only = True)
-        main_out_sheet = output_list.active  
+        main_out_sheet = output_list.active
+        output_list.create_sheet("full_stat")
+        full_stat = output_list["full_stat"]
 
 
-        income_list = self.result()
-
+        income_list = self.final_grouping()
+        income_list_main = self.stat_for_country()
 
         def insert_cell(row_val, col_val, cell_value):
-            main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+            full_stat.cell(row = row_val, column = col_val).value = cell_value
             pass  
+
+
+        def insert_cell_main(row_val, col_val, cell_value):
+            main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+            pass 
 
         insert_cell(1, 1, "Дата")
         insert_cell(1, 2, "Контрагент")
@@ -615,9 +577,21 @@ class CurrencyStat:
         insert_cell(1, 5, "Сумма в валюте")
         insert_cell(1, 6, "Сумма в бел. рублях")
         insert_cell(1, 7, "Сумма в долларах")
-
         insert_cell(1, 8, "Курс валюты на дату")
         insert_cell(1, 9, "Курс доллара на дату")
+
+
+        insert_cell_main(1, 1, "Страна")
+        insert_cell_main(1, 2, "Сумма в валюте платежа")
+        insert_cell_main(1, 3, "Сумма в бел. рублях")
+        insert_cell_main(1, 4, "Сумма в долларах")
+
+
+        for i in range(len(income_list_main)):
+            insert_cell_main(i+3, 1, income_list_main[i]['country'])
+            insert_cell_main(i+3, 2, income_list_main[i]['summ'])
+            insert_cell_main(i+3, 3, income_list_main[i]['bel_sum'])
+            insert_cell_main(i+3, 4, income_list_main[i]['usd_sum'])
 
 
     
@@ -632,37 +606,34 @@ class CurrencyStat:
             insert_cell(i+3, 8, income_list[0][i]['rate_on_date'])
             insert_cell(i+3, 9, income_list[0][i]['usd_rate_on_date'])
 
-        for i in range(len(income_list[1])):
-            insert_cell(len(income_list[0])+i+6, 1, income_list[1][i]['date'])
-            insert_cell(len(income_list[0])+i+6, 2, income_list[1][i]['contragent'])
-            insert_cell(len(income_list[0])+i+6, 3, income_list[1][i]['country'])
-            insert_cell(len(income_list[0])+i+6, 4, income_list[1][i]['curr_name'])
-            insert_cell(len(income_list[0])+i+6, 5, income_list[1][i]['summ'])
-            insert_cell(len(income_list[0])+i+6, 6, income_list[1][i]['bel_sum'])
-            insert_cell(len(income_list[0])+i+6, 7, income_list[1][i]['usd_sum'])
-            insert_cell(len(income_list[0])+i+6, 8, income_list[1][i]['rate_on_date'])
-            insert_cell(len(income_list[0])+i+6, 9, income_list[1][i]['usd_rate_on_date'])
-
-
-        for i in range(len(income_list[2])):
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 1, income_list[2][i]['date'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 2, income_list[2][i]['contragent'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 3, income_list[2][i]['country'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 4, income_list[2][i]['curr_name'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 5, income_list[2][i]['summ'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 6, income_list[2][i]['bel_sum'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 7, income_list[2][i]['usd_sum'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 8, income_list[2][i]['rate_on_date'])
-            insert_cell(len(income_list[0])+len(income_list[1])+i+9, 9, income_list[2][i]['usd_rate_on_date'])
-
         output_list.save(filename = output_doc)
         return(str(output_doc))
         pass
 
 
-def full_update():
-    for x in range(len(rates)):
-        CurrencyUpdater().updater(rates[x], x)
+
+
+##################----------COURSES--------------##########
+
+class CoursesUpdater:
+
+    def today_updater(self):
+        conn = sqlite3.connect('courses.sqlite')
+        cur = conn.cursor()
+        today_course = []
+        for val in rates:
+            today_course +=  create_list_of_table_values(cur.execute(select_course_on_date.format(val['name'], "'"+str(date.today())+"'")),cur.description)
+
+        datas_table = create_list_of_table_values(cur.execute(select_course_data.format('usd')),cur.description)
+        for i in range(len(rates)):
+            datas_table = create_list_of_table_values(cur.execute(select_course_data.format(rates[i]['name'])),cur.description)
+            if str(date.today()) != datas_table[-1]['data']:
+                cur.executemany(insert_courses.format(rates[i]['name']),  [(str(date.today()), get_today_course()[i]['cur_name'],get_today_course()[i]['cur_scale'],get_today_course()[i]['cur_rate'])])    
+        conn.commit()
+        conn.close()
+        return today_course
+        pass
+
 
 #---------------------------------STATISTIKA End----------------
 
