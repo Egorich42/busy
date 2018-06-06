@@ -7,7 +7,9 @@ import sqlite3
 import itertools
 from django.http import HttpResponse, HttpResponseRedirect
 import mimetypes
-
+from itertools import groupby
+import itertools
+from operator import itemgetter
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
@@ -47,4 +49,19 @@ def generate_data_list(start_data, end_data):
     start = datetime.datetime.strptime(start_data, "%Y-%m-%d")
     end = datetime.datetime.strptime(end_data, "%Y-%m-%d")
     return [start + datetime.timedelta(days=x) for x in range(0, (end-start).days)]
+    pass
+
+
+
+def grouping_by_key(income_list, key_name):
+    output_list = []
+    full_grouped_list = []
+
+    sorted_list = sorted(income_list, key=itemgetter(key_name))
+
+    for key, group in itertools.groupby(sorted_list, key=lambda x:x[key_name]):
+        grouped_sorted_list = list(group)
+        full_grouped_list += [grouped_sorted_list]                              
+
+    return full_grouped_list
     pass

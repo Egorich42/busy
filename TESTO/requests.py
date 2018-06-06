@@ -129,8 +129,128 @@ LEFT JOIN contragents ON contragents_documents.parent=contragents.id
 LEFT JOIN countries   ON contragents.country =countries.dbf_id
 WHERE contragents_documents.doc_date >= {} 
 AND contragents_documents.doc_date <= {}
+
 AND contragents_documents.deleted != '*'
 AND contragents_documents.doc_type != '0'
 AND contragents_documents.currency_type != '1'
+
 ORDER BY contragents_documents.doc_date;
 """  
+
+######------REQUESTS-FOR-HVOSTY--------################
+#--SELECT_OUTCOME PAYS AND DOCS---#
+
+sel_out_pays_br ="""
+SELECT * FROM contragents_documents
+LEFT JOIN contragents ON contragents_documents.parent=contragents.id
+WHERE contragents_documents.doc_date >= {} 
+AND contragents_documents.doc_date <= {}
+
+AND contragents_documents.deleted != '*'
+AND contragents_documents.doc_type = '0'
+AND contragents_documents.operation_type != '3' 
+AND contragents_documents.pay_type != 'S5C'
+AND contragents_documents.pay_type != '2MS'
+AND contragents_documents.pay_type != '2MS'
+AND contragents_documents.pay_type != '2MS'
+AND contragents_documents.pay_type != '2MQ'
+AND contragents_documents.currency_type = '0'
+
+ORDER BY contragents_documents.doc_date;
+"""
+
+
+
+sel_out_docs_br = """
+SELECT * FROM contragents_documents
+LEFT JOIN contragents ON contragents_documents.parent=contragents.id
+WHERE contragents_documents.doc_date >= {} 
+AND contragents_documents.doc_date <= {}
+
+AND contragents_documents.deleted != '*'
+AND contragents_documents.doc_type != '0'
+AND contragents_documents.back_flag = '0'
+AND contragents_documents.operation_type = '1'
+
+ORDER BY contragents_documents.doc_date;
+
+"""
+
+
+sel_out_docs_br_back = """
+SELECT * FROM contragents_documents
+LEFT JOIN contragents ON contragents_documents.parent=contragents.id
+WHERE contragents_documents.doc_date >= {} 
+AND contragents_documents.doc_date <= {}
+
+AND contragents_documents.doc_type != '0'
+AND contragents_documents.deleted != '*'
+AND contragents_documents.back_flag != '0'
+
+ORDER BY contragents_documents.doc_date;
+"""
+#ДПД == 2MS
+#ХЗ ЧТО == S5C
+
+
+
+#--SELECT_INCOME PAYS AND DOCS---#
+
+sel_income_docs_br = """
+SELECT * FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+
+AND contragents_documents_two.doc_type = '0'
+AND contragents_documents_two.deleted != '*'
+AND contragents_documents_two.provider_account_type != '364    9U'
+AND contragents_documents_two.provider_account_type != '364    AS'
+
+ORDER BY contragents_documents_two.doc_date;
+"""
+
+
+sel_income_pays_br = """
+SELECT * FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+
+AND contragents_documents_two.doc_type != '0' 
+AND contragents_documents_two.deleted !='*' 
+AND contragents_documents_two.pay_type !='S5B' 
+AND contragents_documents_two.pay_type !='2MM'
+AND contragents_documents_two.currency_type ='0'
+
+ORDER BY contragents_documents_two.doc_date;
+"""
+
+#ДОГОВОР ПЕРЕВОДА ДОЛГА
+sel_income_pays_br_dpd = """
+SELECT * FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+
+AND contragents_documents_two.doc_type != '0' 
+AND contragents_documents_two.deleted !='*' 
+AND contragents_documents_two.pay_type ='2MM'
+
+ORDER BY contragents_documents_two.doc_date;
+"""
+
+
+sel_income_pays_br_back = """
+SELECT * FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+
+AND contragents_documents_two.doc_type != '0' 
+AND contragents_documents_two.deleted !='*' 
+AND contragents_documents_two.pay_type ='S5B' 
+AND contragents_documents_two.currency_type ='0'
+
+ORDER BY contragents_documents_two.doc_date;
+"""

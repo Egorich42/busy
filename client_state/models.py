@@ -1,11 +1,12 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 from django.db import migrations, models
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
+
 from itertools import groupby
 from collections import defaultdict
 from operator import itemgetter
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
 
 import datetime
 from datetime import date
@@ -135,8 +136,6 @@ class CompanyBalance:
 
 
 #---------------------------------HVOSTY---------------------------------#
-
-
 
 def transform_sql(select_command,docs,pays,cursor,contragent,data_start,data_end):
     select_documents = [select_command.format(doc, "'"+str(contragent)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (docs,pays)]
@@ -570,21 +569,16 @@ class CurrencyStat:
             main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
             pass 
 
+
+
+        col_names = ["Дата", "Контрагент", "Страна","Валюта", "Сумма в валюте", "Сумма в бел. рублях",  "Сумма в долларах", "Курс валюты на дату", "Курс доллара на дату"]    
         insert_cell(1, 1, "Дата")
-        insert_cell(1, 2, "Контрагент")
-        insert_cell(1, 3, "Страна")
-        insert_cell(1, 4, "Валюта")
-        insert_cell(1, 5, "Сумма в валюте")
-        insert_cell(1, 6, "Сумма в бел. рублях")
-        insert_cell(1, 7, "Сумма в долларах")
-        insert_cell(1, 8, "Курс валюты на дату")
-        insert_cell(1, 9, "Курс доллара на дату")
+        
+        for name in col_names:
+            insert_cell(1, col_names.index(name), name)
 
-
-        insert_cell_main(1, 1, "Страна")
-        insert_cell_main(1, 2, "Сумма в валюте платежа")
-        insert_cell_main(1, 3, "Сумма в бел. рублях")
-        insert_cell_main(1, 4, "Сумма в долларах")
+        for contr_name in col_names[0:4]:
+            insert_cell(1, col_names.index(name), name)
 
 
         for i in range(len(income_list_main)):
