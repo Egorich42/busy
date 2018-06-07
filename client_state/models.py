@@ -569,16 +569,21 @@ class CurrencyStat:
             main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
             pass 
 
-
-
-        col_names = ["Дата", "Контрагент", "Страна","Валюта", "Сумма в валюте", "Сумма в бел. рублях",  "Сумма в долларах", "Курс валюты на дату", "Курс доллара на дату"]    
         insert_cell(1, 1, "Дата")
-        
-        for name in col_names:
-            insert_cell(1, col_names.index(name), name)
+        insert_cell(1, 2, "Контрагент")
+        insert_cell(1, 3, "Страна")
+        insert_cell(1, 4, "Валюта")
+        insert_cell(1, 5, "Сумма в валюте")
+        insert_cell(1, 6, "Сумма в бел. рублях")
+        insert_cell(1, 7, "Сумма в долларах")
+        insert_cell(1, 8, "Курс валюты на дату")
+        insert_cell(1, 9, "Курс доллара на дату")
 
-        for contr_name in col_names[0:4]:
-            insert_cell(1, col_names.index(name), name)
+
+        insert_cell_main(1, 1, "Страна")
+        insert_cell_main(1, 2, "Сумма в валюте платежа")
+        insert_cell_main(1, 3, "Сумма в бел. рублях")
+        insert_cell_main(1, 4, "Сумма в долларах")
 
 
         for i in range(len(income_list_main)):

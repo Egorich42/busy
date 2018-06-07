@@ -28,52 +28,51 @@ class Hvosty:
 		pass
 
 
-	def contragent_ops_result(self, income_list, sum_type):
+	def contragent_ops_result(self, income_list):
 		result = []
 		for contragent in income_list:
-			result +=[{'name': contragent[0]['contragent_name'], 'parent':contragent[0]['parent'],  sum_type:round(sum([float(x['summ']) for x in contragent]),2)}]
+			result +=[{'name': contragent[0]['contragent_name'], 'parent':contragent[0]['parent'],  'sum':round(sum([float(x['summ']) for x in contragent]),2)}]
 		return result
 		pass
 		
 
+
+	def found_result(self, one_list, sec_list):
+		out_list = []
+		in_list = []
+		for doc in one_list:
+			for ops in sec_list:
+				if doc['parent'] == ops['parent']:
+					if doc['sum'] > ops['sum']:
+						out_list+=[{'name':doc['name'], 'summ':round(doc['sum'] -  ops['sum'],2)}]
+
+					if doc['sum'] < ops['sum']:
+						in_list+=[{'name':doc['name'], 'summ': round(ops['sum'] - doc['sum'],2)}]
+
+		return(out_list, in_list)			
+		pass
+
+
 	def show_contragent_balance(self):
+#		provider_debt = []#предоплатили поставщику, не отгрузил
+#		provider_prepay = []#поставил, не оплатили еще
 
-		out_pays = self.contragent_ops_result(grouping_by_key(self.get_ops_list()[0],'parent'), 'out_pays')
-		income_docs= self.contragent_ops_result(grouping_by_key(self.get_ops_list()[1], 'parent'),'income_docs')
+#		buyer_debt = []#покупатель должен денег
+#		buyer_prepay = []#покупатель предоплатил, не отгрузили
 
-		income_pays = self.contragent_ops_result(grouping_by_key(self.get_ops_list()[2], 'parent'),'income_pays')
-		outcome_docs= self.contragent_ops_result(grouping_by_key(self.get_ops_list()[3], 'parent'),'outcome_docs')
+		out_pays = self.contragent_ops_result(grouping_by_key(self.get_ops_list()[0],'parent'))
+		income_docs= self.contragent_ops_result(grouping_by_key(self.get_ops_list()[1], 'parent'))
 
-
-		providers_state = grouping_by_key(out_pays+income_docs,'parent')
-
-		buyers_state = grouping_by_key(income_pays+outcome_docs,'parent')
-
-		provider_debt = []#предоплатили поставщику, не отгрузил
-		provider_prepay = []#поставил, не оплатили еще
+		income_pays = self.contragent_ops_result(grouping_by_key(self.get_ops_list()[2], 'parent'))
+		outcome_docs= self.contragent_ops_result(grouping_by_key(self.get_ops_list()[3], 'parent'))
 
 
-		buyer_debt = []#покупатель должен денег
-		buyer_prepay = []#покупатель предоплатил, не отгрузили
 
-		for provider_state in providers_state:
-			if len(provider_state)>1:
-				for i in provider_state:
-					if provider_state[0]['out_pays'] > provider_state[1]['income_docs']:
-						provider_debt+=[{'name':i['name'], 'summ':i['out_pays'] - i['income_docs']}]
+		provider_debt = self.found_result(out_pays, income_docs)[0]
+		provider_prepay = self.found_result(out_pays, income_docs)[1]
 
-					if provider_state[0]['out_pays'] < provider_state[1]['income_docs']:
-						provider_prepay+=[{'name':i['name'], 'summ':i['income_docs'] - i['out_pays']}]
-
-
-		for buyer_state in buyers_state:
-			if len(buyer_state)>1:
-				for x in buyer_state:
-					if buyer_state[0]['income_pays'] > buyer_state[1]['outcome_docs']:
-							buyer_prepay+=[{'name':x['name'],   'summ':x['income_pays'] - x['outcome_docs']}]
-
-					if buyer_state[0]['income_pays'] < buyer_state[1]['outcome_docs']:
-						buyer_debt+=[{'name':x['name'],   'summ':x['outcome_docs'] - x['income_pays']}]
+		buyer_debt =self.found_result(income_pays, outcome_docs)[0]
+		buyer_prepay = self.found_result(income_pays, outcome_docs)[1]
 
 		return (provider_debt, provider_prepay, buyer_prepay, buyer_debt)
 		pass
