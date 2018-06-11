@@ -20,11 +20,9 @@ from openpyxl import load_workbook,Workbook
 
 
 from TESTO import nbrb_rates_today, nbrb_rates_on_date, rates, years, months, days
-from TESTO import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list
-from TESTO import outcome_serv_nds, outcome_tn_nds, income_serv_nds, income_tn_nds, select_course_on_date, income_tovary,outcome_full_nonds,select_course_data, insert_courses
+from TESTO import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list, grouping_by_key
+from TESTO.requests import *
 
-
-from . import sql_commands as sq_c
 
 
 
@@ -50,20 +48,6 @@ def create_sorted_list(income_list):
 
     return output_list
     pass
-
-def grouping_by_key(income_list, key_name):
-    output_list = []
-    full_grouped_list = []
-
-    sorted_list = sorted(income_list, key=itemgetter(key_name))
-
-    for key, group in itertools.groupby(sorted_list, key=lambda x:x[key_name]):
-        grouped_sorted_list = list(group)
-        full_grouped_list += [grouped_sorted_list]                              
-
-    return full_grouped_list
-    pass
-
  
 #---------------------------------CURENT FIN STATE---------------------------------#
 
@@ -137,154 +121,112 @@ class CompanyBalance:
 
 #---------------------------------HVOSTY---------------------------------#
 
-def transform_sql(select_command,docs,pays,cursor,contragent,data_start,data_end):
-    select_documents = [select_command.format(doc, "'"+str(contragent)+"'", "'"+data_start+"'","'"+data_end+"'") for doc in (docs,pays)]
-    documents_list = [create_list_of_table_values(cursor.execute(table),cursor.description) for table in select_documents]
+class Hvosty:
+    def __init__(self, base_name=None, start_data = None, end_data = None):
+        self.base_name = base_name
+        self.start_data = start_data
+        self.end_data = end_data
 
-    summa_tn = sum([i['summ']for i in documents_list[0]])
-    summa_pp = sum([i['summ']for i in documents_list[1]])
-    
-    return (documents_list,summa_tn,summa_pp)
-    pass
-    
-     
+    def get_ops_list(self):
+        conn = sqlite3.connect(self.base_name )
+        cur = conn.cursor()
 
-def get_hvosty_lists(cursor,data_start, data_end):
-    contragents_id = create_list_of_table_values(cursor.execute(sq_c.select_contragents_identificator),cursor.description)
-    contargents_id_list = [i['id'] for i in contragents_id]
-    
-    debts_providers=[]
-    prepayment_providers=[]
-    debts_buyers=[]
-    prepayment_buyers=[]
-    id_list =[]
+        income_pays_list = create_list_of_table_values(cur.execute(sel_income_pays_br.format(self.start_data, self.end_data)),cur.description)
+        out_docs_list = create_list_of_table_values(cur.execute(sel_out_docs_br.format(self.start_data, self.end_data)),cur.description)
 
-   
-    for altair in contargents_id_list:
+        out_pays_list = create_list_of_table_values(cur.execute(sel_out_pays_br.format(self.start_data, self.end_data)),cur.description)
+        income_docs_list = create_list_of_table_values(cur.execute(sel_income_docs_br.format(self.start_data, self.end_data)),cur.description)
 
-        buyers_docs = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers,cursor,altair,data_start,data_end)
-        buyers_docs_vozvr = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers_vozvr,cursor,altair,data_start,data_end)
-        buyers_docs_dpd = transform_sql(sq_c.select_documents_to_buyers,sq_c.tn_buyers, sq_c.pp_buyers_dpd,cursor,altair,data_start,data_end)
-
-        providers_docs = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers,cursor,altair,data_start,data_end)
-        providers_docs_nodel = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_no_del, sq_c.pp_providers,cursor,altair,data_start,data_end)
-        providers_docs_vozvr = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers, sq_c.pp_providers_vozvr,cursor,altair,data_start,data_end)
-
-        providers_docs_moneyback = transform_sql(sq_c.select_documents_from_providers,sq_c.tn_providers_moneyback, sq_c.pp_providers,cursor,altair,data_start,data_end)
-
-        suma_tn_prov = providers_docs[1]+providers_docs_nodel[1]+buyers_docs_dpd[2]+providers_docs_vozvr[2]-providers_docs_moneyback[1]
-        suma_pp_prov = providers_docs[2]# добавляю нужныц и работающий в сверке +buyers_docs_vozvr[2] - по нулям
-                                        #У возвратной неравильные команды, именно в списке функций
-    
-        suma_tn_buy = buyers_docs[1]
-        suma_pp_buy = buyers_docs[2] 
-
-        inner_summ = suma_tn_prov+suma_pp_buy
-        outer_summ = suma_tn_buy+suma_pp_prov 
-
-        if suma_tn_prov>suma_pp_prov and providers_docs[0][0] !=[]:
-            if inner_summ-outer_summ>0.1:
-                summ = str(round(inner_summ-outer_summ,2))
-                for_summator = round(inner_summ-outer_summ,2)
-                debts_providers += [{
-                                    'name':providers_docs[0][0][0]['name'], 
-                                    'contragent_id':providers_docs[0][0][0]['id'], 
-                                    'summa':summ, 
-                                    'for_sumator':for_summator}]
-             
-        if suma_tn_prov<suma_pp_prov and providers_docs[0][0] !=[]:
-            if outer_summ-inner_summ>0.1:
-                summ = str(round(outer_summ-inner_summ,2))
-                for_summator = round(outer_summ-inner_summ,2)
-                prepayment_providers += [{'name':providers_docs[0][0][0]['name'],
-                                        'summa':summ,
-                                        'for_sumator':for_summator}]
-
-        if suma_tn_buy<suma_pp_buy and buyers_docs[0][0] !=[]:
-            if inner_summ-outer_summ>0.1:
-                summ = str(round(inner_summ-outer_summ,2))
-                for_summator = round(outer_summ-inner_summ,2)
-                debts_buyers += [{'name':buyers_docs[0][0][0]['name'],
-                                    'summa':summ,
-                                    'for_sumator':for_summator}]            
-
-        if suma_tn_buy>suma_pp_buy and buyers_docs[0][0] !=[]:
-            if outer_summ-inner_summ > 0.1:
-                summ = str(round(outer_summ-inner_summ,2))
-                for_summator = round(outer_summ-inner_summ,2)
-                prepayment_buyers += [{'name':buyers_docs[0][0][0]['name'],
-                                        'summa':summ,
-                                        'for_sumator':for_summator}]            
-    
-
-    def summator():
-        summa = []
-        for x in (debts_providers,prepayment_providers,debts_buyers,prepayment_buyers):
-            summa += [round(sum([i['for_sumator'] for i in x]),2)]
-        return summa
-            
-    debts_providers_result = summator()[0]
-    prepayment_providers_result = summator()[1]
-    debts_buyers_result = summator()[2]
-    prepayment_buyers_result = summator()[3]
-
-    return(
-            debts_providers,
-            prepayment_providers,
-            debts_buyers,
-            prepayment_buyers, 
-            debts_providers_result,
-            prepayment_providers_result,
-            debts_buyers_result,
-            prepayment_buyers_result
-            )
-    pass
-
-
-
-
-def create_hvosty_excel(request, income_list):
-    output_doc = BASE_DIR+'\\'+"resultat.xlsx"
-    openpyxl.Workbook().save(output_doc)
-    output_list = load_workbook(output_doc,data_only = True)
-    main_out_sheet = output_list.active
-
-
-    def insert_cell(row_val, col_val, cell_value):
-        main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+        conn.commit()
+        conn.close()
+        return income_pays_list, out_docs_list, out_pays_list, income_docs_list
         pass
 
-    insert_cell(1, 1, "Контрагент")
-    insert_cell(1, 2, "Сумма")
+    def contragent_ops_result(self, income_list):
+        result = []
+        for contragent in income_list:
+            result +=[{'name': contragent[0]['contragent_name'], 'parent':contragent[0]['parent'],  'sum':round(sum([float(x['summ']) for x in contragent]),2)}]
+        return result
+        pass
+        
 
-    insert_cell(3, 1, 'ЗАДОЛЖЕННОСТЬ ПОКУПАТЕЛЕЙ (Д 62)'  )
-    for i in range(len(income_list[0])):
-        insert_cell(i+5, 1, income_list[0][i]['name'] )
-        insert_cell(i+5, 2, income_list[0][i]['summa'])
+    def found_result(self, one_list, sec_list):
+        out_list = []
+        in_list = []
+        for doc in one_list:
+            for ops in sec_list:
+                if doc['parent'] == ops['parent']:
+                    if doc['sum'] > ops['sum']:
+                        out_list+=[{'name':doc['name'], 'summ':round(doc['sum'] -  ops['sum'],2)}]
 
+                    if doc['sum'] < ops['sum']:
+                        in_list+=[{'name':doc['name'], 'summ': round(ops['sum'] - doc['sum'],2)}]
 
-    insert_cell(len(income_list[0])+10, 1, 'АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62)'  )
-    for i in range(len(income_list[1])):
-        insert_cell(i+len(income_list[0])+12, 1, income_list[1][i]['name'] )
-        insert_cell(i+len(income_list[0])+12, 2, income_list[1][i]['summa'] )    
-
-    insert_cell(len(income_list[0])+len(income_list[1])+16, 1, 'АВАНСЫ ПОСТАВЩИКАМ(Д 60)' )
-    for i in range(len(income_list[2])):
-        insert_cell(i+len(income_list[0])+len(income_list[1])+18, 1, income_list[2][i]['name'] )
-        insert_cell(i+len(income_list[0])+len(income_list[1])+18, 2, income_list[2][i]['summa'] )  
-    
-    insert_cell(len(income_list[0])+len(income_list[1])+len(income_list[2])+22, 1, 'ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)' )
-    for i in range(len(income_list[3])):
-        insert_cell(i+len(income_list[0])+len(income_list[1])+len(income_list[2])+24, 1, income_list[3][i]['name'] )
-        insert_cell(i+len(income_list[0])+len(income_list[1])+len(income_list[2])+24, 2, income_list[3][i]['summa'] ) 
-    
-    output_list.save(filename = output_doc)
-
-    return(str(output_doc))
-    pass
+        return(out_list, in_list)           
+        pass
 
 
+    def show_contragent_balance(self):
 
+        out_pays = self.contragent_ops_result(grouping_by_key(self.get_ops_list()[2],'parent'))
+        income_docs= self.contragent_ops_result(grouping_by_key(self.get_ops_list()[3], 'parent'))
+
+        income_pays = self.contragent_ops_result(grouping_by_key(self.get_ops_list()[0], 'parent'))
+        outcome_docs= self.contragent_ops_result(grouping_by_key(self.get_ops_list()[1], 'parent'))
+
+        provider_debt = self.found_result(out_pays, income_docs)[0]
+        provider_prepay = self.found_result(out_pays, income_docs)[1]
+
+        buyer_debt =self.found_result(income_pays, outcome_docs)[0]
+        buyer_prepay = self.found_result(income_pays, outcome_docs)[1]
+
+        return provider_debt, provider_prepay, buyer_debt, buyer_prepay
+        pass
+
+
+    def create_hvosty_excel(self):
+        output_doc = BASE_DIR+'\\'+"resultat.xlsx"
+        openpyxl.Workbook().save(output_doc)
+        output_list = load_workbook(output_doc,data_only = True)
+        main_out_sheet = output_list.active
+
+
+        def insert_cell(row_val, col_val, cell_value):
+            main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+            pass
+
+        insert_cell(1, 1, "Контрагент")
+        insert_cell(1, 2, "Сумма")
+
+        first_space = len(self.show_contragent_balance()[0])+12
+        sec_space =  first_space++len(self.show_contragent_balance()[1])+6
+        thr_space = sec_space+len(self.show_contragent_balance()[2])+6
+
+        insert_cell(3, 1, 'ЗАДОЛЖЕННОСТЬ ПОКУПАТЕЛЕЙ (Д 62)'  )
+        for i in range(len(self.show_contragent_balance()[0])):
+            insert_cell(i+5, 1, self.show_contragent_balance()[0][i]['name'] )
+            insert_cell(i+5, 2, self.show_contragent_balance()[0][i]['summ'])
+
+
+        insert_cell(first_space, 1, 'АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62)'  )
+        for i in range(len(self.show_contragent_balance()[1])):
+            insert_cell(i+first_space+2, 1, self.show_contragent_balance()[1][i]['name'] )
+            insert_cell(i+first_space+2, 2, self.show_contragent_balance()[1][i]['summ'] )    
+
+        insert_cell(sec_space, 1, 'АВАНСЫ ПОСТАВЩИКАМ(Д 60)' )
+        for i in range(len(self.show_contragent_balance()[2])):
+            insert_cell(i+sec_space+2, 1, self.show_contragent_balance()[2][i]['name'] )
+            insert_cell(i+sec_space+2, 2, self.show_contragent_balance()[2][i]['summ'] )  
+        
+        insert_cell(thr_space, 1, 'ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)' )
+        for i in range(len(self.show_contragent_balance()[3])):
+            insert_cell(i+thr_space+2, 1, self.show_contragent_balance()[3][i]['name'] )
+            insert_cell(i+thr_space+2, 2, self.show_contragent_balance()[3][i]['summ'] ) 
+        
+        output_list.save(filename = output_doc)
+
+        return(str(output_doc))
+        pass
 
 
 #------------------------SVERKA SS PORTALOM--------------------
@@ -416,7 +358,7 @@ def get_today_course():
 
 class CurrencyStat:
     def __init__(self, 
-                select_command=sq_c.select_curr_income, 
+                select_command=None, 
                 data_start="2018-05-11", 
                 data_end="2018-05-15", 
                 base_name = "zeno.sqlite",
@@ -439,10 +381,10 @@ class CurrencyStat:
     def transform_sql_to_list(self):
         conn = sqlite3.connect(self.base_name)
         cur = conn.cursor()
-        if self.request_type == 'входящий':
-            sel_request = sq_c.select_curr_income
-        if self.request_type == 'исходящий':
-            sel_request = sq_c.select_curr_outcome
+        if self.request_type == 'входящий' or  "входящий" or "'"+"входящий"+"'" or "'"+'входящий'+"'":
+            sel_request = select_curr_income
+        if self.request_type == 'исходящий' or "исходящий" or "'"+"исходящий"+"'" or "'"+'исходящий'+"'":
+            sel_request = select_curr_outcome
 
         sql_request = sel_request.format("'"+self.data_start+"'","'"+self.data_end+"'")
     
@@ -456,8 +398,8 @@ class CurrencyStat:
 
         for x in self.transform_sql_to_list():
             if x['currency_type'] == '3':
-                for y in self.create_rates_list(sq_c.select_eur_course):
-                    for i in self.create_rates_list(sq_c.select_usd_course):
+                for y in self.create_rates_list(select_eur_course):
+                    for i in self.create_rates_list(select_usd_course):
                         if x['doc_date'] == y['data'] and x['doc_date']== i['data'] and x['name'] != None and type(x['name']) != None:
                             eur += [{
                                     'doc': x['document_name'],  
@@ -473,8 +415,8 @@ class CurrencyStat:
                                     }]
 
             if x['currency_type'] == '7':
-                for y in self.create_rates_list(sq_c.select_usd_course):
-                    for i in self.create_rates_list(sq_c.select_usd_course):
+                for y in self.create_rates_list(select_usd_course):
+                    for i in self.create_rates_list(select_usd_course):
                         if x['doc_date'] == y['data'] and x['doc_date']== i['data'] and x['name'] != None and type(x['name']) != None:
                             usd += [{
                                     'doc': x['document_name'],  
@@ -491,8 +433,8 @@ class CurrencyStat:
 
 
             if x['currency_type'] == '6':
-                for y in self.create_rates_list(sq_c.select_rus_course):
-                    for i in self.create_rates_list(sq_c.select_usd_course):
+                for y in self.create_rates_list(select_rus_course):
+                    for i in self.create_rates_list(select_usd_course):
                         if x['doc_date'] == y['data'] and x['doc_date']== i['data'] and x['name'] != None  and type(x['name']) != None:
                             rub += [{
                                     'doc': x['document_name'],  

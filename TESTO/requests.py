@@ -140,7 +140,7 @@ ORDER BY contragents_documents.doc_date;
 ######------REQUESTS-FOR-HVOSTY--------################
 #--SELECT_OUTCOME PAYS AND DOCS---#
 
-sel_out_pays_br ="""
+sel_income_pays_br ="""
 SELECT * FROM contragents_documents
 LEFT JOIN contragents ON contragents_documents.parent=contragents.id
 WHERE contragents_documents.doc_date >= {} 
@@ -211,7 +211,7 @@ ORDER BY contragents_documents_two.doc_date;
 """
 
 
-sel_income_pays_br = """
+sel_out_pays_br = """
 SELECT * FROM contragents_documents_two
 LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
 WHERE contragents_documents_two.doc_date >= {} 

@@ -170,7 +170,7 @@
         {%for prov_debt in providers_debts %}
             <article class="contragent-fin-balance">
                 <span>{{prov_debt.name}}</span>
-                <span  class="summa">&nbsp;&nbsp;{{prov_debt.summa}}&nbsp;.Р</span>
+                <span  class="summa">&nbsp;&nbsp;{{prov_debt.summ}}&nbsp;.Р</span>
             </article>
         {%endfor%}
 
@@ -187,7 +187,7 @@
         {%for prov_prepay in providers_prepay %}
         <article class="contragent-fin-balance">
             <span>{{prov_prepay.name}}</span>
-            <span class="summa">&nbsp;&nbsp;{{prov_prepay.summa}}&nbsp;.Р  </span>
+            <span class="summa">&nbsp;&nbsp;{{prov_prepay.summ}}&nbsp;.Р  </span>
         </article>
 
         {%endfor%}
@@ -209,7 +209,7 @@
 
             <article class="contragent-fin-balance">
             <span>{{buyer_prepay.name}}</span>
-            <span class="summa">&nbsp;&nbsp;{{buyer_prepay.summa}}&nbsp;.Р </span>
+            <span class="summa">&nbsp;&nbsp;{{buyer_prepay.summ}}&nbsp;.Р </span>
         </article>
 
         {%endfor%}
@@ -227,7 +227,7 @@
         {%for buyer_debt in buyers_debts %}
             <article class="contragent-fin-balance">
             <span>{{buyer_debt.name}}</span>
-            <span class="summa">&nbsp;&nbsp;{{buyer_debt.summa}}&nbsp;.Р</span>
+            <span class="summa">&nbsp;&nbsp;{{buyer_debt.summ}}&nbsp;.Р</span>
             </article>
         {%endfor%}
 
@@ -245,44 +245,46 @@
 
 {% if tax_system == "nds" %}
 
-<h3>НДС&nbsp;за текущий месяц&nbsp;:</h3>
-<article class="contragent-fin-balance">
-  <span>&nbsp;входящий:&nbsp;</span> <span>{{income_nds_month}}</span>
-  </article>
-<article class="contragent-fin-balance">  
-  <span>&nbsp;исходящий:&nbsp; </span><span>{{outcome_nds_month}}</span>
-  </article>
-<article class="contragent-fin-balance">  
-  <span>&nbsp;к уплате:&nbsp; </span><span>{{result_nds_month}}</span>
-  </article>
-</ul>
-
 <h3>НДС&nbsp;за текущий квартал&nbsp;:</h3>
+
+{% for nds in nds_square %}
 <article class="contragent-fin-balance">
 
-  <span>&nbsp;входящий:&nbsp;</span><span>{{income_nds_square}}</span>
+  <span>&nbsp;{{nds.name}}:&nbsp;</span><span>{{nds.value}}</span>
   </article>
-  <article class="contragent-fin-balance">
 
-  <span>&nbsp;исходящий:&nbsp;</span><span>{{outcome_nds_square}}</span>
-  </article>
-  <article class="contragent-fin-balance">
+{% endfor %}
 
-  <span>&nbsp;к уплате:&nbsp;</span><span>{{result_nds_square}}</span>
+<h3>НДС&nbsp;за текущий месяц&nbsp;:</h3>
+{% for nds in nds_month %}
+<article class="contragent-fin-balance">
+  <span>&nbsp;{{nds.name}}:&nbsp;</span> <span>{{nds.value}}</span>
   </article>
+{% endfor %}
+
+
+
+
 
 {% elif tax_system == "usn" %}
+
+{% for nds in usn_square %}
 <h3>УСН&nbsp;за текущий квартал&nbsp;:</h3>
 <article class="contragent-fin-balance">
-  <span>&nbsp;к уплате:&nbsp;</span><span> {{result_nds_month}}</span>
+  <span>&nbsp;{{uns.name}}&nbsp;</span><span> {{usn.value}}</span>
    </article>
-<article class="contragent-fin-balance">   
- <span>&nbsp;к уплате:&nbsp;</span><span>{{result_nds_square}}</span>  
-  </article>  
+{% endfor %}
+
+{% for nds in usn_month %}
+<h3>УСН&nbsp;за текущий месяц&nbsp;:</h3>
+<article class="contragent-fin-balance">
+  <span>&nbsp;{{uns.name}}&nbsp;</span><span> {{usn.value}}</span>
+   </article>
+{% endfor %}
+
 
 
 {% endif %} 
-
 
 
     </section>

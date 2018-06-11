@@ -3,7 +3,7 @@
 import os
 from django.shortcuts import render, get_object_or_404, render_to_response
 from users.models import Client
-from .models import get_hvosty_lists,create_hvosty_excel,  return_excel_list, insert_into_excel, CoursesUpdater, CurrencyStat, CompanyBalance
+from .models import  return_excel_list, insert_into_excel, CoursesUpdater, CurrencyStat, CompanyBalance, Hvosty
 from .forms import StateForm, TaxForm, FoundDifferenceForm, CurrStatForm
 import sqlite3
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,8 +18,13 @@ TO_BASE_PATH = str('\\'.join(BASE_DIR.split('\\')[:-2]))+'\\'
 
 def get_acess_to_office(request):
 	user = request.user.username
-	if request.user.username == "busy":
-		clients = Client.objects.all()
+	if request.user.username == "busy" or request.user.username =="Egorich42" or request.user.username =="egor":
+		clients = []
+		for client in Client.objects.all():
+			if client.name !='busy' and client.name !='egor' and client.name !='Egorich42':
+
+				clients +=[client]
+
 		return render(request, "singles/clients/clients_list.html", {'clients':clients})
 	else:
 		return render(request, "singles/clients/office_login_error.html")
@@ -27,7 +32,7 @@ def get_acess_to_office(request):
 
 
 def client_detail(request, name):
-	if request.user.username == "busy":
+	if request.user.username == "busy" or request.user.username =="Egorich42" or request.user.username =="egor":
 
 		client_info = get_object_or_404(Client, name = name)
 
@@ -35,14 +40,14 @@ def client_detail(request, name):
 			state_form = StateForm(request.POST, request.FILES)
 			if state_form.is_valid():
 
-				data_start =  "2016-06-30"
+				data_start = "'"+'2016-06-30'+"'"
 				data_end = str(state_form.cleaned_data['end_year'])+"-"+str(state_form.cleaned_data["end_month"])+"-"+str(state_form.cleaned_data["end_day"])
 
 				base_name = TO_BASE_PATH+'sqlite_bases'+'\\'+str(client_info.name)+'.sqlite'
 				conn = sqlite3.connect(base_name)
 				cur = conn.cursor()
 
-				excel_file_name = create_hvosty_excel(request, get_hvosty_lists(cur,data_start, data_end))
+				excel_file_name = Hvosty(base_name ,data_start,  "'"+ data_end+"'").create_hvosty_excel()
 				return return_excel_list(excel_file_name, client_info.name, "hvosty")
 				pass
 
@@ -116,7 +121,7 @@ def client_detail(request, name):
 																		'tax_form':tax_form, 
 																		"dif_form":find_difference_form,
 																		"currency_stat_form":currency_stat_form,
-																		'today_rate': CoursesUpdater().today_updater(),
+#																		'today_rate': CoursesUpdater().today_updater(),
 																		})
 
 	else:

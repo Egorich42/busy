@@ -41,14 +41,12 @@ class PortalDifference:
 				data_start=None, 
 				data_end=None, 
 				base_name = None,
-				request_type = None,
-				nalog_system = None):
+				request_type = None):
 
-				self.data_start = data_start
-				self.data_end = data_end
-				self.base_name = base_name
-				self.request_type = request_type
-				self.nalog_system = nalog_system
+		self.data_start = data_start
+		self.data_end = data_end
+		self.base_name = base_name
+		self.request_type = request_type
 
 
 	def nds_docs_list(self):
@@ -112,8 +110,6 @@ class PortalDifference:
 		pass
 
 
-
-
 	def find_difference(self):
 		not_in_excel = self.get_eschf_data()
 		not_in_base = self.nds_docs_list()
@@ -154,7 +150,7 @@ class PortalDifference:
 		pass
 
 
-print(PortalDifference(base_name ="avangard.sqlite", 
+PortalDifference(base_name ="avangard.sqlite", 
 				data_start = "'"+ '2018-01-30'+"'", 
 				data_end="'"+'2018-02-05'+"'",
-				request_type = "исходящий").insert_into_excel())
+				request_type = "исходящий").find_difference()
