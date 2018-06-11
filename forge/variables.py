@@ -41,6 +41,8 @@ def current_kvartal():
     pass 
 
 
+start_square = str(current_kvartal())
+start_month = str(date(this_year, this_month, 1))
 
 nbrb_rates_today = "http://www.nbrb.by/API/ExRates/Rates/{}"
 nbrb_rates_on_date = "http://www.nbrb.by/API/ExRates/Rates/{}?onDate={}"

@@ -1,4 +1,4 @@
-from TESTO import sqlite3, create_list_of_table_values, outcome_serv_nds, outcome_tn_nds, income_serv_nds, income_tn_nds, income_tovary,outcome_full_nonds
+from forge import sqlite3, create_list_of_table_values, outcome_serv_nds, outcome_tn_nds, income_serv_nds, income_tn_nds, income_tovary,outcome_full_nonds
 
 class CompanyBalance:
 	def __init__(self, base_name = None, data_start = None, data_end = None):

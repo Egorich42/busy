@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 from django.shortcuts import render, get_object_or_404, render_to_response
-from .models import  get_paginator, start_square, start_month
+from .models import  get_paginator
 from django.http import HttpResponse
 from django.views.generic.edit import FormView
 from django.views.generic.base import View
@@ -18,6 +18,8 @@ import os
 from client_state.models import Hvosty, CompanyBalance
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+from forge import start_month, start_square, today
 
 
 class LoginFormView(FormView):
@@ -51,8 +53,8 @@ def show_user_profile(request,id, **kwargs):
         taxes_system = user.client.nalog_system
 
         if taxes_system == 'nds' or taxes_system == 'NDS':
-            nds_month_res = CompanyBalance(base_name, "'"+start_month+"'", "'"+ str(var.today)+"'").count_nds()
-            nds_square_res = CompanyBalance(base_name, "'"+start_square+"'", "'"+ str(var.today)+"'").count_nds()
+            nds_month_res = CompanyBalance(base_name, "'"+start_month+"'", "'"+ str(today)+"'").count_nds()
+            nds_square_res = CompanyBalance(base_name, "'"+start_square+"'", "'"+ str(today)+"'").count_nds()
 
             nds_month = [{"name": "Входной НДС", "value": str(round(nds_month_res[0],2))},
             {"name": "Исходящий НДС", "value":str(round(nds_month_res[1],2))},
@@ -65,8 +67,8 @@ def show_user_profile(request,id, **kwargs):
             usn_square = None
 
         else:
-            usn_month = [{"name": "УСН за текущий месяц", "value": str(round(CompanyBalance(base_name, "'"+start_month+"'", "'"+ str(var.today)+"'").count_usn(),2))}]
-            usn_square = [{"name": "УСН за текущий квартал", "value": str(round(CompanyBalance(base_name, "'"+start_square+"'", "'"+ str(var.today)+"'").count_usn(),2))}]
+            usn_month = [{"name": "УСН за текущий месяц", "value": str(round(CompanyBalance(base_name, "'"+start_month+"'", "'"+ str(today)+"'").count_usn(),2))}]
+            usn_square = [{"name": "УСН за текущий квартал", "value": str(round(CompanyBalance(base_name, "'"+start_square+"'", "'"+ str(today)+"'").count_usn(),2))}]
             nds_month = None
             nds_square = None
 

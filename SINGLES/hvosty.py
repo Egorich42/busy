@@ -3,8 +3,8 @@ import sqlite3
 import os
 import openpyxl
 from openpyxl import load_workbook,Workbook
-from TESTO import create_list_of_table_values, grouping_by_key
-from TESTO import sel_out_pays_br, sel_out_docs_br, sel_out_docs_br_back, sel_income_docs_br, sel_income_pays_br, sel_income_pays_br_dpd, sel_income_pays_br_back 
+from forge import create_list_of_table_values, grouping_by_key
+from forge import sel_out_pays_br, sel_out_docs_br, sel_out_docs_br_back, sel_income_docs_br, sel_income_pays_br, sel_income_pays_br_dpd, sel_income_pays_br_back 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
 
 

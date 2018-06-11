@@ -1,7 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*
 
-from datetime import *
+import datetime
+from datetime import date
+
 from . import sql_commands as sq_c
 from django.db import migrations
 from django.db import models
@@ -11,11 +13,7 @@ from django.db import migrations
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django import forms
 
-from TESTO import create_list_of_table_values, this_year, this_month, current_kvartal, taxes
-
-
-start_square = str(current_kvartal())
-start_month = str(date(this_year, this_month, 1))
+from forge import create_list_of_table_values, taxes
 
 
 def get_pages(request,paginator):

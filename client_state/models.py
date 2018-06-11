@@ -4,26 +4,24 @@ from django.db import migrations, models
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from itertools import groupby
-from collections import defaultdict
-from operator import itemgetter
-
 import datetime
 from datetime import date
 import os
 import sqlite3
 
+
+from collections import defaultdict
+from operator import itemgetter
 import itertools
+from itertools import groupby
 import requests
 import openpyxl
 from openpyxl import load_workbook,Workbook
 
 
-from TESTO import nbrb_rates_today, nbrb_rates_on_date, rates, years, months, days
-from TESTO import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list, grouping_by_key
-from TESTO.requests import *
-
-
+from forge import nbrb_rates_today, nbrb_rates_on_date, rates, years, months, days
+from forge import create_list_of_table_values, sum_of_list, return_excel_list, generate_data_list, grouping_by_key
+from forge.requests import *
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
@@ -359,10 +357,10 @@ def get_today_course():
 class CurrencyStat:
     def __init__(self, 
                 select_command=None, 
-                data_start="2018-05-11", 
-                data_end="2018-05-15", 
-                base_name = "zeno.sqlite",
-                request_type = "исходящий",):
+                data_start=None, 
+                data_end=None, 
+                base_name = None,
+                request_type = None,):
 
        self.select_command = select_command
        self.data_start = data_start
@@ -381,13 +379,15 @@ class CurrencyStat:
     def transform_sql_to_list(self):
         conn = sqlite3.connect(self.base_name)
         cur = conn.cursor()
-        if self.request_type == 'входящий' or  "входящий" or "'"+"входящий"+"'" or "'"+'входящий'+"'":
-            sel_request = select_curr_income
-        if self.request_type == 'исходящий' or "исходящий" or "'"+"исходящий"+"'" or "'"+'исходящий'+"'":
+
+        if self.request_type ==  "входящий":
             sel_request = select_curr_outcome
+        if self.request_type == "исходящий":
+            sel_request = select_curr_income
 
         sql_request = sel_request.format("'"+self.data_start+"'","'"+self.data_end+"'")
-    
+
+
         return create_list_of_table_values(cur.execute(sql_request),cur.description)
         pass
 
@@ -574,9 +574,6 @@ class CoursesUpdater:
         conn.close()
         return today_course
         pass
-
-
-#---------------------------------STATISTIKA End----------------
 
 
 

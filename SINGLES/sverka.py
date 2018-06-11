@@ -11,8 +11,8 @@ from operator import itemgetter
 
 
 
-from TESTO import create_list_of_table_values, grouping_by_key, sum_of_list
-from TESTO import income_tn_nds, income_serv_nds, income_tovary, outcome_tn_nds, outcome_serv_nds
+from forge import create_list_of_table_values, grouping_by_key, sum_of_list
+from forge import income_tn_nds, income_serv_nds, income_tovary, outcome_tn_nds, outcome_serv_nds
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))+'\\'
