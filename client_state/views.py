@@ -3,7 +3,7 @@
 import os
 from django.shortcuts import render, get_object_or_404, render_to_response
 from users.models import Client
-from .models import  return_excel_list, insert_into_excel, CoursesUpdater, CurrencyStat, CompanyBalance, Hvosty
+from .models import  return_excel_list, CoursesUpdater, CurrencyStat, CompanyBalance, Hvosty, PortalDifference
 from .forms import StateForm, TaxForm, FoundDifferenceForm, CurrStatForm
 import sqlite3
 from django.http import HttpResponse, HttpResponseRedirect
@@ -112,11 +112,14 @@ def client_detail(request, name):
 				data_start =  str(find_difference_form.cleaned_data['start_year'])+"-"+str(find_difference_form.cleaned_data["start_month"])+"-"+str(find_difference_form.cleaned_data["start_day"])
 				data_end = str(find_difference_form.cleaned_data['end_year'])+"-"+str(find_difference_form.cleaned_data["end_month"])+"-"+str(find_difference_form.cleaned_data["end_day"])
 
-				excel_file_name = insert_into_excel(request, income_doc_name, str(client_info.id),  data_start, data_end, client_info.nalog_system)
+				excel_file_name = PortalDifference(base_name =base_name, 
+													doc_name = income_doc_name,
+													data_start = "'"+ data_start+"'", 
+													data_end="'"+data_end+"'",
+													request_type = "исходящий").insert_into_excel()
 
 				return return_excel_list(excel_file_name, income_doc_name, "dif")
 				pass
-
 
 
 

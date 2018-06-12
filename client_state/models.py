@@ -228,120 +228,122 @@ class Hvosty:
 
 
 #------------------------SVERKA SS PORTALOM--------------------
+class PortalDifference:
+    def __init__(self,  data_start=None,  data_end=None,  base_name = None, request_type = None, doc_name = None):
+
+        self.data_start = data_start
+        self.data_end = data_end
+        self.base_name = base_name
+        self.request_type = request_type
+        self.doc_name = doc_name
 
 
+    def nds_docs_list(self):
+        conn = sqlite3.connect(self.base_name)
+        cur = conn.cursor()
+        doc_list = []
+        commands =[]
+        if self.request_type == "исходящий":
+            commands = [income_tn_nds, income_serv_nds, income_tovary]
 
-#ВХОДЯЩИЙ:
-data_type = 'income'
-unp_number = 2
-name_col = 4
-list_number = 5
+        if self.request_type == "входящий":
+            commands = [outcome_tn_nds, outcome_serv_nds]
 
+        for command in commands:
+            doc_list += [create_list_of_table_values(cur.execute(command.format(self.data_start, self.data_end)),cur.description)]
+        conn.commit()
+        conn.close()
 
-#ИСХОДЯЩИЙ
-#data_type = 'outcome'
-#unp_number = 9
-#name_col = 11
-#list_number = 0
-
-
-output_doc = BASE_DIR+'\\'+"result_{}.xlsx".format(data_type)
-openpyxl.Workbook().save(output_doc)
-
-output_list = load_workbook(output_doc,data_only = True)
-main_out_sheet = output_list.active
-
-
-
-
-def get_eschf_data(main_inner_sheet):
-    first_list_from_excel =[]
-
-    for x in range(1, 8):
-        if main_inner_sheet.cell(row=x, column=1).value == "Код страны поставщика": 
-            start_point = x+1
-
-    for i in range(start_point, main_inner_sheet.max_row+1):
-        if  main_inner_sheet.cell(row=i, column=18).value != "Аннулирован": 
-            if main_inner_sheet.cell(row=i, column=unp_number).value != None: 
-                first_list_from_excel += [{ 
-                        "unp" : main_inner_sheet.cell(row=i, column=unp_number).value, 
-                        "name" : main_inner_sheet.cell(row=i, column=name_col).value,
-                        "nds" : main_inner_sheet.cell(row=i, column=42).value,
-                        }]
-    return create_sorted_list(first_list_from_excel)
-    pass
-
-
-
-
-def find_difference(main_inner_sheet, sql_base_name, data_start, data_end, nalog_system):
-    connect = sqlite3.connect(sql_base_name )
-    cursor = connect.cursor()
-    not_in_excel = get_eschf_data(main_inner_sheet)
-    not_in_base = curent_finace_states(data_start, data_end, cursor,nalog_system)[list_number]
-
-
-    for i in curent_finace_states(data_start, data_end, cursor, nalog_system)[list_number]:
-        for x in get_eschf_data(main_inner_sheet):
-            if i['unp'] == x['unp'] and i['nds'] == x['nds']:
-                not_in_excel.remove(x)
-                not_in_base.remove(i)
-                        
-    connect.commit()
-    connect.close()
-    return(not_in_excel,not_in_base)
-    pass
-
-
-
-
-def insert_into_excel(request, excel_income, base_name, data_start, data_end, nalog_system):
-    portal_list = load_workbook(TO_DOCS_PATH+excel_income,data_only = True)
-    main_inner_sheet = portal_list.active
-    sql_base_name = TO_BASE_PATH+base_name+'.sqlite'
-
-
-    connect = sqlite3.connect(sql_base_name)
-    cursor = connect.cursor()
-
-    def insert_cell(row_val, col_val, cell_value):
-        main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+        if len(doc_list) == 2:
+            doc_list = doc_list[0]+doc_list[1]
+        elif len(doc_list) == 3:
+            doc_list = doc_list[0]+doc_list[1]+doc_list[2]  
+        return doc_list
         pass
 
-    for x in (1,4):
-        insert_cell(3, x, "Контрагент")
 
-    for i in (2,5):
-        insert_cell(3, i, "НДС")    
+    def get_eschf_data(self):
 
-    insert_cell(1, 4, "Есть в базе, нет на портале")
-    insert_cell(1, 1, "Есть на портале, нет в базе")
+        first_list_from_excel =[]
+        portal_list = load_workbook(self.doc_name,data_only = True)
+        main_inner_sheet = portal_list.active
 
-    insert_cell(2, 4, "Весь НДС из базы")
-    insert_cell(2, 1, "Весь НДС с Портала")
+        if self.request_type == "исходящий":
+            unp_number = 9
+            name_col = 11
+            list_number = 0
+
+        if self.request_type == "входящий":
+            unp_number = 2
+            name_col = 4
+            list_number = 5 
+
+        for x in range(1, 8):
+            if main_inner_sheet.cell(row=x, column=1).value == "Код страны поставщика": 
+                start_point = x+1
+
+        for i in range(start_point, main_inner_sheet.max_row+1):
+            if main_inner_sheet.cell(row=i, column=18).value != "Аннулирован": 
+                if main_inner_sheet.cell(row=i, column=unp_number).value != None: 
+                            first_list_from_excel += [{ 
+                            "unp" : main_inner_sheet.cell(row=i, column=unp_number).value, 
+                            "name" : main_inner_sheet.cell(row=i, column=name_col).value,
+                            "nds" : main_inner_sheet.cell(row=i, column=42).value,
+                            }]
+
+        return create_sorted_list(first_list_from_excel)
+        pass
 
 
-    insert_cell(2, 5, sum_of_list('nds',curent_finace_states(data_start, data_end, cursor, nalog_system)[list_number]))
-    insert_cell(2, 2, sum_of_list('nds', get_eschf_data(main_inner_sheet)))
-
-    for i in range(len(find_difference(main_inner_sheet, sql_base_name, data_start, data_end, nalog_system)[0])):
-        insert_cell(i+5, 1, find_difference(main_inner_sheet, sql_base_name, data_start, data_end, nalog_system)[0][i]['name'])
-        insert_cell(i+5, 2, find_difference(main_inner_sheet, sql_base_name, data_start, data_end, nalog_system)[0][i]['nds'])
-
-    for i in range(len(find_difference(main_inner_sheet, sql_base_name, data_start, data_end, nalog_system)[1])):
-
-        insert_cell(i+5, 4, find_difference(main_inner_sheet, sql_base_name, data_start, data_end, nalog_system)[1][i]['name'])
-        insert_cell(i+5, 5, find_difference(main_inner_sheet, sql_base_name, data_start, data_end, nalog_system)[1][i]['nds'])
-
-    output_list.save(filename = output_doc)
-    connect.commit()
-    connect.close()
-    return(str(output_doc))
-    pass
+    def find_difference(self):
+        not_in_excel = self.get_eschf_data()
+        not_in_base = self.nds_docs_list()
 
 
+        for i in self.nds_docs_list():
+            for x in self.get_eschf_data():
+                if i['unp'] == x['unp'] and i['nds'] == x['nds']:
+                    not_in_excel.remove(x)
+                    not_in_base.remove(i)
+        return(not_in_excel,not_in_base)
+        pass
 
+
+    def insert_into_excel(self):
+
+        output_doc = BASE_DIR+"result.xlsx"
+        openpyxl.Workbook().save(output_doc)
+        output_list = load_workbook(output_doc,data_only = True)
+        main_out_sheet = output_list.active
+
+        def insert_cell(row_val, col_val, cell_value):
+            main_out_sheet.cell(row = row_val, column = col_val).value = cell_value
+            pass
+
+        for x in (1,4):
+            insert_cell(3, x, "Контрагент")
+
+        for i in (2,5):
+            insert_cell(3, i, "НДС")    
+
+        insert_cell(1, 4, "Есть в базе, нет на портале")
+        insert_cell(1, 1, "Есть на портале, нет в базе")
+
+        insert_cell(2, 4, "Весь НДС из базы")
+        insert_cell(2, 1, "Весь НДС с Портала")
+
+
+        for i in range(len(self.find_difference()[0])):
+            insert_cell(i+5, 1, self.find_difference()[0][i]['name'])
+            insert_cell(i+5, 2, self.find_difference()[0][i]['nds'])
+
+        for i in range(len(self.find_difference()[1])):
+            insert_cell(i+5, 4, self.find_difference()[1][i]['name'])
+            insert_cell(i+5, 5, self.find_difference()[1][i]['nds'])
+
+        output_list.save(filename = output_doc)
+        return(str(output_doc))
+        pass
 
 #-------STATISTICA-----------------------------
 
@@ -381,9 +383,9 @@ class CurrencyStat:
         cur = conn.cursor()
 
         if self.request_type ==  "входящий":
-            sel_request = select_curr_outcome
-        if self.request_type == "исходящий":
             sel_request = select_curr_income
+        if self.request_type == "исходящий":
+            sel_request = select_curr_outcome
 
         sql_request = sel_request.format("'"+self.data_start+"'","'"+self.data_end+"'")
 
@@ -395,7 +397,7 @@ class CurrencyStat:
         eur = []
         usd = []
         rub = []
-
+#        print(self.transform_sql_to_list())
         for x in self.transform_sql_to_list():
             if x['currency_type'] == '3':
                 for y in self.create_rates_list(select_eur_course):
