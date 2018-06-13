@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 
-<p><span>Компания:</span><span>{{client_info.name}}</span></p>
+<p><span>Компания:</span><span>{{client_info.rus_name}}</span></p>
 <section class="courses-list">
   {%for curr in today_rate%}
   <article>
@@ -22,16 +22,60 @@
 
 
   <aside class="choice-buttons">
+  <button><a href="/office">К списку клиентов</a></button>
 	<button id="link-0">Налог за период</button>
 	<button id="link-1">Хвосты за период</button>
 	<button id="link-2">Сверка с порталом</button>
-	<button id="link-3">Статистика по валютным операциям за период</button>
+	<button id="link-3">Статистика по валютным операциям</button>
 
 </aside> 
 
 <section class="client-actions">
 
 <section class="office-form-client" id="panel-0" >
+
+
+{% if client_info.tax_system == nds %}
+
+<h3>НДС&nbsp;за текущий квартал&nbsp;:</h3>
+
+{% for nds in nds_square %}
+<article class="contragent-fin-balance">
+
+  <span>&nbsp;{{nds.name}}:&nbsp;</span><span>{{nds.value}}</span>
+  </article>
+
+{% endfor %}
+
+<h3>НДС&nbsp;за текущий месяц&nbsp;:</h3>
+{% for nds in nds_month %}
+<article class="contragent-fin-balance">
+  <span>&nbsp;{{nds.name}}:&nbsp;</span> <span>{{nds.value}}</span>
+  </article>
+{% endfor %}
+
+
+
+{% elif tax_system == usn %}
+
+{% for nds in usn_square %}
+<h3>УСН&nbsp;за текущий квартал&nbsp;:</h3>
+<article class="contragent-fin-balance">
+  <span>&nbsp;{{uns.name}}&nbsp;</span><span> {{usn.value}}</span>
+   </article>
+{% endfor %}
+
+{% for nds in usn_month %}
+<h3>УСН&nbsp;за текущий месяц&nbsp;:</h3>
+<article class="contragent-fin-balance">
+  <span>&nbsp;{{uns.name}}&nbsp;</span><span> {{usn.value}}</span>
+   </article>
+{% endfor %}
+
+
+
+{% endif %} 
+
   <h3>Получить налог за период:</h3>
 	<form method="post" enctype="multipart/form-data" class="forma">
 
@@ -78,25 +122,31 @@
 	<form method="post" enctype="multipart/form-data" class="forma">
 
 
-	<span>{{dif_form.uploaded_file}}</span>
+	<span>{{find_diff_form_file.uploaded_file}}</span>
 
 
 
   	<article class="select-data">
   	<p>Выбрать начало периода </p>
-		{{ dif_form.start_year }}
-		{{ dif_form.start_month }}
-		{{ dif_form.start_day }}
+		{{ find_diff_form_info.start_year }}
+		{{ find_diff_form_info.start_month }}
+		{{ find_diff_form_info.start_day }}
   	</article>
 
 
 
   	<article class="select-data">
  	 <p>Выбрать окончание периода</p>
-		{{ dif_form.end_year }}
-		{{ dif_form.end_month }}
-		{{ dif_form.end_day }}
+		{{ find_diff_form_info.end_year }}
+		{{ find_diff_form_info.end_month }}
+		{{ find_diff_form_info.end_day }}
  	</article>
+
+      <article class="select-data">
+   <p>Выбрать тип</p>
+    {{find_diff_form_info.data_type }}
+  </article>
+
 
     {% csrf_token %}
     <input type="submit" class="input-button-client"  value="Отправить" name="found_dif"  style="background-color: #fff;">
@@ -135,7 +185,7 @@
  	</article>
 
     <article class="select-data">
-   <p>Выбрать окончание периода</p>
+   <p>Выбрать тип</p>
     {{ currency_stat_form.data_type }}
   </article>
 

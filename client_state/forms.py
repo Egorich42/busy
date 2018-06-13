@@ -12,12 +12,12 @@ months = [ ("01", "январь", ),("02", "февраль", ),("03",  "март
 			("12", "декабрь")]
 
 
-
 days = [("01","01"), ("02","02"), ("03","03"), ("04","04"), ("05","05"), ("06","06"), ("07","07"), 
 		("08","08"), ("09","09"), ("10","10"), ("11","11"), ("12","12"), ("13","13"),  
 		("14","14"), ("15","15"), ("16","16"), ("17","17"), ("18","18"), ("19","19"),
 		("20","20"), ("21","21"), ("22","22"), ("23","23"), ("24","24"), ("25","25"), 
 		("26","26"),  ("27","27"),("28","28"), ("29","29"),  ("30","30"),  ("31", "31"), ]
+
 data_type = [("входящий","входящий" ),("исходящий","исходящий")]
 
 class StateForm(forms.Form):	
@@ -51,7 +51,9 @@ class TaxForm(forms.Form):
 	end_month = forms.ChoiceField(choices=months,widget=forms.Select)
 	end_day = forms.ChoiceField(choices=days,widget=forms.Select)
 
+
+
 class FoundDifferenceForm(ModelForm):
   class Meta:
     model = Upload_file
-    fields = ['uploaded_file', "start_year","start_month","start_day","end_year","end_month","end_day"]
+    fields = ['uploaded_file']

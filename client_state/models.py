@@ -165,7 +165,6 @@ class Hvosty:
 
 
     def show_contragent_balance(self):
-
         out_pays = self.contragent_ops_result(grouping_by_key(self.get_ops_list()[2],'parent'))
         income_docs= self.contragent_ops_result(grouping_by_key(self.get_ops_list()[3], 'parent'))
 
@@ -397,7 +396,6 @@ class CurrencyStat:
         eur = []
         usd = []
         rub = []
-#        print(self.transform_sql_to_list())
         for x in self.transform_sql_to_list():
             if x['currency_type'] == '3':
                 for y in self.create_rates_list(select_eur_course):
@@ -554,8 +552,6 @@ class CurrencyStat:
         pass
 
 
-
-
 ##################----------COURSES--------------##########
 
 class CoursesUpdater:
@@ -578,17 +574,8 @@ class CoursesUpdater:
         pass
 
 
+from django.core.validators import FileExtensionValidator
 
 class Upload_file(models.Model):
-    uploaded_file = models.FileField(upload_to='docs/')
-    start_year = models.CharField(max_length=350, choices=years,db_index=True, blank = True)
-    start_month = models.CharField(max_length=350, choices=months,db_index=True, blank = True)
-    start_day = models.CharField(max_length=350, choices=days,db_index=True, blank = True)
-
-    end_year = models.CharField(max_length=350, choices=years,db_index=True, blank = True)
-    end_month = models.CharField(max_length=350, choices=months,db_index=True, blank = True)
-    end_day = models.CharField(max_length=350, choices=days,db_index=True, blank = True)
-
-
-
+    uploaded_file = models.FileField(upload_to='docs/', validators=[FileExtensionValidator(['xlsx'])])
 

@@ -19,7 +19,7 @@ from forge import start_month, start_square, today
 
 def get_acess_to_office(request):
 	user = request.user.username
-	if request.user.username == "busy" or request.user.username =="Egorich42" or request.user.username =="egor":
+	if request.user.username == "busy" or request.user.username =="Egorich42" or request.user.username =="egor" or request.user.rus_name == "admin":
 		clients = []
 		for client in Client.objects.all():
 			if client.name !='busy' and client.name !='egor' and client.name !='Egorich42':
@@ -33,7 +33,7 @@ def get_acess_to_office(request):
 
 
 def client_detail(request, name):
-	if request.user.username == "busy" or request.user.username =="Egorich42" or request.user.username =="egor":
+	if request.user.username == "busy" or request.user.username =="Egorich42" or request.user.username =="egor" or request.user.username == "Egor" or request.user.rus_name == "admin":
 
 		client_info = get_object_or_404(Client, name = name)
 		tax_system = client_info.nalog_system
@@ -59,8 +59,6 @@ def client_detail(request, name):
 			usn_square = [{"name": "УСН за текущий квартал", "value": str(round(CompanyBalance(base_name, "'"+start_square+"'", "'"+ str(today)+"'").count_usn(),2))}]
 			nds_month = None
 			nds_square = None
-
-
 
 
 		if request.method == 'POST' and 'state_button' in request.POST:
@@ -103,22 +101,30 @@ def client_detail(request, name):
 
 
 		if request.method == 'POST' and 'found_dif' in request.POST:
-			find_difference_form = FoundDifferenceForm(request.POST, request.FILES)
+			find_diff_form_file = FoundDifferenceForm(request.POST, request.FILES)
+			find_diff_form_info = CurrStatForm(request.POST, request.FILES)
 
-			if 	find_difference_form.is_valid():
-				find_difference_form.save()
+			if 	find_diff_form_file.is_valid() and find_diff_form_info.is_valid():
+				find_diff_form_file.save()
+				
 			
-				income_doc_name = find_difference_form.cleaned_data['uploaded_file'].name
-				data_start =  str(find_difference_form.cleaned_data['start_year'])+"-"+str(find_difference_form.cleaned_data["start_month"])+"-"+str(find_difference_form.cleaned_data["start_day"])
-				data_end = str(find_difference_form.cleaned_data['end_year'])+"-"+str(find_difference_form.cleaned_data["end_month"])+"-"+str(find_difference_form.cleaned_data["end_day"])
+				income_doc_name = find_diff_form_file.cleaned_data['uploaded_file'].name
+				data_start =  str(find_diff_form_info.cleaned_data['start_year'])+"-"+str(find_diff_form_info.cleaned_data["start_month"])+"-"+str(find_diff_form_info.cleaned_data["start_day"])
+				data_end = str(find_diff_form_info.cleaned_data['end_year'])+"-"+str(find_diff_form_info.cleaned_data["end_month"])+"-"+str(find_diff_form_info.cleaned_data["end_day"])
+
 
 				excel_file_name = PortalDifference(base_name =base_name, 
 													doc_name = income_doc_name,
 													data_start = "'"+ data_start+"'", 
 													data_end="'"+data_end+"'",
-													request_type = "исходящий").insert_into_excel()
+													request_type=find_diff_form_info.cleaned_data['data_type']).insert_into_excel()
 
-				return return_excel_list(excel_file_name, income_doc_name, "dif")
+				if find_diff_form_info.cleaned_data['data_type'] == "входящий":
+					doc_name = "rasznost_vhod"
+				if find_diff_form_info.cleaned_data['data_type'] == "исходящий":
+					doc_name = "rasznost_ishod"
+
+				return return_excel_list(excel_file_name, income_doc_name, doc_name)
 				pass
 
 
@@ -145,15 +151,22 @@ def client_detail(request, name):
 		else:
 			tax_form = TaxForm()
 			state_form = StateForm()
-			find_difference_form = FoundDifferenceForm()
+			find_diff_form_file = FoundDifferenceForm()
 			currency_stat_form = CurrStatForm()
+			find_diff_form_info = CurrStatForm()
 
 		return render(request, 'singles/clients/client_profile.html', {'client_info':client_info,
 																		'state_form': state_form, 
 																		'tax_form':tax_form, 
-																		"dif_form":find_difference_form,
+																		"find_diff_form_info":find_diff_form_info,
+																		"find_diff_form_file":find_diff_form_file,
 																		"currency_stat_form":currency_stat_form,
 #																		'today_rate': CoursesUpdater().today_updater(),
+																		"usn_month": usn_month,
+																		"usn_square": usn_square,
+																		"nds_month": nds_month,
+																		"nds_square": nds_square,
+																		"tax_system": tax_system,
 																		})
 
 	else:
