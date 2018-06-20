@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 
-<p><span>Компания:</span><span>{{client_info.rus_name}}</span></p>
+<p><span>Компания:</span><span>{{client_info.name}}</span></p>
 <section class="courses-list">
   {%for curr in today_rate%}
   <article>
@@ -22,7 +22,7 @@
 
 
   <aside class="choice-buttons">
-  <button><a href="/office">К списку клиентов</a></button>
+  <a href="/office" class="to-clients-list">К списку клиентов</a>
 	<button id="link-0">Налог за период</button>
 	<button id="link-1">Хвосты за период</button>
 	<button id="link-2">Сверка с порталом</button>
@@ -32,7 +32,7 @@
 
 <section class="client-actions">
 
-<section class="office-form-client" id="panel-0" >
+<section class="tax-balnce" id="panel-0" >
 
 
 {% if client_info.tax_system == nds %}

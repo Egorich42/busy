@@ -4,18 +4,13 @@
 import datetime
 from datetime import date
 
-from . import sql_commands as sq_c
 from django.db import migrations
 from django.db import models
 from django.contrib.auth.models import User
-from django.db import migrations
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-
-from django import forms
-
-from forge import create_list_of_table_values, taxes
+from forge import create_list_of_table_values, taxes,docs_on_main
 
 
 def get_pages(request,paginator):
@@ -32,15 +27,19 @@ def get_pages(request,paginator):
 
 
 def get_paginator(cursor, table_name, request_name, vals_on_page,request):
-    paginator = Paginator(create_list_of_table_values(cursor.execute(sq_c.docs_on_main.format(table_name,request_name)),cursor.description),vals_on_page)
+    paginator = Paginator(create_list_of_table_values(cursor.execute(docs_on_main.format(table_name,request_name)),cursor.description),vals_on_page)
     all_documents = get_pages(request,paginator)
     return all_documents
 
     
 
+
 class Client(models.Model):
     user = models.OneToOneField(User)
     name = models.CharField(max_length=200, db_index=True, verbose_name='Название')
-    rus_name = models.CharField(max_length=200, db_index=True, verbose_name='Название на русском')
+#    rus_name = models.CharField(max_length=200, db_index=True, verbose_name='Название на русском')
     nalog_system = models.CharField(max_length=3, choices=taxes,db_index=True, blank = True,verbose_name='Система налогооблажения')
-
+    unp = models.PositiveIntegerField(verbose_name='УНП', default=1)
+    bank_schet = models.CharField(max_length=100, db_index=True,verbose_name='Банковский счет')
+    bank_BIK = models.CharField(max_length=100, db_index=True, verbose_name='IBAN')
+    email = models.EmailField(verbose_name='Е-mail', blank = True) 

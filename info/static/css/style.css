@@ -179,6 +179,8 @@ padding-bottom: 50px;
 .main-client-profile{width: 90%; display: flex; align-items: start;}
 
 
+
+
 .choice-buttons{ width: 20%;}
 .choice-buttons button{
 border: solid 1.5px #FD761F;
@@ -187,6 +189,7 @@ padding: 10px 20px;
 background-color: #fff;
 margin-top: 20px;}
 
+.to-clients-list{border-radius: 40px; padding: 10px 6px; border: solid 1.5px #FD761F; color: #fff; font-weight: bold;}
 
 .courses-list{display: flex; flex-direction: row;}
 .courses-list article span{font-size: 13px;}
@@ -221,6 +224,8 @@ margin-top: 20px;}
 .contacts-info-chanels article {height: 70px; font-size: 20px; text-align: right;}
 .contacts-info-chanels{padding-right: 30px;}
 
+.tax-balnce{margin: 0% 20%;}
+.tax-balnce h3{background-color: #FD761F; color: #fff; padding: 10px 0px;}
 
 .login{width: 50%;}
 .login p{font-size: 26px;margin: 0px;padding:0px;}
@@ -251,6 +256,8 @@ margin: 20px 0px;
 .key{width: 25px; margin: 0px 10px;}
 .pp-name-agent{width: 70%; padding-right: 10%;}
 #map{height: 480px;width: 650px; }
+
+
 /*-----------MODULES RULES END -------------*/
 
 

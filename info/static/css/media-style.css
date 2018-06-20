@@ -39,7 +39,6 @@ nav ul li a{font-size: 52px;}
 .forma-feedback input{padding: 10px 20px; border: solid 1.5px #FD761F; font-size: 21px; border-radius: 40px; text-align: left;}
 
 
-
 .central-block{width: 770px; padding-top: 35px; padding-bottom: 35px;}
 .central-block,
 .colored-paragraph-text,
@@ -93,12 +92,15 @@ nav ul li a{font-size: 52px;}
 .user-profile-main{flex-direction: column; min-height: 500px;}
 .main-client-profile{flex-direction: column;}
 .login{width: 70%;}
-.choice-buttons{width: 40%;}
 .client-actions{width: 100%;}
 .main-plitka { flex-wrap: wrap; width: auto; margin: 0px 20px;}
 
 .client-link {width: 45%;}
 .plitka { height: 350px;}
+.choice-buttons{width: 100%; display: flex; flex-direction: row; flex-wrap: wrap;}
+.choice-buttons button{width: 45%;     margin: 2%;     height: 80px; font-size: 19px;}
+.to-clients-list{width: 100%; font-size: 32px; padding: 20px 0px;}
+
 }
 
 
@@ -174,8 +176,7 @@ nav ul li a{font-size: 22px;}
 .invisible-300{visibility: collapse;width: 0px;height: 0px;}
 .column-300{flex-direction: column;}
 
-.choice-buttons{width: 100%; display: flex; flex-direction: row; flex-wrap: wrap;}
-.choice-buttons button{width: 45%;     margin: 2%;     height: 80px; font-size: 19px;}
+
 .office-form-client{font-size: 25px;}
 
 
@@ -193,7 +194,7 @@ nav ul li a{font-size: 22px;}
 .contacts-info-chanels article img{width: 60px; float: left;}
 .contacts-info-chanels article {height: 70px; font-size: 20px; text-align: right;}
 .choice-buttons button{width: 100%; margin: 15px 0px; height: 80px; font-size: 19px;}
-
+.tax-balnce {margin: 0% 0%;}
 }
 
 @media screen and (max-width: 480px) {

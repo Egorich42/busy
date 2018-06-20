@@ -199,23 +199,23 @@ class Hvosty:
         sec_space =  first_space++len(self.show_contragent_balance()[1])+6
         thr_space = sec_space+len(self.show_contragent_balance()[2])+6
 
-        insert_cell(3, 1, 'ЗАДОЛЖЕННОСТЬ ПОКУПАТЕЛЕЙ (Д 62)'  )
+        insert_cell(3, 1, 'АВАНСЫ ПОСТАВЩИКАМ(ДЕБ 60)'  )
         for i in range(len(self.show_contragent_balance()[0])):
             insert_cell(i+5, 1, self.show_contragent_balance()[0][i]['name'] )
             insert_cell(i+5, 2, self.show_contragent_balance()[0][i]['summ'])
 
 
-        insert_cell(first_space, 1, 'АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62)'  )
+        insert_cell(first_space, 1, 'ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)'  )
         for i in range(len(self.show_contragent_balance()[1])):
             insert_cell(i+first_space+2, 1, self.show_contragent_balance()[1][i]['name'] )
             insert_cell(i+first_space+2, 2, self.show_contragent_balance()[1][i]['summ'] )    
 
-        insert_cell(sec_space, 1, 'АВАНСЫ ПОСТАВЩИКАМ(Д 60)' )
+        insert_cell(sec_space, 1, 'АВАНСЫ ПОКУПАТЕЛЕЙ (КР 62 ОПЛАЧЕН0, НЕ ОТГРУЖЕНО)' )
         for i in range(len(self.show_contragent_balance()[2])):
             insert_cell(i+sec_space+2, 1, self.show_contragent_balance()[2][i]['name'] )
             insert_cell(i+sec_space+2, 2, self.show_contragent_balance()[2][i]['summ'] )  
         
-        insert_cell(thr_space, 1, 'ЗАДОЛЖЕННОСТЬ ПЕРЕД ПОСТАВЩИКАМИ(КР 60)' )
+        insert_cell(thr_space, 1, 'ЗАДОЛЖЕННОСТЬ ПОКУПАТЕЛЕЙ (Д 62)' )
         for i in range(len(self.show_contragent_balance()[3])):
             insert_cell(i+thr_space+2, 1, self.show_contragent_balance()[3][i]['name'] )
             insert_cell(i+thr_space+2, 2, self.show_contragent_balance()[3][i]['summ'] ) 
