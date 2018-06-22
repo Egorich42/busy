@@ -320,7 +320,63 @@ docs_on_main = "SELECT * FROM {} WHERE {} ORDER BY doc_date DESC;"
 ####- ACT SVERKI-----------##########
 #--SELECT_OUTCOME PAYS AND DOCS---#
 
-sel_income_pays_br_sv_act ="""
+
+sel_out_docs_contragent = """
+SELECT * FROM contragents_documents
+LEFT JOIN contragents ON contragents_documents.parent=contragents.id
+WHERE contragents_documents.doc_date >= {} 
+AND contragents_documents.doc_date <= {}
+
+AND contragents.id = {}
+
+
+AND contragents_documents.deleted != '*'
+AND contragents_documents.doc_type != '0'
+AND contragents_documents.back_flag = '0'
+AND contragents_documents.operation_type = '1'
+
+ORDER BY contragents_documents.doc_date;
+"""
+
+
+sel_out_docs_back_contragent = """
+SELECT * FROM contragents_documents
+LEFT JOIN contragents ON contragents_documents.parent=contragents.id
+WHERE contragents_documents.doc_date >= {} 
+AND contragents_documents.doc_date <= {}
+
+AND contragents.id = {}
+
+AND contragents_documents.doc_type != '0'
+AND contragents_documents.deleted != '*'
+AND contragents_documents.back_flag != '0'
+
+ORDER BY contragents_documents.doc_date;
+"""
+
+
+#ДПД == 2MS
+#ХЗ ЧТО == S5C
+sel_out_pays_contragent  = """
+SELECT * FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+
+AND contragents.id = {}
+
+AND contragents_documents_two.doc_type != '0' 
+AND contragents_documents_two.deleted !='*' 
+AND contragents_documents_two.pay_type !='S5B' 
+AND contragents_documents_two.pay_type !='2MM'
+AND contragents_documents_two.currency_type ='0'
+
+ORDER BY contragents_documents_two.doc_date;
+"""
+
+
+#--SELECT_INCOME PAYS AND DOCS---#
+sel_income_pays_contragent ="""
 SELECT * FROM contragents_documents
 LEFT JOIN contragents ON contragents_documents.parent=contragents.id
 WHERE contragents_documents.doc_date >= {} 
@@ -342,93 +398,14 @@ ORDER BY contragents_documents.doc_date;
 """
 
 
-
-sel_out_docs_br_sv_act = """
-SELECT * FROM contragents_documents
-LEFT JOIN contragents ON contragents_documents.parent=contragents.id
-WHERE contragents_documents.doc_date >= {} 
-AND contragents_documents.doc_date <= {}
-
-AND contragents.id = {}
-
-
-AND contragents_documents.deleted != '*'
-AND contragents_documents.doc_type != '0'
-AND contragents_documents.back_flag = '0'
-AND contragents_documents.operation_type = '1'
-
-ORDER BY contragents_documents.doc_date;
-
-"""
-
-
-sel_out_docs_br_back_sv_act = """
-SELECT * FROM contragents_documents
-LEFT JOIN contragents ON contragents_documents.parent=contragents.id
-WHERE contragents_documents.doc_date >= {} 
-AND contragents_documents.doc_date <= {}
-
-AND contragents.id = {}
-
-
-AND contragents_documents.doc_type != '0'
-AND contragents_documents.deleted != '*'
-AND contragents_documents.back_flag != '0'
-
-ORDER BY contragents_documents.doc_date;
-"""
-#ДПД == 2MS
-#ХЗ ЧТО == S5C
-
-
-
-#--SELECT_INCOME PAYS AND DOCS---#
-
-sel_income_docs_br_sv_act = """
-SELECT * FROM contragents_documents_two
-LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
-WHERE contragents_documents_two.doc_date >= {} 
-AND contragents_documents_two.doc_date <= {}
-
-AND contragents.id = {}
-
-
-AND contragents_documents_two.doc_type = '0'
-AND contragents_documents_two.deleted != '*'
-AND contragents_documents_two.provider_account_type != '364    9U'
-AND contragents_documents_two.provider_account_type != '364    AS'
-
-ORDER BY contragents_documents_two.doc_date;
-"""
-
-
-sel_out_pays_br_sv_act = """
-SELECT * FROM contragents_documents_two
-LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
-WHERE contragents_documents_two.doc_date >= {} 
-AND contragents_documents_two.doc_date <= {}
-
-AND contragents.id = {}
-
-
-AND contragents_documents_two.doc_type != '0' 
-AND contragents_documents_two.deleted !='*' 
-AND contragents_documents_two.pay_type !='S5B' 
-AND contragents_documents_two.pay_type !='2MM'
-AND contragents_documents_two.currency_type ='0'
-
-ORDER BY contragents_documents_two.doc_date;
-"""
-
 #ДОГОВОР ПЕРЕВОДА ДОЛГА
-sel_income_pays_br_dpd_sv_act = """
+sel_income_pays_dpd_contragent  = """
 SELECT * FROM contragents_documents_two
 LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
 WHERE contragents_documents_two.doc_date >= {} 
 AND contragents_documents_two.doc_date <= {}
 
 AND contragents.id = {}
-
 
 AND contragents_documents_two.doc_type != '0' 
 AND contragents_documents_two.deleted !='*' 
@@ -438,7 +415,7 @@ ORDER BY contragents_documents_two.doc_date;
 """
 
 
-sel_income_pays_br_back_sv_act = """
+sel_income_pays_back_contragent  = """
 SELECT * FROM contragents_documents_two
 LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
 WHERE contragents_documents_two.doc_date >= {} 
@@ -446,11 +423,26 @@ AND contragents_documents_two.doc_date <= {}
 
 AND contragents.id = {}
 
-
 AND contragents_documents_two.doc_type != '0' 
 AND contragents_documents_two.deleted !='*' 
 AND contragents_documents_two.pay_type ='S5B' 
 AND contragents_documents_two.currency_type ='0'
+
+ORDER BY contragents_documents_two.doc_date;
+"""
+
+sel_income_docs_contragent = """
+SELECT * FROM contragents_documents_two
+LEFT JOIN contragents ON contragents_documents_two.parent=contragents.id
+WHERE contragents_documents_two.doc_date >= {} 
+AND contragents_documents_two.doc_date <= {}
+
+AND contragents.id = {}
+
+AND contragents_documents_two.doc_type = '0'
+AND contragents_documents_two.deleted != '*'
+AND contragents_documents_two.provider_account_type != '364    9U'
+AND contragents_documents_two.provider_account_type != '364    AS'
 
 ORDER BY contragents_documents_two.doc_date;
 """

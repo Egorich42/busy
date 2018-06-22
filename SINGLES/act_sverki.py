@@ -75,11 +75,12 @@ class Hvosty:
 
 
 
-balance_lists = Hvosty("avangard.sqlite","'"+ '2016-07-01'+"'", "'"+'2018-03-30'+"'").create_hvosty_excel()
+balance_lists = Hvosty("avangard.sqlite","'"+ '2017-01-01'+"'", "'"+'2018-03-30'+"'","'60'").get_ops_list()
 
-
+"""
 Бусы -6J
 ИВ и компания -V
 ЖКУ ОАО "МАПИД" - 60
 
 Дилогос и Теплосервис - уже фсьо
+"""
