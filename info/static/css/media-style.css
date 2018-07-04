@@ -70,7 +70,6 @@ nav ul li a{font-size: 52px;}
 
 .contacts-info-chanels {font-size: 28px; font-weight: bold; margin: 50px 0px;}
 .contacts-info-chanels article {padding: 15px;}
-.contacts-main{margin: 100px 0px;}
 .contacts-main h1{font-size: 30px;}
 .registered-office p{font-size: 14px;}
 
@@ -100,7 +99,8 @@ nav ul li a{font-size: 52px;}
 .choice-buttons{width: 100%; display: flex; flex-direction: row; flex-wrap: wrap;}
 .choice-buttons button{width: 45%;     margin: 2%;     height: 80px; font-size: 19px;}
 .to-clients-list{width: 100%; font-size: 32px; padding: 20px 0px;}
-
+.central-block-colored article p,.central-block-colored article h2{text-align: left; margin: 0px 30px}
+.central-block-colored article h2{padding-bottom: 30px;}
 }
 
 
@@ -147,7 +147,7 @@ nav ul li a{font-size: 22px;}
 .contacts-info-chanels {font-size: 20px;}
 .contacts-info-chanels article img {width: 50px;}
 
-.how-it-work-list ul li {margin-left: 0px;margin-top: 40px;margin-bottom: 0px;}
+.how-it-work-list ul li {margin-left: 0px;margin-top: 40px;margin-bottom: 0px;  margin-right: 0px;}
 .how-it-work-list ul li img { width: 80px;}
 .how-it-work-list ul,.list-block{font-size: 16px;}
 
@@ -155,7 +155,7 @@ nav ul li a{font-size: 22px;}
 .list-block ul,.central-block ul li p{font-size: 19px;}
 
 
-.colored-paragraph-text{width: 95%; margin:0px;}
+.colored-paragraph-text{width: 90%; margin:0px;}
 .colored-paragraph{margin: 0px;}
 
 .plitka { height: 300px;}
@@ -164,7 +164,7 @@ nav ul li a{font-size: 22px;}
 .clients-list{padding: 20px; display: flex; flex-direction: column; justify-content: center;}
 .side-menu ul li{list-style-type: square; margin-left: 20px;}
 .main-scren-data{ margin-bottom: 100px }
-.central-block{width: 95%; }
+.central-block{width: 90%; }
 .list-block ul{text-align: center;  margin-top: 40px;}
 .big-font {font-size: 22px;}
 .operations-list{padding: 0%; }
