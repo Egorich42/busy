@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  | {{ post.name }}
+{% endblock %}
+{% block content %}
+
+
+
+
+
+<h1>{{ post.name }}</h1>    
+<img  src="{% if post.image %}{{ post.image.url }}{% else %}{% static "img/no-image.jpg"%}{% endif %}" class="post-info"  alt="fullImage"/>    
+<h2>{{post.short_description}}</h2>   
+{{post.story|safe}}
+
+
+
+
+
+<!--div id="disqus_thread" style="width: 90%; margin-left: 5%;"></div>
+ <script id="dsq-count-scr" src="//http-winorbite-com.disqus.com/count.js" async></script>
+<script>
+(function() { 
+var d = document, s = d.createElement('script');
+s.src = '//http-winorbite-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+</section-->
+
+<!--aside>
+{% for post in posts %}
+<article>
+<a href="{{post.slug }}">
+<img src="{% if post.image %}{{ post.image.url }}{% else %}{% static "img/no-image.jpg"%}{% endif %}" class="img-responsive" alt="post-image">
+</a>
+ <p><a href="{{ post.slug}}">{{post.name }}</a></p>
+ </article>
+{% endfor %}	
+</aside-->
+
+</section>
+{% endblock %}

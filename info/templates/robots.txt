@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /about/contact/
+Disallow: /about/payment/
+Disallow: /about/privacy/
+
+User-agent: Googlebot 
+Disallow: /admin/
+Disallow: /about/contact/
+Disallow: /about/payment/
+Disallow: /about/privacy/
+
+User-agent: Yandex
+Disallow: /admin/
+Disallow: /about/contact/
+Disallow: /about/payment/
+Disallow: /about/privacy/

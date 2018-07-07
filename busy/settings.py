@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     'users',
     'updater',
     'client_state',
+    'ckeditor',
+    'ckeditor_uploader',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -90,5 +93,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
-
+CKEDITOR_UPLOAD_PATH = 'uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
