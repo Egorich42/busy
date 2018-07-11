@@ -1,15 +1,22 @@
-{% extends 'base.html' %}
 {% load static %}
 {% block title %}
-&nbsp;|&nbsp;Логин
+<title>"Бухгалтерские советы"</title>
+
+<link rel="stylesheet" href="{% static "/css/style.css" %}">
+<link rel="stylesheet" href="{% static "/css/media-style.css" %}">
 {% endblock %}
 {% block content %}
+<section class="main flex column vertical-content-center">
+
+
 <section class="login">
+<img src="/static/icons/logo-busy.png" alt="background" title="logo">
+
 {% if user.is_authenticated %}
 HELLO{{user.username}} Хотите посетить личный кабинет? <a href="/users/{{user.id}}/{{user.first_name}}">Войти</a>
 
 {% else %}
-<p>Войти в личный кабинет</p>
+<!--p>Войти в личный кабинет</p-->
 <form id="login_form" method="post" action="/users/login/" >
 {% csrf_token %}
 <p>Логин:</p> 
@@ -24,6 +31,7 @@ HELLO{{user.username}} Хотите посетить личный кабинет
   {% endif %}
 
 {% endif %}
+</section>
 </section>
 {% endblock %}
 

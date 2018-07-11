@@ -11,13 +11,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = "e.g.hutter@gmail.com"
-EMAIL_HOST_PASSWORD = "atlantishearth198622"
-EMAIL_USE_TLS = True
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

@@ -88,9 +88,12 @@ nav ul li a{font-size: 52px;}
 
 
 @media screen and (max-width: 940px) {
+.login{width: 60%; }
+
+
 .user-profile-main{flex-direction: column; min-height: 500px;}
 .main-client-profile{flex-direction: column;}
-.login{width: 70%;}
+
 .client-actions{width: 100%;}
 .main-plitka { flex-wrap: wrap; width: auto; margin: 0px 20px;}
 
@@ -101,6 +104,9 @@ nav ul li a{font-size: 52px;}
 .to-clients-list{width: 100%; font-size: 32px; padding: 20px 0px;}
 .central-block-colored article p,.central-block-colored article h2{text-align: left; margin: 0px 30px}
 .central-block-colored article h2{padding-bottom: 30px;}
+
+
+
 }
 
 
@@ -112,6 +118,8 @@ ul{padding: 0px;margin: 0px;}
 nav ul{flex-direction: column;}
 nav ul li{padding-top: 15px;}
 nav ul li a{font-size: 22px;}	
+
+.login form input {height: 60px; font-size: 26px;}
 
 .down-description p, .central-block p,.central-block,.central-block p{ font-size: 14px;}
 .down-description p{text-align: left;}
@@ -160,7 +168,6 @@ nav ul li a{font-size: 22px;}
 
 .plitka { height: 300px;}
 
-.login{width: 80%;}
 .clients-list{padding: 20px; display: flex; flex-direction: column; justify-content: center;}
 .side-menu ul li{list-style-type: square; margin-left: 20px;}
 .main-scren-data{ margin-bottom: 100px }

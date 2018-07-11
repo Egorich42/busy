@@ -1,0 +1,40 @@
+.full-description{text-align:left;}
+
+.post-window{
+height: 250px;
+display: inline-block; 
+padding: 0px;
+}
+
+
+.post-info{width:80%;}
+
+
+.full-description{
+padding-right:50px;
+max-width:1000px;
+font-size:1.2em;
+margin-top:35px;
+padding-top:15px;
+}
+
+.blog-post-list{
+display: flex;
+margin-left: 5%;
+background: none;
+}
+
+.blog-post-full{
+display: inline-block;
+padding: 15px;
+}
+
+.blog-image{width: 50%;}
+
+.blog-image a img{
+width: 200%;
+max-width: auto;
+max-width: 300%;
+}
+
+.blog-chained-posts{display: flex;}

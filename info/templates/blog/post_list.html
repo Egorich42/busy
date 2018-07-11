@@ -4,7 +4,19 @@
 {% endblock %}
 {% block content %}
 {% for post in posts %}
-<a href="{{post.slug}}">{{post.name }}</a>
+<section class="blog-post-list" >
+{% for post in posts %}
+<section class="post-window">
+<section class="blog-image">
+<a href="{{post.get_post_url }}">
+
+<img src="{% if post.image %}{{ post.image.url }}{% else %}{% static "img/no-image.jpg"%}{% endif %}" class="img-responsive" alt="post-image">
+</a>
+
+</section>
+<article class="post-title"><a href="{{ post.get_post_url}}">{{post.name }}</a></article>
+</section>
 {% endfor %}
+</section>{% endfor %}
 {% endblock %}
 

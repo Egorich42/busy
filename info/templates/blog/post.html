@@ -9,10 +9,36 @@
 
 
 
+<section class="blog-post-full">
+
+
+
+
+
+<section class="full-post">
 <h1>{{ post.name }}</h1>    
 <img  src="{% if post.image %}{{ post.image.url }}{% else %}{% static "img/no-image.jpg"%}{% endif %}" class="post-info"  alt="fullImage"/>    
 <h2>{{post.short_description}}</h2>   
+<section class="full-description" style="padding-right: 0px;">
 {{post.story|safe}}
+
+
+</section>
+</section>
+
+<aside>
+{% for post in posts %}
+<article>
+<a href="{{post.get_post_url }}">
+<img src="{% if post.image %}{{ post.image.url }}{% else %}{% static "img/no-image.jpg"%}{% endif %}" class="img-responsive" alt="post-image">
+</a>
+ <p><a href="{{ post.get_post_url}}">{{post.name }}</a></p>
+ </article>
+{% endfor %}	
+</aside>
+
+</section>
+
 
 
 

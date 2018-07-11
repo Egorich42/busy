@@ -78,12 +78,12 @@ def show_user_profile(request,id, **kwargs):
         all_providers_docs = get_paginator(cur, 'contragents_documents',sq_c.tn_providers,15,request)
 
 
-        hvosty_list = Hvosty(base_name,"'"+ '2016-06-30'+"'", "'"+ str(var.today)+"'").show_contragent_balance()
+#        hvosty_list = Hvosty(base_name,"'"+ '2016-06-30'+"'", "'"+ str(var.today)+"'").show_contragent_balance()
 
-        providers_debts = hvosty_list[0]
-        providers_prepay = hvosty_list[1]
-        buyers_debts = hvosty_list[2]
-        buyers_prepay = hvosty_list[3]
+#        providers_debts = hvosty_list[0]
+#        providers_prepay = hvosty_list[1]
+#        buyers_debts = hvosty_list[2]
+#        buyers_prepay = hvosty_list[3]
     
  
         return render(request, 'users/user_profile.html',
@@ -93,10 +93,10 @@ def show_user_profile(request,id, **kwargs):
                                 'all_providers_docs':all_providers_docs,
 
                                 'tax_system':taxes_system,
-                                'providers_debts':providers_debts,
-                                'providers_prepay':providers_prepay,
-                                'buyers_debts':buyers_debts,
-                                'buyers_prepay':buyers_prepay,
+#                                'providers_debts':providers_debts,
+#                                'providers_prepay':providers_prepay,
+#                                'buyers_debts':buyers_debts,
+#                                'buyers_prepay':buyers_prepay,
 
                                 "nds_month": nds_month,
                                 "nds_square": nds_square,

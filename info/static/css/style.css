@@ -119,7 +119,7 @@ footer
 
 
 /*---------MODULES RULES------*/
-
+footer section{display: flex; justify-content: space-around; width: 100%;}
 .choice-buttons{height: 100%;}
 .main-client-profile{min-height: 700px;}
 
@@ -229,13 +229,16 @@ margin-top: 20px;}
 .tax-balnce{margin: 0% 20%;}
 .tax-balnce h3{background-color: #FD761F; color: #fff; padding: 10px 0px;}
 
-.login{width: 50%;}
+.login{width: 25%; text-align: center; padding-top: 100px;}
+.login img{max-width: 100%; margin: 50px 0px;}
 .login p{font-size: 26px;margin: 0px;padding:0px;}
-.login form input{
+
+
+.login form input {
 border: solid 1.5px #FD761F;
 border-radius: 40px;
-padding: 10px 0px;
-font-size: 40px;
+padding: 5px 0px;
+font-size: 22px;
 margin: 20px 0px;
 }
 
