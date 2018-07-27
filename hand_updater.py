@@ -50,7 +50,7 @@ class CurrencyUpdater:
 
     def create_courses_table(self, money):
        courses_list = []
-       for i in [requests.get(self.addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list( '2018-06-10', '2018-06-12')]:
+       for i in [requests.get(self.addres.format(money, data.strftime("%Y-%m-%d"))).json() for data in  generate_data_list( '2018-06-11', '2018-07-17')]:
            courses_list += [( str(i["Date"][:10]),i["Cur_Name"], i["Cur_Scale"], i["Cur_OfficialRate"] )]
        return courses_list
 
